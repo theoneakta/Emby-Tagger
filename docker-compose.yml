@@ -1,0 +1,9 @@
+services:
+  emby-tag-manager:
+    build: .
+    container_name: emby-tag-manager
+    restart: unless-stopped
+    ports:
+      - "8765:3000"        # Change 8765 to any free port you like
+    env_file:
+      - .env               # Loads EMBY_SERVER, EMBY_API_KEY, EMBY_USER_ID
