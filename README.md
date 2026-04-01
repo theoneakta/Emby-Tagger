@@ -1,13 +1,12 @@
 # Emby Tag Manager — Self-Hosted
 
-A browser-based tool for managing tags on your Emby movie library.
-Runs as a Docker container (Node.js + Express).
+A browser-based tool for restoring category tags on your Emby movie library after a Radarr migration (or any total library rebuild).
 
 ---
 
 ## Quick start
 
-### 1. Edit `.env`
+### 1. Create `.env`
 
 ```env
 EMBY_SERVER=http://192.168.3.7:8096
@@ -15,10 +14,7 @@ EMBY_API_KEY=your_api_key_here
 EMBY_USER_ID=your_user_id_here
 ```
 
-- **EMBY_SERVER** — local IP and port, no trailing slash
-- **EMBY_API_KEY** — Emby Dashboard → Advanced → Security → API Keys
-- **EMBY_USER_ID** — find yours with the command below
-
+Find your User ID:
 ```bash
 curl -s "http://192.168.3.7:8096/Users" \
   -H "X-Emby-Token: YOUR_API_KEY" | \
@@ -33,9 +29,51 @@ docker compose up -d --build
 
 ### 3. Open
 
-Go to **http://localhost:8765** (or your NAS/server IP).
+**http://localhost:8765**
 
-The app loads your library automatically — no login screen.
+---
+
+## How to restore tags after a Radarr migration
+
+**Scenario:** You had movies organized in genre folders (`/movies/Action/Die.Hard`, `/movies/Sci-Fi/The.Matrix`) and Emby used the parent folder as a tag. After moving everything to one flat Radarr folder, all the tags are gone.
+
+**Two ways to restore:**
+
+### Option A — Visual Sorter (recommended for rebuilds)
+
+1. Open **🗂 Visual Sorter**
+2. Click **Auto-import categories from Emby paths** if Emby still has old path metadata, OR manually add categories (Action, Comedy, Sci-Fi, etc.)
+3. Browse your movie library in grid or list mode
+4. **Drag** movies into category columns, or click **＋** to assign via dropdown, or use the list-mode dropdown selector
+5. Click **Apply all to Emby →** to write tags back
+
+### Option B — CSV Import (great if you have a backup)
+
+1. Export a CSV **before** your migration using **⬇ Export CSV**
+2. After migration, open **📄 CSV Import**
+3. Drop the CSV file or paste its contents
+4. The tool matches movies by title (tolerates dots, quality tags, year differences)
+5. Review matches, uncheck anything wrong, click **Apply**
+
+### CSV format
+
+```
+Category,MovieFolderName
+Action,Die.Hard.1988.BluRay.x264
+Sci-Fi,The.Matrix.1999.BDRIP
+Comedy,Bad.Moms.2016.BRRip.YTS
+```
+
+---
+
+## Tabs
+
+| Tab | Purpose |
+|-----|---------|
+| 🗂 Visual Sorter | Create categories, drag-and-drop or click-assign movies, apply tags to Emby |
+| 📄 CSV Import | Upload/paste a category→movie CSV and apply tags in bulk |
+| ⬇ Export CSV | Download your current tags as a CSV backup |
+| 🎬 Movies | Manual tag management movie-by-movie |
 
 ---
 
@@ -54,16 +92,14 @@ docker compose logs -f
 
 ---
 
-## How it works
+## Architecture
 
 ```
 Browser  →  /emby/*      →  Node proxy  →  Emby server
-         ←  /api/config  (apiKey + userId, read from .env)
+         ←  /api/config  (apiKey + userId from .env)
 ```
 
-Credentials never leave the server. The browser receives the API key
-and user ID from /api/config at startup and uses them for Emby calls,
-all of which are proxied through the Node container.
+Credentials never leave your server. The sorter state (categories + assignments) is persisted in browser localStorage so you can resume across sessions.
 
 ---
 
@@ -72,8 +108,8 @@ all of which are proxied through the Node container.
 | File | Purpose |
 |------|---------|
 | `.env` | Credentials and server URL (edit this) |
-| `server.mjs` | Node.js backend — reads .env, proxies Emby API |
-| `public/index.html` | The entire frontend (single file) |
+| `server.mjs` | Node.js backend — proxies Emby API |
+| `public/index.html` | Entire frontend (single file) |
 | `Dockerfile` | Builds the Node image |
 | `docker-compose.yml` | Wires everything together |
-| `package.json` | Node dependencies (express, http-proxy-middleware) |
+| `package.json` | Node dependencies |

@@ -39,6 +39,7 @@ button.primary:hover{opacity:.85}
 button.success{border-color:var(--success-border);color:var(--success-text);background:var(--success-bg)}
 button.success:hover{opacity:.85}
 button.danger{border-color:var(--danger-border);color:var(--danger-text)}
+button.danger:hover{background:var(--danger-bg)}
 button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
 .badge{display:inline-flex;align-items:center;font-size:12px;padding:3px 9px;border-radius:999px;font-weight:500}
@@ -51,7 +52,7 @@ button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .tag-chip.pending{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}
 .tag-chip .rm{cursor:pointer;font-size:10px;opacity:.6;margin-left:2px}
 .tag-chip .rm:hover{opacity:1;color:var(--danger-text)}
-#app{max-width:1040px;margin:0 auto;padding:1.5rem 1rem}
+#app{max-width:1200px;margin:0 auto;padding:1.5rem 1rem}
 .row{display:flex;align-items:center;gap:8px}
 .suggest-wrap{position:relative}
 .tag-suggest{position:absolute;z-index:100;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);max-height:160px;overflow-y:auto;min-width:200px;box-shadow:0 4px 16px rgba(0,0,0,.15);top:38px;left:0}
@@ -59,8 +60,9 @@ button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .tag-suggest div:hover{background:var(--bg2)}
 .movie-row{border-bottom:0.5px solid var(--border);padding:10px 0;display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:start}
 .movie-row:last-child{border-bottom:none}
-.thumb{width:48px;height:72px;border-radius:4px;object-fit:cover;background:var(--bg2);border:0.5px solid var(--border);flex-shrink:0;display:block}
-.thumb-placeholder{width:48px;height:72px;border-radius:4px;background:var(--bg2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:var(--text3)}
+.thumb{width:40px;height:60px;border-radius:4px;object-fit:cover;background:var(--bg2);border:0.5px solid var(--border);flex-shrink:0;display:block}
+.thumb-sm{width:32px;height:48px;border-radius:3px;object-fit:cover;background:var(--bg2);border:0.5px solid var(--border);flex-shrink:0}
+.thumb-placeholder{width:40px;height:60px;border-radius:4px;background:var(--bg2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:var(--text3)}
 .log-line{font-size:12px;font-family:monospace;padding:3px 0;border-bottom:0.5px solid var(--border)}
 .log-line.ok{color:var(--success-text)}
 .log-line.err{color:var(--danger-text)}
@@ -83,55 +85,122 @@ button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .splash h2{font-size:18px;font-weight:500;color:var(--text)}
 #toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.15);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none}
 #toast.show{opacity:1}
-.csv-table{width:100%;border-collapse:collapse;font-size:13px}
-.csv-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border)}
-.csv-table td{padding:8px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
-.csv-table tr:last-child td{border-bottom:none}
-.csv-table tr.unmatched td{background:var(--danger-bg);color:var(--danger-text)}
-.csv-table input[type=text]{height:28px;font-size:12px;padding:0 6px}
 .drop-zone{border:1.5px dashed var(--border2);border-radius:var(--radius-lg);padding:2rem;text-align:center;color:var(--text2);cursor:pointer;transition:border-color .15s,background .15s}
 .drop-zone:hover,.drop-zone.over{border-color:var(--info-text);background:var(--info-bg)}
 .drop-zone p{font-size:13px;margin-top:6px}
-textarea.csv-input{width:100%;min-height:120px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;font-family:monospace;font-size:12px;outline:none}
+textarea.csv-input{width:100%;min-height:100px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;font-family:monospace;font-size:12px;outline:none}
 textarea.csv-input:focus{border-color:var(--info-text)}
-.step-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
-.clean-table{width:100%;border-collapse:collapse;font-size:13px}
-.clean-table th{text-align:left;padding:7px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border)}
-.clean-table td{padding:7px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
-.clean-table tr:last-child td{border-bottom:none}
-.clean-table tr.removed td{opacity:.35;text-decoration:line-through}
-.clean-table input[type=text]{height:26px;font-size:12px;padding:0 6px}
 .tag-group-header{background:var(--bg2);padding:6px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px}
 .step-num{width:24px;height:24px;border-radius:50%;background:var(--text);color:var(--bg);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .step-num.done{background:var(--success-text)}
 .step-title{font-size:15px;font-weight:500}
+.csv-table{width:100%;border-collapse:collapse;font-size:13px}
+.csv-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border)}
+.csv-table td{padding:8px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
+.csv-table tr:last-child td{border-bottom:none}
+
+/* ── Sorter layout ── */
+.sorter-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.sorter-sidebar{display:flex;flex-direction:column;gap:10px;position:sticky;top:16px}
+.sorter-categories{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px}
+.cat-slot{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);min-height:64px;transition:border-color .15s,background .15s}
+.cat-slot.drag-over{border-color:var(--info-text);background:var(--info-bg)}
+.cat-slot-header{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:0.5px solid var(--border);cursor:pointer;user-select:none}
+.cat-slot-header:hover{background:var(--bg2);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.cat-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cat-slot-name{font-size:13px;font-weight:500;flex:1}
+.cat-slot-count{font-size:11px;color:var(--text2)}
+.cat-slot-movies{padding:6px;display:flex;flex-direction:column;gap:4px}
+.cat-movie-item{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:6px;background:var(--bg2);font-size:12px;cursor:default}
+.cat-movie-item .rm-movie{margin-left:auto;cursor:pointer;color:var(--text3);font-size:11px;flex-shrink:0}
+.cat-movie-item .rm-movie:hover{color:var(--danger-text)}
+.sorter-main{display:flex;flex-direction:column;gap:12px}
+.sorter-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.movie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.movie-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:10px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative;display:flex;flex-direction:column;gap:6px;user-select:none}
+.movie-card:hover{border-color:var(--info-text);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.movie-card.assigned{opacity:.45;pointer-events:none}
+.movie-card.dragging{opacity:.35;transform:scale(.97)}
+.movie-card-poster{width:100%;aspect-ratio:2/3;border-radius:6px;object-fit:cover;background:var(--bg2);display:block}
+.movie-card-poster-ph{width:100%;aspect-ratio:2/3;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--text3)}
+.movie-card-title{font-size:12px;font-weight:500;line-height:1.3}
+.movie-card-year{font-size:11px;color:var(--text2)}
+.movie-card-tags{display:flex;flex-wrap:wrap;gap:3px}
+.movie-card-assign-btn{position:absolute;top:6px;right:6px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;opacity:0;transition:opacity .15s}
+.movie-card:hover .movie-card-assign-btn{opacity:1}
+.cat-assign-dropdown{position:absolute;top:36px;right:6px;z-index:200;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);box-shadow:0 4px 16px rgba(0,0,0,.2);min-width:160px;max-height:240px;overflow-y:auto}
+.cat-assign-dropdown div{padding:7px 12px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.cat-assign-dropdown div:hover{background:var(--bg2)}
+.sorter-unassigned-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text2)}
+.movie-list-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.movie-list-row:last-child{border-bottom:none}
+.movie-list-row select{height:28px;font-size:12px;padding:0 6px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;flex-shrink:0;max-width:160px}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div id="toast"></div>
 <script>
-const STORAGE_KEY = 'emby_tag_history_v2';
-
-let S = {
-  nav: 'movies',
-  config: { apiKey:'', userId:'' },
-  movies: [], tagHistory: [], pendingTags: {},
-  logs: [], applying: false, applyProgress: 0,
-  stats: { applied:0, skipped:0, errors:0 },
-  filterText: '', subTab: 'untagged',
-  page: 'loading', error: null,
-  imp: null,
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+const STORAGE_KEY='emby_tag_v3';
+let S={
+  nav:'sorter',
+  config:{apiKey:'',userId:''},
+  movies:[], tagHistory:[],
+  page:'loading', error:null,
+  pendingTags:{},
+  logs:[], applying:false, applyProgress:0,
+  stats:{applied:0,skipped:0,errors:0},
+  filterText:'', subTab:'untagged',
+  // Sorter
+  sorter:{
+    categories:[], // [{id,name,color}]
+    assignments:{}, // movieId → catId
+    filter:'unassigned', // 'all'|'unassigned'|'assigned'
+    search:'',
+    viewMode:'grid', // 'grid'|'list'
+    dragMovieId:null,
+    openDropdownId:null,
+    phase:'sort', // 'sort'|'applying'|'done'
+    progress:0,total:0,
+    applyStats:{applied:0,skipped:0,errors:0},
+    applyLogs:[],
+    collapseMap:{}, // catId→bool
+  },
+  // CSV import
+  imp:null,
 };
 
-function loadTagHistory(){ try{ const t=localStorage.getItem(STORAGE_KEY); if(t) S.tagHistory=JSON.parse(t); }catch(e){} }
-function saveTagHistory(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S.tagHistory)); }catch(e){} }
-function addTagHistory(tag){ tag=tag.trim(); if(!tag) return; if(!S.tagHistory.includes(tag)){ S.tagHistory.unshift(tag); if(S.tagHistory.length>300) S.tagHistory=S.tagHistory.slice(0,300); saveTagHistory(); } }
+const CAT_COLORS=['#4f8ef7','#e05c5c','#3baa6f','#e09a1e','#a855f7','#06b6d4','#f97316','#64748b','#ec4899','#10b981'];
 
-function toast(msg,ms=2800){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
-function hdrs(){ return {'X-Emby-Token':S.config.apiKey,'Content-Type':'application/json'}; }
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      categories:S.sorter.categories,
+      assignments:S.sorter.assignments,
+      tagHistory:S.tagHistory,
+    }));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+    if(d.categories) S.sorter.categories=d.categories;
+    if(d.assignments) S.sorter.assignments=d.assignments;
+    if(d.tagHistory) S.tagHistory=d.tagHistory;
+  }catch(e){}
+}
 
-// ── Title cleaning ───────────────────────────────────────────
+// ════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════
+function toast(msg,ms=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
+function hdrs(){return{'X-Emby-Token':S.config.apiKey,'Content-Type':'application/json'};}
+function uid(){return Math.random().toString(36).slice(2);}
+function addTagHistory(tag){tag=tag.trim();if(!tag)return;if(!S.tagHistory.includes(tag)){S.tagHistory.unshift(tag);if(S.tagHistory.length>300)S.tagHistory=S.tagHistory.slice(0,300);saveState();}}
+
 function cleanTitle(raw){
   let s=raw;
   s=s.replace(/\s*\.(mkv|mp4|avi|m4v|mov|wmv|flv|ts)$/i,'');
@@ -149,258 +218,814 @@ function cleanTitle(raw){
   s=s.replace(/\s{2,}/g,' ').trim();
   return s.toLowerCase();
 }
-
-function normaliseEmby(name){ return name.replace(/\s*\(\d{4}\)\s*$/,'').toLowerCase().trim(); }
-function bare(s){ return s.replace(/[^a-z0-9]/g,''); }
-function wordOverlap(a,b){
-  const wa=a.split(/\s+/).filter(w=>w.length>1);
-  const wb=new Set(b.split(/\s+/).filter(w=>w.length>1));
-  if(!wa.length) return 0;
-  return wa.filter(w=>wb.has(w)).length/wa.length;
-}
-
+function normaliseEmby(name){return name.replace(/\s*\(\d{4}\)\s*$/,'').toLowerCase().trim();}
+function bare(s){return s.replace(/[^a-z0-9]/g,'');}
+function wordOverlap(a,b){const wa=a.split(/\s+/).filter(w=>w.length>1);const wb=new Set(b.split(/\s+/).filter(w=>w.length>1));if(!wa.length)return 0;return wa.filter(w=>wb.has(w)).length/wa.length;}
 function findMovie(cleaned,lookup){
-  if(lookup.has(cleaned)) return lookup.get(cleaned);
+  if(lookup.has(cleaned))return lookup.get(cleaned);
   const noArt=cleaned.replace(/^(the|a|an) /,'');
-  for(const [k,v] of lookup){ if(k.replace(/^(the|a|an) /,'')=== noArt) return v; }
+  for(const[k,v]of lookup){if(k.replace(/^(the|a|an) /,'')===noArt)return v;}
   const cb=bare(cleaned);
-  if(cb.length>=4){ for(const [k,v] of lookup){ if(bare(k)===cb) return v; } }
-  if(cb.length>=6){ for(const [k,v] of lookup){ const eb=bare(k); if(eb.startsWith(cb)||cb.startsWith(eb)) return v; } }
+  if(cb.length>=4){for(const[k,v]of lookup){if(bare(k)===cb)return v;}}
+  if(cb.length>=6){for(const[k,v]of lookup){const eb=bare(k);if(eb.startsWith(cb)||cb.startsWith(eb))return v;}}
   const words=cleaned.split(/\s+/).filter(w=>w.length>1);
-  if(words.length>=3){
-    let best=null,bestScore=0;
-    for(const [k,v] of lookup){ const sc=wordOverlap(cleaned,k); if(sc>bestScore){bestScore=sc;best=v;} }
-    if(bestScore>=0.80) return best;
-  }
+  if(words.length>=3){let best=null,bestScore=0;for(const[k,v]of lookup){const sc=wordOverlap(cleaned,k);if(sc>bestScore){bestScore=sc;best=v;}}if(bestScore>=0.80)return best;}
   return null;
 }
+function buildLookup(){const m=new Map();S.movies.forEach(mv=>{const k=normaliseEmby(mv.name);if(!m.has(k))m.set(k,mv);});return m;}
 
-function buildLookup(){
-  const m=new Map();
-  S.movies.forEach(mv=>{ const k=normaliseEmby(mv.name); if(!m.has(k)) m.set(k,mv); });
-  return m;
-}
-
-// ── API ──────────────────────────────────────────────────────
+// ════════════════════════════════════════════════
+// API
+// ════════════════════════════════════════════════
 async function init(){
-  S.page='loading'; render();
+  S.page='loading';render();
   try{
     const r=await fetch('/api/config');
-    if(!r.ok) throw new Error(`Config endpoint returned HTTP ${r.status}`);
+    if(!r.ok)throw new Error(`Config endpoint returned HTTP ${r.status}`);
     const cfg=await r.json();
-    S.config.apiKey=cfg.apiKey; S.config.userId=cfg.userId;
+    S.config.apiKey=cfg.apiKey;S.config.userId=cfg.userId;
     await fetchMovies();
-  }catch(e){ S.error=e.message; S.page='error'; render(); }
+  }catch(e){S.error=e.message;S.page='error';render();}
 }
 
 async function fetchMovies(){
-  S.page='loading'; S.movies=[]; S.logs=[]; render();
+  S.page='loading';S.movies=[];render();
   try{
     const url=`/emby/Users/${S.config.userId}/Items?IncludeItemTypes=Movie&Recursive=true&Fields=Tags,TagItems,Path,ProductionYear&Limit=9999`;
     const r=await fetch(url,{headers:hdrs()});
-    if(!r.ok) throw new Error(`Emby returned HTTP ${r.status} — check your API key and User ID in .env`);
+    if(!r.ok)throw new Error(`Emby returned HTTP ${r.status}`);
     const d=await r.json();
     S.movies=(d.Items||[]).map(m=>({
       id:m.Id,name:m.Name,year:m.ProductionYear||'',
       path:m.Path||'',tags:(m.TagItems||[]).map(t=>t.Name),tagItems:m.TagItems||[]
     }));
-    addLog(`Loaded ${S.movies.length} movies — ${S.movies.filter(m=>m.tags.length===0).length} untagged`,'info');
     S.page='ready';
-  }catch(e){ S.error=e.message; S.page='error'; }
+  }catch(e){S.error=e.message;S.page='error';}
   render();
 }
-
-function filterMovies(){
-  let list=S.movies;
-  if(S.subTab==='untagged') list=list.filter(m=>m.tags.length===0);
-  else if(S.subTab==='tagged') list=list.filter(m=>m.tags.length>0);
-  if(S.filterText){ const q=S.filterText.toLowerCase(); list=list.filter(m=>m.name.toLowerCase().includes(q)||(m.year+'').includes(q)); }
-  return list;
-}
-
-function addLog(msg,type='info'){ S.logs.unshift({msg,type,ts:new Date().toLocaleTimeString()}); if(S.logs.length>500) S.logs=S.logs.slice(0,500); }
 
 async function applyTag(movieId,tag){
   try{
     const r=await fetch(`/emby/Users/${S.config.userId}/Items/${movieId}`,{headers:hdrs()});
-    if(!r.ok) throw new Error(`Fetch HTTP ${r.status}`);
+    if(!r.ok)throw new Error(`Fetch HTTP ${r.status}`);
     const item=await r.json();
     const existing=(item.TagItems||[]).map(t=>t.Name);
-    if(existing.includes(tag)) return 'skipped';
+    if(existing.includes(tag))return'skipped';
     const body=JSON.stringify({...item,TagItems:[...(item.TagItems||[]),{Name:tag,Id:0}]});
     const pr=await fetch(`/emby/Items/${movieId}`,{method:'POST',headers:hdrs(),body});
-    if(!pr.ok) throw new Error(`Save HTTP ${pr.status}`);
-    return 'ok';
-  }catch(e){ return 'error:'+e.message; }
+    if(!pr.ok)throw new Error(`Save HTTP ${pr.status}`);
+    return'ok';
+  }catch(e){return'error:'+e.message;}
 }
 
-async function applyAllPending(){
-  const entries=Object.entries(S.pendingTags).filter(([,tags])=>tags.length>0);
-  if(!entries.length){ toast('No pending tags.'); return; }
-  S.applying=true; S.applyProgress=0; S.stats={applied:0,skipped:0,errors:0}; S.logs=[];
-  S.nav='log'; render();
-  const total=entries.reduce((s,[,tags])=>s+tags.length,0);
-  let done=0;
-  for(const [id,tags] of entries){
-    const movie=S.movies.find(m=>m.id===id);
-    for(const tag of tags){
-      addTagHistory(tag);
-      const res=await applyTag(id,tag);
-      done++; S.applyProgress=Math.round((done/total)*100);
-      if(res==='ok'){ S.stats.applied++; addLog(`+ "${tag}" → ${movie?.name||id}`,'ok'); if(movie&&!movie.tags.includes(tag)) movie.tags.push(tag); }
-      else if(res==='skipped'){ S.stats.skipped++; addLog(`~ already tagged "${tag}": ${movie?.name||id}`,'skip'); }
-      else{ S.stats.errors++; addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err'); }
-      render(); await new Promise(r=>setTimeout(r,80));
-    }
-    delete S.pendingTags[id];
-  }
-  S.applying=false; render();
-  toast(`Done — ${S.stats.applied} applied, ${S.stats.skipped} skipped, ${S.stats.errors} errors`);
-}
-
-// ── CSV logic ────────────────────────────────────────────────
-async function parseAndMatchCsv(raw){
-  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean)
-    .filter(l=>!/^folde?r?tag/i.test(l) && l.includes(','));
-  const lookup=buildLookup();
-  const rows=[];
-  S.csvMatching=true; S.csvMatchProgress=0; S.csvMatchTotal=lines.length;
-  render();
-  const CHUNK=40;
-  for(let i=0;i<lines.length;i++){
-    const line=lines[i];
-    const parts=line.split(',');
-    if(parts.length<2){ S.csvMatchProgress=i+1; continue; }
-    const folderTag=parts[0].trim().replace(/^\[|\]$/g,'');
-    const movieFolder=parts.slice(1).join(',').trim();
-    const cleaned=cleanTitle(movieFolder);
-    const matched=findMovie(cleaned,lookup);
-    rows.push({
-      folderTag, movieFolder, cleanedTitle:cleaned,
-      matchedMovie:matched||null,
-      tag:folderTag,
-      status:matched?'matched':'unmatched',
-      skip:!matched,
-    });
-    S.csvMatchProgress=i+1;
-    // yield to browser every CHUNK rows so UI stays responsive
-    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
-  }
-  S.csvMatching=false; S.csvMatchProgress=0;
-  return rows;
-}
-
-function generateExportCsv(){
-  const lines=['FolderTag,MovieFolder'];
-  S.movies.forEach(m=>{
-    if(!m.path) return;
-    const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
-    if(parts.length<2) return;
-    const movieFolder=parts[parts.length-1];
-    const tagFolder=parts[parts.length-2].replace(/^\[|\]$/g,'');
-    lines.push(`${tagFolder},${movieFolder}`);
-  });
-  return lines.join('\n');
-}
-
-function generateCleanRows(){
-  // Build raw export data
-  const rows=[];
-  S.movies.forEach(m=>{
-    if(!m.path) return;
-    const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
-    if(parts.length<2) return;
-    const rawFolder=parts[parts.length-1];
-    const rawTag=parts[parts.length-2].replace(/^\[|\]$/g,'');
-    const cleaned=cleanTitle(rawFolder);
-    rows.push({ tag:rawTag, rawFolder, cleanedTitle:cleaned, keep:true });
-  });
-  // Sort by tag then cleaned title
-  rows.sort((a,b)=>a.tag.localeCompare(b.tag)||a.cleanedTitle.localeCompare(b.cleanedTitle));
-  return rows;
-}
-
-// Convert cleanRows to CSV for the paste/import step
-function cleanRowsToCsv(){
-  const lines=['FolderTag,MovieFolder'];
-  S.cleanRows.filter(r=>r.keep).forEach(r=>{
-    lines.push(`${r.tag},${r.rawFolder}`);
-  });
-  return lines.join('\n');
-}
-
-async function applyCsvTags(){
-  const toApply=S.csvRows.filter(r=>!r.skip&&r.status==='matched'&&r.matchedMovie);
-  if(!toApply.length){ toast('Nothing to apply.'); return; }
-  S.csvApplying=true; S.csvProgress=0; S.csvStats={applied:0,skipped:0,errors:0}; S.csvLogs=[];
-  render();
-  for(let i=0;i<toApply.length;i++){
-    const row=toApply[i];
-    addTagHistory(row.tag);
-    const res=await applyTag(row.matchedMovie.id,row.tag);
-    S.csvProgress=Math.round(((i+1)/toApply.length)*100);
-    if(res==='ok'){
-      S.csvStats.applied++;
-      S.csvLogs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
-      if(!row.matchedMovie.tags.includes(row.tag)) row.matchedMovie.tags.push(row.tag);
-    }else if(res==='skipped'){
-      S.csvStats.skipped++;
-      S.csvLogs.unshift({msg:`~ already tagged "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
-    }else{
-      S.csvStats.errors++;
-      S.csvLogs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
-    }
-    render();
-    await new Promise(r=>setTimeout(r,80));
-  }
-  S.csvApplying=false; S.csvStep=3; render();
-  toast(`Done — ${S.csvStats.applied} applied, ${S.csvStats.skipped} skipped, ${S.csvStats.errors} errors`);
-}
-
-// ── DOM helpers ──────────────────────────────────────────────
+// ════════════════════════════════════════════════
+// DOM HELPERS
+// ════════════════════════════════════════════════
 function mk(tag,attrs={},...ch){
   const e=document.createElement(tag);
-  for(const [k,v] of Object.entries(attrs)){
-    if(k==='style'&&typeof v==='object') Object.assign(e.style,v);
-    else if(k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(),v);
+  for(const[k,v]of Object.entries(attrs)){
+    if(k==='style'&&typeof v==='object')Object.assign(e.style,v);
+    else if(k.startsWith('on'))e.addEventListener(k.slice(2).toLowerCase(),v);
     else e.setAttribute(k,v);
   }
   ch.flat().forEach(c=>e.appendChild(typeof c==='string'?document.createTextNode(c):c));
   return e;
 }
+function addLog(msg,type='info'){S.logs.unshift({msg,type,ts:new Date().toLocaleTimeString()});if(S.logs.length>500)S.logs=S.logs.slice(0,500);}
 
+// ════════════════════════════════════════════════
+// RENDER ROOT
+// ════════════════════════════════════════════════
 function render(){
   const app=document.getElementById('app');
   app.innerHTML='';
-  if(S.page==='loading'){ app.appendChild(renderSplash('Connecting to Emby…','Loading your movie library.')); return; }
-  if(S.page==='error'){ app.appendChild(renderError()); return; }
+  if(S.page==='loading'){app.appendChild(renderSplash('Connecting to Emby…','Loading your movie library.'));return;}
+  if(S.page==='error'){app.appendChild(renderError());return;}
   const nav=mk('div',{class:'nav-bar'});
-  [['movies','Movies'],['import','Folder import'],['log','Apply log']].forEach(([id,label])=>{
+  [['sorter','🗂 Visual Sorter'],['import','📄 CSV Import'],['export','⬇ Export CSV'],['movies','🎬 Movies']].forEach(([id,label])=>{
     const t=mk('div',{class:'nav-tab'+(S.nav===id?' active':'')},label);
-    t.onclick=()=>{ if(id!=='log'||!S.applying){ S.nav=id; render(); } };
+    t.onclick=()=>{S.nav=id;render();};
     nav.appendChild(t);
   });
   app.appendChild(nav);
-  if(S.nav==='movies') app.appendChild(renderMovies());
-  else if(S.nav==='import') app.appendChild(renderImport());
-  else app.appendChild(renderLog());
+  if(S.nav==='sorter')app.appendChild(renderSorter());
+  else if(S.nav==='import')app.appendChild(renderImport());
+  else if(S.nav==='export')app.appendChild(renderExport());
+  else app.appendChild(renderMovies());
 }
 
 function renderSplash(title,sub){
   const w=mk('div',{class:'splash'});
-  w.innerHTML=`<h2>${title}</h2><p>${sub}</p>`;
+  w.innerHTML=`<div style="font-size:48px">🎬</div><h2>${title}</h2><p>${sub}</p>`;
   return w;
 }
-
 function renderError(){
   const w=mk('div',{class:'splash'});
   w.innerHTML=`<h2>Connection error</h2><p style="color:var(--danger-text);max-width:420px;text-align:center">${S.error}</p><p style="font-size:13px;margin-top:8px">Check your <code>.env</code> file and make sure the container can reach your Emby server.</p>`;
   const btn=mk('button',{class:'primary',style:{marginTop:'12px'}},'Retry');
-  btn.onclick=init; w.appendChild(btn);
+  btn.onclick=init;w.appendChild(btn);
   return w;
 }
 
-// ── Movies tab ───────────────────────────────────────────────
+// ════════════════════════════════════════════════
+// VISUAL SORTER TAB
+// ════════════════════════════════════════════════
+function catColor(catId){
+  const cat=S.sorter.categories.find(c=>c.id===catId);
+  return cat?cat.color:'#999';
+}
+function catName(catId){
+  const cat=S.sorter.categories.find(c=>c.id===catId);
+  return cat?cat.name:'';
+}
+
+async function applySorterTags(){
+  const assignments=S.sorter.assignments;
+  const pairs=Object.entries(assignments); // [movieId, catId]
+  if(!pairs.length){toast('No assignments to apply.');return;}
+  S.sorter.phase='applying';
+  S.sorter.progress=0;S.sorter.total=pairs.length;
+  S.sorter.applyStats={applied:0,skipped:0,errors:0};S.sorter.applyLogs=[];
+  render();
+  for(let i=0;i<pairs.length;i++){
+    const[movieId,catId]=pairs[i];
+    const cat=S.sorter.categories.find(c=>c.id===catId);
+    if(!cat){S.sorter.progress=i+1;continue;}
+    const tag=cat.name;
+    addTagHistory(tag);
+    const res=await applyTag(movieId,tag);
+    S.sorter.progress=i+1;
+    const movie=S.movies.find(m=>m.id===movieId);
+    if(res==='ok'){
+      S.sorter.applyStats.applied++;
+      S.sorter.applyLogs.unshift({msg:`+ "${tag}" → ${movie?.name||movieId}`,type:'ok',ts:new Date().toLocaleTimeString()});
+      if(movie&&!movie.tags.includes(tag))movie.tags.push(tag);
+    }else if(res==='skipped'){
+      S.sorter.applyStats.skipped++;
+      S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
+    }else{
+      S.sorter.applyStats.errors++;
+      S.sorter.applyLogs.unshift({msg:`! ${movie?.name||movieId}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+    }
+    render();
+    await new Promise(r=>setTimeout(r,60));
+  }
+  S.sorter.phase='done';render();
+  toast(`Done — ${S.sorter.applyStats.applied} tags applied`);
+}
+
+function renderSorter(){
+  if(S.sorter.phase==='applying'||S.sorter.phase==='done')return renderSorterApplying();
+  const w=mk('div');
+  // Header
+  const hdr=mk('div',{class:'row',style:{marginBottom:'1rem',flexWrap:'wrap',gap:'8px'}});
+  hdr.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Visual Sorter'));
+  const assignedCount=Object.keys(S.sorter.assignments).length;
+  hdr.appendChild(mk('span',{class:'badge info'},`${assignedCount} assigned`));
+  hdr.appendChild(mk('span',{class:'badge warning'},`${S.movies.length-assignedCount} unassigned`));
+  const btnApply=mk('button',{class:'success'},'Apply all to Emby →');
+  btnApply.disabled=assignedCount===0;
+  btnApply.onclick=applySorterTags;
+  hdr.appendChild(btnApply);
+  const btnRefresh=mk('button',{},'↺ Refresh');
+  btnRefresh.onclick=fetchMovies;
+  hdr.appendChild(btnRefresh);
+  w.appendChild(hdr);
+
+  const layout=mk('div',{class:'sorter-layout'});
+
+  // ── LEFT: category sidebar ──
+  const sidebar=mk('div',{class:'sorter-sidebar'});
+
+  // Add category form
+  const addCard=mk('div',{class:'card',style:{padding:'10px 12px'}});
+  const addLabel=mk('div',{class:'section-label'},'Categories');
+  addCard.appendChild(addLabel);
+  const addRow=mk('div',{class:'row',style:{gap:'6px',marginTop:'6px'}});
+  const catInput=mk('input',{type:'text',placeholder:'New category name…',style:{flex:'1',height:'30px',fontSize:'13px'}});
+  catInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doAddCat();}});
+  const btnAddCat=mk('button',{style:{height:'30px',padding:'0 10px',fontSize:'13px'}},'＋ Add');
+  function doAddCat(){
+    const name=catInput.value.trim();
+    if(!name)return;
+    if(S.sorter.categories.find(c=>c.name.toLowerCase()===name.toLowerCase())){toast('Category already exists.');return;}
+    const color=CAT_COLORS[S.sorter.categories.length%CAT_COLORS.length];
+    S.sorter.categories.push({id:uid(),name,color});
+    catInput.value='';
+    saveState();render();
+  }
+  btnAddCat.onclick=doAddCat;
+  addRow.appendChild(catInput);addRow.appendChild(btnAddCat);
+  addCard.appendChild(addRow);
+
+  // Import from Emby paths hint
+  const hintRow=mk('div',{style:{marginTop:'8px',fontSize:'11px',color:'var(--text2)',lineHeight:'1.6'}});
+  const btnAutoImport=mk('button',{style:{height:'24px',fontSize:'11px',padding:'0 8px',marginTop:'4px'}},'Auto-import categories from Emby paths');
+  btnAutoImport.onclick=()=>{
+    let added=0;
+    const seen=new Set(S.sorter.categories.map(c=>c.name.toLowerCase()));
+    S.movies.forEach(m=>{
+      if(!m.path)return;
+      const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
+      if(parts.length<2)return;
+      const rawTag=parts[parts.length-2].replace(/^\[|\]$/g,'');
+      if(!seen.has(rawTag.toLowerCase())){
+        const color=CAT_COLORS[S.sorter.categories.length%CAT_COLORS.length];
+        S.sorter.categories.push({id:uid(),name:rawTag,color});
+        seen.add(rawTag.toLowerCase());
+        added++;
+      }
+    });
+    saveState();render();
+    toast(added?`Added ${added} categories from Emby paths`:'No new categories found in paths.');
+  };
+  hintRow.appendChild(btnAutoImport);
+  addCard.appendChild(hintRow);
+  sidebar.appendChild(addCard);
+
+  // Categories list
+  const catList=mk('div',{class:'sorter-categories'});
+  if(!S.sorter.categories.length){
+    catList.appendChild(mk('div',{style:{fontSize:'13px',color:'var(--text2)',textAlign:'center',padding:'20px 0'}},'Add your first category above.\nExamples: Action, Comedy, Sci-Fi…'));
+  } else {
+    S.sorter.categories.forEach(cat=>{
+      const movies=S.movies.filter(m=>S.sorter.assignments[m.id]===cat.id);
+      const collapsed=S.sorter.collapseMap[cat.id];
+      const slot=mk('div',{class:'cat-slot'});
+      // drag-over wiring
+      slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drag-over');});
+      slot.addEventListener('dragleave',()=>slot.classList.remove('drag-over'));
+      slot.addEventListener('drop',e=>{
+        e.preventDefault();slot.classList.remove('drag-over');
+        const mId=e.dataTransfer.getData('movieId');
+        if(mId){S.sorter.assignments[mId]=cat.id;saveState();render();}
+      });
+
+      const hd=mk('div',{class:'cat-slot-header'});
+      const dot=mk('div',{class:'cat-color-dot',style:{background:cat.color}});
+      const nameSpan=mk('span',{class:'cat-slot-name'},cat.name);
+      const countSpan=mk('span',{class:'cat-slot-count'},`${movies.length}`);
+      const chevron=mk('span',{style:{fontSize:'10px',color:'var(--text3)',marginLeft:'4px'}},collapsed?'▶':'▼');
+      hd.appendChild(dot);hd.appendChild(nameSpan);hd.appendChild(countSpan);hd.appendChild(chevron);
+      hd.onclick=()=>{S.sorter.collapseMap[cat.id]=!collapsed;render();};
+
+      // Edit/delete buttons
+      const actRow=mk('div',{style:{display:'flex',gap:'4px',marginLeft:'auto'}});
+      const btnDel=mk('button',{class:'danger',style:{height:'22px',padding:'0 6px',fontSize:'10px'}},'✕');
+      btnDel.onclick=(e)=>{
+        e.stopPropagation();
+        if(!confirm(`Delete category "${cat.name}"? Movies will be unassigned.`))return;
+        // unassign movies in this category
+        Object.keys(S.sorter.assignments).forEach(mId=>{if(S.sorter.assignments[mId]===cat.id)delete S.sorter.assignments[mId];});
+        S.sorter.categories=S.sorter.categories.filter(c=>c.id!==cat.id);
+        saveState();render();
+      };
+      actRow.appendChild(btnDel);hd.appendChild(actRow);
+      slot.appendChild(hd);
+
+      if(!collapsed&&movies.length>0){
+        const movieList=mk('div',{class:'cat-slot-movies'});
+        movies.forEach(m=>{
+          const item=mk('div',{class:'cat-movie-item'});
+          const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=60&quality=70&api_key=${S.config.apiKey}`,class:'thumb-sm',alt:'',style:{borderRadius:'3px'}});
+          img.onerror=()=>{item.replaceChild(mk('span',{style:{fontSize:'16px'}}, '🎬'),img);};
+          item.appendChild(img);
+          const title=mk('span',{style:{flex:'1',fontSize:'11px',lineHeight:'1.3'}},m.name+(m.year?` (${m.year})`:''));
+          item.appendChild(title);
+          const rmBtn=mk('span',{class:'rm-movie'},'✕');
+          rmBtn.onclick=()=>{delete S.sorter.assignments[m.id];saveState();render();};
+          item.appendChild(rmBtn);
+          movieList.appendChild(item);
+        });
+        slot.appendChild(movieList);
+      }
+      catList.appendChild(slot);
+    });
+  }
+  sidebar.appendChild(catList);
+
+  // Clear all button
+  if(Object.keys(S.sorter.assignments).length>0){
+    const btnClear=mk('button',{class:'danger',style:{width:'100%',marginTop:'4px'}},'Clear all assignments');
+    btnClear.onclick=()=>{if(confirm('Clear all category assignments?')){S.sorter.assignments={};saveState();render();}};
+    sidebar.appendChild(btnClear);
+  }
+
+  layout.appendChild(sidebar);
+
+  // ── RIGHT: movie pool ──
+  const main=mk('div',{class:'sorter-main'});
+
+  // Controls bar
+  const controls=mk('div',{class:'sorter-controls'});
+  const searchInput=mk('input',{type:'text',placeholder:'Filter movies…',value:S.sorter.search,style:{maxWidth:'220px',height:'32px',fontSize:'13px'}});
+  searchInput.addEventListener('input',()=>{S.sorter.search=searchInput.value;render();});
+  controls.appendChild(searchInput);
+
+  ['all','unassigned','assigned'].forEach(f=>{
+    const btn=mk('button',{style:{height:'32px',fontSize:'12px',background:S.sorter.filter===f?'var(--text)':'transparent',color:S.sorter.filter===f?'var(--bg)':'var(--text)',borderColor:S.sorter.filter===f?'transparent':'var(--border2)'}},
+      f==='all'?'All':f==='unassigned'?'Unassigned':'Assigned');
+    btn.onclick=()=>{S.sorter.filter=f;render();};
+    controls.appendChild(btn);
+  });
+
+  const btnGrid=mk('button',{style:{height:'32px',fontSize:'13px',background:S.sorter.viewMode==='grid'?'var(--bg2)':'transparent'}}, '⊞ Grid');
+  const btnList=mk('button',{style:{height:'32px',fontSize:'13px',background:S.sorter.viewMode==='list'?'var(--bg2)':'transparent'}}, '☰ List');
+  btnGrid.onclick=()=>{S.sorter.viewMode='grid';render();};
+  btnList.onclick=()=>{S.sorter.viewMode='list';render();};
+  controls.appendChild(btnGrid);controls.appendChild(btnList);
+  main.appendChild(controls);
+
+  // Filter movies
+  let visible=S.movies;
+  if(S.sorter.filter==='unassigned')visible=visible.filter(m=>!S.sorter.assignments[m.id]);
+  else if(S.sorter.filter==='assigned')visible=visible.filter(m=>!!S.sorter.assignments[m.id]);
+  if(S.sorter.search){const q=S.sorter.search.toLowerCase();visible=visible.filter(m=>m.name.toLowerCase().includes(q)||(m.year+'').includes(q));}
+
+  const countLabel=mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginBottom:'4px'}},`Showing ${visible.length} of ${S.movies.length} movies`);
+  main.appendChild(countLabel);
+
+  if(!visible.length){
+    main.appendChild(mk('div',{class:'empty-state'},'No movies match.'));
+  } else if(S.sorter.viewMode==='grid'){
+    const grid=mk('div',{class:'movie-grid'});
+    visible.forEach(m=>{
+      const catId=S.sorter.assignments[m.id];
+      const card=mk('div',{class:'movie-card'+(catId?' assigned':'')});
+      card.draggable=!catId;
+      if(!catId){
+        card.addEventListener('dragstart',e=>{e.dataTransfer.setData('movieId',m.id);S.sorter.dragMovieId=m.id;card.classList.add('dragging');});
+        card.addEventListener('dragend',()=>{S.sorter.dragMovieId=null;card.classList.remove('dragging');});
+      }
+      // Poster
+      const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=300&quality=70&api_key=${S.config.apiKey}`,class:'movie-card-poster',alt:''});
+      img.onerror=()=>{const ph=mk('div',{class:'movie-card-poster-ph'},'🎬');card.replaceChild(ph,img);};
+      card.appendChild(img);
+      card.appendChild(mk('div',{class:'movie-card-title'},m.name));
+      if(m.year)card.appendChild(mk('div',{class:'movie-card-year'},m.year+''));
+      // Current tags
+      if(m.tags.length){
+        const tRow=mk('div',{class:'movie-card-tags'});
+        m.tags.slice(0,2).forEach(t=>tRow.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'10px',padding:'2px 6px'}},t)));
+        card.appendChild(tRow);
+      }
+      // Category assignment badge (if assigned)
+      if(catId){
+        const cat=S.sorter.categories.find(c=>c.id===catId);
+        if(cat){
+          const badge=mk('div',{style:{fontSize:'10px',padding:'2px 6px',borderRadius:'4px',background:cat.color+'33',color:cat.color,border:`0.5px solid ${cat.color}55`,fontWeight:'500'}},cat.name);
+          card.appendChild(badge);
+        }
+      }
+      // Assign button (visible on hover)
+      if(!catId&&S.sorter.categories.length){
+        const assignBtn=mk('div',{class:'movie-card-assign-btn'},'＋');
+        let dropOpen=false;
+        assignBtn.onclick=(e)=>{
+          e.stopPropagation();
+          dropOpen=!dropOpen;
+          const existing=card.querySelector('.cat-assign-dropdown');
+          if(existing){existing.remove();return;}
+          const dd=mk('div',{class:'cat-assign-dropdown'});
+          S.sorter.categories.forEach(cat=>{
+            const item=mk('div');
+            item.appendChild(mk('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:cat.color,display:'inline-block',flexShrink:'0'}}));
+            item.appendChild(document.createTextNode(cat.name));
+            item.onclick=(e)=>{e.stopPropagation();S.sorter.assignments[m.id]=cat.id;saveState();render();};
+            dd.appendChild(item);
+          });
+          card.appendChild(dd);
+          setTimeout(()=>{document.addEventListener('click',()=>{dd.remove();},{once:true});},0);
+        };
+        card.appendChild(assignBtn);
+      }
+      grid.appendChild(card);
+    });
+    main.appendChild(grid);
+  } else {
+    // List mode
+    const card=mk('div',{class:'card',style:{padding:'0'}});
+    visible.forEach(m=>{
+      const catId=S.sorter.assignments[m.id];
+      const row=mk('div',{class:'movie-list-row',style:{padding:'6px 12px'}});
+      const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=96&quality=60&api_key=${S.config.apiKey}`,class:'thumb-sm',alt:'',style:{borderRadius:'3px',flexShrink:'0'}});
+      img.onerror=()=>{row.replaceChild(mk('span',{style:{fontSize:'20px',flexShrink:'0'}},'🎬'),img);};
+      row.appendChild(img);
+      const info=mk('div',{style:{flex:'1',minWidth:'0'}});
+      info.appendChild(mk('div',{style:{fontWeight:'500',fontSize:'13px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},m.name));
+      if(m.year||m.tags.length){
+        const meta=mk('div',{style:{fontSize:'11px',color:'var(--text2)',marginTop:'2px'}});
+        if(m.year)meta.appendChild(document.createTextNode(m.year+' '));
+        m.tags.forEach(t=>meta.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'10px',padding:'1px 5px'}},t)));
+        info.appendChild(meta);
+      }
+      row.appendChild(info);
+      // Category select
+      const sel=document.createElement('select');
+      sel.style.cssText='height:28px;font-size:12px;padding:0 6px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;flex-shrink:0;max-width:180px;';
+      const optNone=document.createElement('option');optNone.value='';optNone.textContent='— assign category —';sel.appendChild(optNone);
+      S.sorter.categories.forEach(cat=>{
+        const opt=document.createElement('option');opt.value=cat.id;opt.textContent=cat.name;
+        if(catId===cat.id)opt.selected=true;
+        sel.appendChild(opt);
+      });
+      sel.onchange=()=>{if(sel.value){S.sorter.assignments[m.id]=sel.value;}else{delete S.sorter.assignments[m.id];}saveState();render();};
+      row.appendChild(sel);
+      card.appendChild(row);
+    });
+    main.appendChild(card);
+  }
+
+  layout.appendChild(main);
+  w.appendChild(layout);
+  return w;
+}
+
+function renderSorterApplying(){
+  const{phase,progress,total,applyStats,applyLogs}=S.sorter;
+  const pct=total>0?Math.round((progress/total)*100):0;
+  const w=mk('div');
+  const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},phase==='done'?'Tags applied!':'Applying tags to Emby…'));
+  w.appendChild(top);
+  const statRow=mk('div',{class:'stats'});
+  [{v:applyStats.applied,l:'Applied'},{v:applyStats.skipped,l:'Already set'},{v:applyStats.errors,l:'Errors'}].forEach(({v,l})=>{
+    const sc=mk('div',{class:'stat-card'});sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`;statRow.appendChild(sc);
+  });
+  w.appendChild(statRow);
+  if(phase==='applying'){
+    const p=mk('div',{class:'progress',style:{marginTop:'12px'}});
+    p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
+    w.appendChild(p);
+    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginTop:'4px'}},`${progress} of ${total} — ${pct}%`));
+  }
+  const logCard=mk('div',{class:'card',style:{maxHeight:'360px',overflowY:'auto',marginTop:'1rem'}});
+  if(!applyLogs.length)logCard.appendChild(mk('div',{class:'empty-state'},'Processing…'));
+  else applyLogs.forEach(l=>logCard.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
+  w.appendChild(logCard);
+  if(phase==='done'){
+    const btnRow=mk('div',{class:'row',style:{marginTop:'1rem'}});
+    const btnBack=mk('button',{},'← Back to Sorter');
+    btnBack.onclick=()=>{S.sorter.phase='sort';render();};
+    const btnExport=mk('button',{class:'primary'},'Export CSV backup →');
+    btnExport.onclick=()=>{S.nav='export';render();};
+    btnRow.appendChild(btnBack);btnRow.appendChild(btnExport);
+    w.appendChild(btnRow);
+  }
+  return w;
+}
+
+// ════════════════════════════════════════════════
+// CSV IMPORT TAB
+// ════════════════════════════════════════════════
+function resetImp(){S.imp={mode:null,phase:'pick',rows:[],stats:{applied:0,skipped:0,errors:0},logs:[],progress:0,total:0,csvRaw:''};}
+
+async function scanCsv(raw){
+  S.imp.phase='scanning';render();
+  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean).filter(l=>!/^folde?r?tag/i.test(l)&&!/^tag,/i.test(l)&&l.includes(','));
+  S.imp.total=lines.length;S.imp.progress=0;
+  const lookup=buildLookup();
+  const rows=[];
+  const CHUNK=40;
+  for(let i=0;i<lines.length;i++){
+    const parts=lines[i].split(',');
+    if(parts.length>=2){
+      const tag=parts[0].trim().replace(/^\[|\]$/g,'');
+      const rawFolder=parts.slice(1).join(',').trim();
+      const cleaned=cleanTitle(rawFolder);
+      const matched=findMovie(cleaned,lookup);
+      rows.push({tag,rawFolder,cleanedTitle:cleaned,matchedMovie:matched||null,keep:!!matched});
+    }
+    S.imp.progress=i+1;
+    if((i+1)%CHUNK===0){render();await new Promise(r=>setTimeout(r,0));}
+  }
+  S.imp.rows=rows;
+  S.imp.phase='confirm';render();
+}
+
+async function applyImpTags(){
+  const toApply=S.imp.rows.filter(r=>r.keep&&r.matchedMovie);
+  if(!toApply.length){toast('Nothing to apply.');return;}
+  S.imp.phase='applying';S.imp.progress=0;S.imp.total=toApply.length;
+  S.imp.stats={applied:0,skipped:0,errors:0};S.imp.logs=[];render();
+  for(let i=0;i<toApply.length;i++){
+    const row=toApply[i];
+    addTagHistory(row.tag);
+    const res=await applyTag(row.matchedMovie.id,row.tag);
+    S.imp.progress=i+1;
+    if(res==='ok'){
+      S.imp.stats.applied++;
+      S.imp.logs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
+      if(!row.matchedMovie.tags.includes(row.tag))row.matchedMovie.tags.push(row.tag);
+    }else if(res==='skipped'){
+      S.imp.stats.skipped++;
+      S.imp.logs.unshift({msg:`~ already set "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
+    }else{
+      S.imp.stats.errors++;
+      S.imp.logs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+    }
+    render();
+    await new Promise(r=>setTimeout(r,80));
+  }
+  S.imp.phase='done';render();
+  toast(`Done — ${S.imp.stats.applied} tags applied`);
+}
+
+function renderImport(){
+  if(!S.imp)S.imp={mode:null,phase:'pick',rows:[],stats:{applied:0,skipped:0,errors:0},logs:[],progress:0,total:0,csvRaw:''};
+  const w=mk('div');
+  const{phase}=S.imp;
+  if(phase==='pick')w.appendChild(renderImpPick());
+  else if(phase==='scanning')w.appendChild(renderImpScanning());
+  else if(phase==='confirm')w.appendChild(renderImpConfirm());
+  else w.appendChild(renderImpApplying());
+  return w;
+}
+
+function renderImpPick(){
+  const w=mk('div',{style:{maxWidth:'640px'}});
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'CSV Import'));
+  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem',lineHeight:'1.7'}},'Upload or paste a CSV mapping categories to movies. Format: <code>Category,MovieFolderName</code> — one row per movie. The tool automatically strips quality tags, dots, and years before matching.'));
+
+  const dropZone=mk('div',{class:'drop-zone',style:{marginBottom:'1rem'}});
+  dropZone.innerHTML='<div style="font-size:28px">📂</div><p style="margin-top:6px">Drop CSV file here or click to browse</p><p style="font-size:11px;margin-top:4px;color:var(--text3)">Accepts .csv or plain text</p>';
+  const fileInput=mk('input',{type:'file',accept:'.csv,text/csv,text/plain',style:{display:'none'}});
+  function handleFile(f){const r=new FileReader();r.onload=e=>{S.imp.csvRaw=e.target.result;textarea.value=e.target.result;};r.readAsText(f);}
+  dropZone.onclick=()=>fileInput.click();
+  dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('over');});
+  dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('over'));
+  dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('over');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
+  fileInput.addEventListener('change',()=>{if(fileInput.files[0])handleFile(fileInput.files[0]);});
+  w.appendChild(dropZone);w.appendChild(fileInput);
+
+  w.appendChild(mk('div',{class:'section-label',style:{marginBottom:'4px'}},'Or paste CSV content'));
+  const textarea=mk('textarea',{class:'csv-input',placeholder:'Category,MovieFolderName\nAction,Die.Hard.1988.BluRay\nComedy,Bad.Moms.2016.BRRip\nSci-Fi,The.Matrix.1999.BDRIP'});
+  textarea.addEventListener('input',()=>{S.imp.csvRaw=textarea.value;});
+  if(S.imp.csvRaw)textarea.value=S.imp.csvRaw;
+  w.appendChild(textarea);
+
+  const btnRow=mk('div',{class:'row',style:{marginTop:'12px',gap:'8px'}});
+  const btnScan=mk('button',{class:'primary'},'Match movies →');
+  btnScan.onclick=()=>{if(!S.imp.csvRaw.trim()){toast('Paste or upload a CSV first.');return;}scanCsv(S.imp.csvRaw);};
+  const btnBack=mk('button',{},'← Visual Sorter');
+  btnBack.onclick=()=>{S.nav='sorter';render();};
+  btnRow.appendChild(btnBack);btnRow.appendChild(btnScan);
+  w.appendChild(btnRow);
+
+  const hint=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',lineHeight:'1.8'}});
+  hint.innerHTML=`<strong>CSV format examples:</strong><br>
+<code>Action,Die.Hard.1988.BluRay.x264</code><br>
+<code>Comedy,Bad.Moms.2016.BRRip</code><br>
+<code>Sci-Fi,The.Matrix.1999.BDRIP.YTS</code><br><br>
+The first column is the tag/category. The second column is the movie folder name as it appears on disk — dots, quality tags, and years are stripped before matching against your Emby library.`;
+  w.appendChild(hint);
+  return w;
+}
+
+function renderImpScanning(){
+  const{progress,total}=S.imp;
+  const pct=total>0?Math.round((progress/total)*100):0;
+  const w=mk('div',{style:{maxWidth:'520px'}});
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Matching movies…'));
+  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem'}},'Reading CSV and matching movies against your Emby library…'));
+  const p=mk('div',{class:'progress',style:{marginBottom:'8px'}});
+  p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
+  w.appendChild(p);
+  w.appendChild(mk('div',{style:{fontSize:'13px',color:'var(--text2)'}},`${progress} of ${total||'?'} — ${pct}%`));
+  const btnCancel=mk('button',{style:{marginTop:'1.5rem'}},'← Cancel');
+  btnCancel.onclick=()=>{resetImp();render();};
+  w.appendChild(btnCancel);
+  return w;
+}
+
+function renderImpConfirm(){
+  const{rows}=S.imp;
+  const matched=rows.filter(r=>r.matchedMovie);
+  const unmatched=rows.filter(r=>!r.matchedMovie);
+  const kept=rows.filter(r=>r.keep&&r.matchedMovie);
+  const w=mk('div');
+  const top=mk('div',{class:'row',style:{marginBottom:'12px',flexWrap:'wrap',gap:'8px'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Review & confirm'));
+  top.appendChild(mk('span',{class:'badge success'},`${matched.length} matched`));
+  if(unmatched.length)top.appendChild(mk('span',{class:'badge danger'},`${unmatched.length} not found`));
+  w.appendChild(top);
+
+  const sum=mk('div',{class:'card',style:{marginBottom:'1rem',fontSize:'13px',color:'var(--text2)',lineHeight:'1.8'}});
+  sum.innerHTML=`<strong style="color:var(--text);font-size:14px">${kept.length} tag${kept.length!==1?'s':''} ready to apply</strong><br>
+${unmatched.length?`<span style="color:var(--danger-text)">${unmatched.length} movie${unmatched.length!==1?'s':''} could not be matched and will be skipped.</span><br>`:''}
+Uncheck anything you don't want, then click Apply.`;
+  w.appendChild(sum);
+
+  const tags=[...new Set(rows.filter(r=>r.keep&&r.matchedMovie).map(r=>r.tag))].sort();
+  const tagSummary=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'12px'}});
+  tags.forEach(t=>{const count=rows.filter(r=>r.tag===t&&r.keep&&r.matchedMovie).length;tagSummary.appendChild(mk('span',{class:'badge info'},`${t} (${count})`));});
+  if(tags.length)w.appendChild(tagSummary);
+
+  const card=mk('div',{class:'card',style:{padding:'0',maxHeight:'480px',overflowY:'auto',marginBottom:'1rem'}});
+  const table=mk('table',{class:'csv-table',style:{width:'100%'}});
+  table.innerHTML='<thead><tr><th style="width:130px">Category</th><th>Movie</th><th style="width:44px;text-align:center">✓</th></tr></thead>';
+  const tbody=mk('tbody');
+
+  let lastTag=null;
+  const sorted=[...rows.filter(r=>r.matchedMovie).sort((a,b)=>a.tag.localeCompare(b.tag)||a.matchedMovie.name.localeCompare(b.matchedMovie.name)),
+                ...rows.filter(r=>!r.matchedMovie)];
+  sorted.forEach(row=>{
+    const ri=S.imp.rows.indexOf(row);
+    if(row.matchedMovie&&row.tag!==lastTag){
+      lastTag=row.tag;
+      const gh=document.createElement('tr');
+      const td=document.createElement('td');td.colSpan=3;td.className='tag-group-header';
+      const cnt=S.imp.rows.filter(r=>r.tag===row.tag&&r.keep&&r.matchedMovie).length;
+      td.innerHTML=`<span style="color:var(--text);font-weight:500">${row.tag}</span><span style="font-weight:400;color:var(--text2);margin-left:6px">${cnt} movie${cnt!==1?'s':''}</span>`;
+      gh.appendChild(td);tbody.appendChild(gh);
+    }
+    const tr=document.createElement('tr');
+    if(!row.matchedMovie)tr.style.cssText='background:var(--danger-bg)';
+    const tagTd=document.createElement('td');tagTd.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'11px'}},row.tag));tr.appendChild(tagTd);
+    const movTd=document.createElement('td');
+    if(row.matchedMovie){movTd.innerHTML=`<span style="font-weight:500;font-size:13px">${row.matchedMovie.name}</span>${row.matchedMovie.year?` <span style="font-size:11px;color:var(--text2)">(${row.matchedMovie.year})</span>`:''}`;}
+    else{movTd.innerHTML=`<span style="font-size:12px;color:var(--danger-text)">No match: ${row.rawFolder.length>50?row.rawFolder.slice(0,50)+'…':row.rawFolder}</span>`;}
+    tr.appendChild(movTd);
+    const cbTd=document.createElement('td');cbTd.style.textAlign='center';
+    if(row.matchedMovie){const cb=document.createElement('input');cb.type='checkbox';cb.checked=row.keep;cb.addEventListener('change',()=>{S.imp.rows[ri].keep=cb.checked;render();});cbTd.appendChild(cb);}
+    tr.appendChild(cbTd);tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);card.appendChild(table);
+  w.appendChild(card);
+
+  const btnRow=mk('div',{class:'row',style:{gap:'8px'}});
+  const btnBack=mk('button',{},'← Back');
+  btnBack.onclick=()=>{resetImp();render();};
+  const btnApply=mk('button',{class:'success'},`Apply ${kept.length} tag${kept.length!==1?'s':''} to Emby`);
+  btnApply.disabled=kept.length===0;
+  btnApply.onclick=applyImpTags;
+  btnRow.appendChild(btnBack);btnRow.appendChild(btnApply);
+  w.appendChild(btnRow);
+  return w;
+}
+
+function renderImpApplying(){
+  const{phase,progress,total,stats,logs}=S.imp;
+  const pct=total>0?Math.round((progress/total)*100):0;
+  const w=mk('div');
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'1rem'}},phase==='done'?'Import complete':'Applying tags…'));
+  const statRow=mk('div',{class:'stats'});
+  [{v:stats.applied,l:'Applied'},{v:stats.skipped,l:'Already set'},{v:stats.errors,l:'Errors'}].forEach(({v,l})=>{
+    const sc=mk('div',{class:'stat-card'});sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`;statRow.appendChild(sc);
+  });
+  w.appendChild(statRow);
+  if(phase==='applying'){
+    const p=mk('div',{class:'progress',style:{marginTop:'12px'}});
+    p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
+    w.appendChild(p);
+    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginTop:'4px'}},`${progress} of ${total} — ${pct}%`));
+  }
+  const logCard=mk('div',{class:'card',style:{maxHeight:'360px',overflowY:'auto',marginTop:'1rem'}});
+  if(!logs.length)logCard.appendChild(mk('div',{class:'empty-state'},'Processing…'));
+  else logs.forEach(l=>logCard.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
+  w.appendChild(logCard);
+  if(phase==='done'){
+    const btnRow=mk('div',{class:'row',style:{marginTop:'1rem'}});
+    const btnAgain=mk('button',{},'Import again');btnAgain.onclick=()=>{resetImp();render();};
+    const btnSorter=mk('button',{class:'primary'},'← Visual Sorter');btnSorter.onclick=()=>{S.nav='sorter';render();};
+    btnRow.appendChild(btnAgain);btnRow.appendChild(btnSorter);
+    w.appendChild(btnRow);
+  }
+  return w;
+}
+
+// ════════════════════════════════════════════════
+// EXPORT CSV TAB
+// ════════════════════════════════════════════════
+function generateExportCsv(){
+  // Export current Emby tags
+  const lines=['Tag,Movie,Year,Path'];
+  S.movies.forEach(m=>{
+    if(!m.tags.length)return;
+    m.tags.forEach(tag=>{
+      const safeName=m.name.replace(/,/g,' ');
+      lines.push(`${tag},${safeName},${m.year||''},${m.path||''}`);
+    });
+  });
+  return lines.join('\n');
+}
+
+function generateSorterCsv(){
+  // Export sorter assignments as category,movie CSV
+  const lines=['Category,Movie,Year'];
+  Object.entries(S.sorter.assignments).forEach(([movieId,catId])=>{
+    const movie=S.movies.find(m=>m.id===movieId);
+    const cat=S.sorter.categories.find(c=>c.id===catId);
+    if(!movie||!cat)return;
+    const safeName=movie.name.replace(/,/g,' ');
+    lines.push(`${cat.name},${safeName},${movie.year||''}`);
+  });
+  return lines.join('\n');
+}
+
+function downloadCsv(content,filename){
+  const blob=new Blob([content],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+function renderExport(){
+  const w=mk('div',{style:{maxWidth:'700px'}});
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Export CSV'));
+  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem',lineHeight:'1.7'}},'Export your library tags as a CSV backup. Use this to restore tags after a total library rebuild — just import the CSV back via the CSV Import tab.'));
+
+  // Option A — Export from Emby
+  const cardA=mk('div',{class:'card',style:{marginBottom:'16px'}});
+  cardA.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:22px">🏷</span><div><div style="font-weight:500;font-size:15px">Export current Emby tags</div><div style="font-size:13px;color:var(--text2);margin-top:2px">Downloads all movies that already have tags in Emby. This is your backup for the current state.</div></div></div>`;
+  const taggedCount=S.movies.filter(m=>m.tags.length>0).length;
+  const statsA=mk('div',{style:{display:'flex',gap:'12px',marginBottom:'12px',fontSize:'13px',color:'var(--text2)'}});
+  statsA.innerHTML=`<span><strong style="color:var(--text)">${taggedCount}</strong> tagged movies</span><span><strong style="color:var(--text)">${S.movies.length-taggedCount}</strong> untagged</span>`;
+  cardA.appendChild(statsA);
+  const previewA=mk('textarea',{class:'csv-input',style:{minHeight:'80px',marginBottom:'8px'},readonly:'true'});
+  const csvA=generateExportCsv();
+  previewA.value=csvA.split('\n').slice(0,6).join('\n')+(csvA.split('\n').length>6?'\n…':'');
+  previewA.readOnly=true;
+  cardA.appendChild(previewA);
+  const btnA=mk('button',{class:'primary'},'⬇ Download Emby tags CSV');
+  btnA.disabled=taggedCount===0;
+  btnA.onclick=()=>downloadCsv(csvA,`emby-tags-${new Date().toISOString().slice(0,10)}.csv`);
+  cardA.appendChild(btnA);
+  w.appendChild(cardA);
+
+  // Option B — Export sorter assignments
+  const cardB=mk('div',{class:'card'});
+  cardB.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:22px">🗂</span><div><div style="font-weight:500;font-size:15px">Export Visual Sorter assignments</div><div style="font-size:13px;color:var(--text2);margin-top:2px">Downloads the categories and movies you've sorted in the Visual Sorter, even if not yet applied to Emby.</div></div></div>`;
+  const assignedCount=Object.keys(S.sorter.assignments).length;
+  const statsB=mk('div',{style:{display:'flex',gap:'12px',marginBottom:'12px',fontSize:'13px',color:'var(--text2)'}});
+  statsB.innerHTML=`<span><strong style="color:var(--text)">${assignedCount}</strong> assignments</span><span><strong style="color:var(--text)">${S.sorter.categories.length}</strong> categories</span>`;
+  cardB.appendChild(statsB);
+  const previewB=mk('textarea',{class:'csv-input',style:{minHeight:'80px',marginBottom:'8px'}});
+  const csvB=generateSorterCsv();
+  previewB.value=csvB.split('\n').slice(0,6).join('\n')+(csvB.split('\n').length>6?'\n…':'');
+  previewB.readOnly=true;
+  cardB.appendChild(previewB);
+  const btnB=mk('button',{class:'primary'},'⬇ Download Sorter CSV');
+  btnB.disabled=assignedCount===0;
+  btnB.onclick=()=>downloadCsv(csvB,`emby-sorter-${new Date().toISOString().slice(0,10)}.csv`);
+  cardB.appendChild(btnB);
+  w.appendChild(cardB);
+
+  // Usage tip
+  const tip=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',lineHeight:'1.8'}});
+  tip.innerHTML=`<strong>🔄 Disaster recovery workflow:</strong><br>
+1. <strong>Export</strong> → saves your current tags as a CSV.<br>
+2. After total library loss: rebuild with Radarr (all movies in one flat folder).<br>
+3. <strong>CSV Import</strong> → upload the saved CSV → the tool matches by title and re-applies tags.<br><br>
+The CSV format is: <code>Category,MovieTitle,Year</code> — compatible with the CSV Import tab.`;
+  w.appendChild(tip);
+  return w;
+}
+
+// ════════════════════════════════════════════════
+// MOVIES TAB (manual tagging)
+// ════════════════════════════════════════════════
+function filterMovies(){
+  let list=S.movies;
+  if(S.subTab==='untagged')list=list.filter(m=>m.tags.length===0);
+  else if(S.subTab==='tagged')list=list.filter(m=>m.tags.length>0);
+  if(S.filterText){const q=S.filterText.toLowerCase();list=list.filter(m=>m.name.toLowerCase().includes(q)||(m.year+'').includes(q));}
+  return list;
+}
+function addPending(movieId,tag){
+  tag=tag.trim();if(!tag)return;
+  const movie=S.movies.find(m=>m.id===movieId);
+  if(movie?.tags.includes(tag))return;
+  if(!S.pendingTags[movieId])S.pendingTags[movieId]=[];
+  if(!S.pendingTags[movieId].includes(tag))S.pendingTags[movieId].push(tag);
+}
+async function applyAllPending(){
+  const entries=Object.entries(S.pendingTags).filter(([,tags])=>tags.length>0);
+  if(!entries.length){toast('No pending tags.');return;}
+  S.applying=true;S.applyProgress=0;S.stats={applied:0,skipped:0,errors:0};S.logs=[];
+  render();
+  const total=entries.reduce((s,[,tags])=>s+tags.length,0);
+  let done=0;
+  for(const[id,tags]of entries){
+    const movie=S.movies.find(m=>m.id===id);
+    for(const tag of tags){
+      addTagHistory(tag);
+      const res=await applyTag(id,tag);
+      done++;S.applyProgress=Math.round((done/total)*100);
+      if(res==='ok'){S.stats.applied++;addLog(`+ "${tag}" → ${movie?.name||id}`,'ok');if(movie&&!movie.tags.includes(tag))movie.tags.push(tag);}
+      else if(res==='skipped'){S.stats.skipped++;addLog(`~ already tagged "${tag}": ${movie?.name||id}`,'skip');}
+      else{S.stats.errors++;addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err');}
+      render();await new Promise(r=>setTimeout(r,80));
+    }
+    delete S.pendingTags[id];
+  }
+  S.applying=false;render();
+  toast(`Done — ${S.stats.applied} applied, ${S.stats.skipped} skipped, ${S.stats.errors} errors`);
+}
+
 function renderMovies(){
   const w=mk('div');
   const untaggedCount=S.movies.filter(m=>m.tags.length===0).length;
@@ -411,26 +1036,30 @@ function renderMovies(){
   top.appendChild(mk('span',{class:'badge success'},`${S.movies.length-untaggedCount} tagged`));
   top.appendChild(mk('span',{class:'badge info'},`${pendingCount} pending`));
   const btnApply=mk('button',{class:'success'},'Apply all pending');
+  btnApply.disabled=pendingCount===0;
   btnApply.onclick=applyAllPending;
   top.appendChild(btnApply);
-  const btnRefresh=mk('button',{},'Refresh');
+  const btnRefresh=mk('button',{},'↺ Refresh');
   btnRefresh.onclick=fetchMovies;
   top.appendChild(btnRefresh);
   w.appendChild(top);
+
   const subTabBar=mk('div',{class:'sub-tab-bar'});
   const counts={untagged:untaggedCount,tagged:S.movies.length-untaggedCount,all:S.movies.length};
   ['untagged','tagged','all'].forEach(t=>{
     const tab=mk('div',{class:'sub-tab'+(S.subTab===t?' active':'')},`${t.charAt(0).toUpperCase()+t.slice(1)} (${counts[t]})`);
-    tab.onclick=()=>{ S.subTab=t; render(); };
+    tab.onclick=()=>{S.subTab=t;render();};
     subTabBar.appendChild(tab);
   });
   w.appendChild(subTabBar);
+
   const sb=mk('div',{style:{marginBottom:'1rem'}});
   const si=mk('input',{type:'text',placeholder:'Filter by title or year…',value:S.filterText,style:{maxWidth:'300px'}});
-  si.addEventListener('input',()=>{ S.filterText=si.value; render(); });
-  sb.appendChild(si); w.appendChild(sb);
+  si.addEventListener('input',()=>{S.filterText=si.value;render();});
+  sb.appendChild(si);w.appendChild(sb);
+
   const list=filterMovies();
-  if(!list.length){ w.appendChild(mk('div',{class:'empty-state'},S.subTab==='untagged'?'All movies are tagged!':'No movies match.')); return w; }
+  if(!list.length){w.appendChild(mk('div',{class:'empty-state'},S.subTab==='untagged'?'All movies are tagged! 🎉':'No movies match.'));return w;}
   const card=mk('div',{class:'card'});
   list.forEach(m=>card.appendChild(renderMovieRow(m)));
   w.appendChild(card);
@@ -440,17 +1069,17 @@ function renderMovies(){
 function renderMovieRow(movie){
   const row=mk('div',{class:'movie-row'});
   const thumbWrap=mk('div',{});
-  const img=mk('img',{src:`/emby/Items/${movie.id}/Images/Primary?maxHeight=144&quality=80&api_key=${S.config.apiKey}`,class:'thumb',alt:''});
+  const img=mk('img',{src:`/emby/Items/${movie.id}/Images/Primary?maxHeight=120&quality=70&api_key=${S.config.apiKey}`,class:'thumb',alt:''});
   const ph=mk('div',{class:'thumb-placeholder'},'🎬');
-  img.onerror=()=>{ thumbWrap.innerHTML=''; thumbWrap.appendChild(ph); };
-  thumbWrap.appendChild(img); row.appendChild(thumbWrap);
+  img.onerror=()=>{thumbWrap.innerHTML='';thumbWrap.appendChild(ph);};
+  thumbWrap.appendChild(img);row.appendChild(thumbWrap);
   const left=mk('div');
   const nameRow=mk('div',{class:'row',style:{flexWrap:'wrap',gap:'6px',marginBottom:'4px'}});
   nameRow.appendChild(mk('span',{style:{fontWeight:'500',fontSize:'14px'}},movie.name));
-  if(movie.year) nameRow.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text2)'}},`(${movie.year})`));
+  if(movie.year)nameRow.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text2)'}},`(${movie.year})`));
   left.appendChild(nameRow);
   const currentTags=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
-  if(movie.tags.length>0) movie.tags.forEach(t=>currentTags.appendChild(mk('span',{class:'tag-chip'},t)));
+  if(movie.tags.length>0)movie.tags.forEach(t=>currentTags.appendChild(mk('span',{class:'tag-chip'},t)));
   else currentTags.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text3)'}},'No tags'));
   left.appendChild(currentTags);
   const pending=S.pendingTags[movie.id]||[];
@@ -459,8 +1088,8 @@ function renderMovieRow(movie){
     pending.forEach((t,i)=>{
       const chip=mk('span',{class:'tag-chip pending'});
       const rm=mk('span',{class:'rm'},' ×');
-      rm.onclick=()=>{ S.pendingTags[movie.id].splice(i,1); if(!S.pendingTags[movie.id].length) delete S.pendingTags[movie.id]; render(); };
-      chip.appendChild(document.createTextNode('+ '+t)); chip.appendChild(rm); pr.appendChild(chip);
+      rm.onclick=()=>{S.pendingTags[movie.id].splice(i,1);if(!S.pendingTags[movie.id].length)delete S.pendingTags[movie.id];render();};
+      chip.appendChild(document.createTextNode('+ '+t));chip.appendChild(rm);pr.appendChild(chip);
     });
     left.appendChild(pr);
   }
@@ -472,24 +1101,24 @@ function renderMovieRow(movie){
     const q=inp.value.toLowerCase().trim();
     const matches=S.tagHistory.filter(t=>(q?t.toLowerCase().includes(q):true)&&!(S.pendingTags[movie.id]||[]).includes(t)&&!movie.tags.includes(t));
     sug.innerHTML='';
-    if(!matches.length){ sug.style.display='none'; return; }
-    matches.slice(0,10).forEach(t=>{ const d=mk('div',{},t); d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();}; sug.appendChild(d); });
+    if(!matches.length){sug.style.display='none';return;}
+    matches.slice(0,10).forEach(t=>{const d=mk('div',{},t);d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();};sug.appendChild(d);});
     sug.style.display='block';
   }
-  inp.addEventListener('input',()=>{ clearTimeout(st); st=setTimeout(showSuggestions,80); });
+  inp.addEventListener('input',()=>{clearTimeout(st);st=setTimeout(showSuggestions,80);});
   inp.addEventListener('focus',showSuggestions);
   inp.addEventListener('blur',()=>setTimeout(()=>sug.style.display='none',150));
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addPending(movie.id,inp.value); inp.value=''; sug.style.display='none'; render(); } });
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();}});
   const btnAdd=mk('button',{},'Add');
-  btnAdd.onclick=()=>{ addPending(movie.id,inp.value); inp.value=''; sug.style.display='none'; render(); };
-  inputWrap.appendChild(inp); inputWrap.appendChild(sug); inputWrap.appendChild(btnAdd);
-  left.appendChild(inputWrap); row.appendChild(left);
+  btnAdd.onclick=()=>{addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();};
+  inputWrap.appendChild(inp);inputWrap.appendChild(sug);inputWrap.appendChild(btnAdd);
+  left.appendChild(inputWrap);row.appendChild(left);
   const right=mk('div',{style:{paddingTop:'2px'}});
   if(pending.length>0){
     const btnNow=mk('button',{class:'success',style:{height:'28px',fontSize:'12px',padding:'0 10px'}},'Apply now');
     btnNow.onclick=async()=>{
-      for(const tag of [...pending]){ addTagHistory(tag); const res=await applyTag(movie.id,tag); if(res==='ok'&&!movie.tags.includes(tag)) movie.tags.push(tag); }
-      delete S.pendingTags[movie.id]; render(); toast(`Tagged: ${movie.name}`);
+      for(const tag of[...pending]){addTagHistory(tag);const res=await applyTag(movie.id,tag);if(res==='ok'&&!movie.tags.includes(tag))movie.tags.push(tag);}
+      delete S.pendingTags[movie.id];render();toast(`Tagged: ${movie.name}`);
     };
     right.appendChild(btnNow);
   }
@@ -497,362 +1126,10 @@ function renderMovieRow(movie){
   return row;
 }
 
-function addPending(movieId,tag){
-  tag=tag.trim(); if(!tag) return;
-  const movie=S.movies.find(m=>m.id===movieId);
-  if(movie?.tags.includes(tag)) return;
-  if(!S.pendingTags[movieId]) S.pendingTags[movieId]=[];
-  if(!S.pendingTags[movieId].includes(tag)) S.pendingTags[movieId].push(tag);
-}
-
-// ── Import tab ───────────────────────────────────────────────
-
-// ── Import tab — two simple paths ───────────────────────────
-// State: imp.mode = null | 'emby' | 'csv'
-//        imp.phase = 'pick' | 'scanning' | 'confirm' | 'applying' | 'done'
-//        imp.rows  = [{tag, rawFolder, cleanedTitle, matchedMovie, keep}]
-//        imp.stats = {applied,skipped,errors}
-//        imp.logs  = []
-//        imp.progress / imp.total
-function resetImp(){ S.imp={ mode:null, phase:'pick', rows:[], stats:{applied:0,skipped:0,errors:0}, logs:[], progress:0, total:0, csvRaw:'' }; }
-
-// ── Build rows from Emby paths ───────────────────────────────
-async function scanEmbyPaths(){
-  S.imp.phase='scanning'; S.imp.progress=0; S.imp.total=S.movies.length; render();
-  const lookup=buildLookup();
-  const rows=[];
-  const CHUNK=40;
-  for(let i=0;i<S.movies.length;i++){
-    const m=S.movies[i];
-    if(m.path){
-      const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
-      if(parts.length>=2){
-        const rawFolder=parts[parts.length-1];
-        const rawTag=parts[parts.length-2].replace(/^\[|\]$/g,'');
-        const cleaned=cleanTitle(rawFolder);
-        const matched=findMovie(cleaned,lookup);
-        if(matched){
-          // skip if already has this tag
-          if(!matched.tags.includes(rawTag)){
-            rows.push({ tag:rawTag, rawFolder, cleanedTitle:cleaned, matchedMovie:matched, keep:true });
-          }
-        }
-      }
-    }
-    S.imp.progress=i+1;
-    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
-  }
-  // Deduplicate: same movie+tag combo only once
-  const seen=new Set();
-  S.imp.rows=rows.filter(r=>{ const k=r.matchedMovie.id+'|'+r.tag; if(seen.has(k)) return false; seen.add(k); return true; });
-  S.imp.phase='confirm'; render();
-}
-
-// ── Build rows from uploaded CSV ─────────────────────────────
-async function scanCsv(raw){
-  S.imp.phase='scanning'; render();
-  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean).filter(l=>!/^folde?r?tag/i.test(l)&&l.includes(','));
-  S.imp.total=lines.length; S.imp.progress=0;
-  const lookup=buildLookup();
-  const rows=[];
-  const CHUNK=40;
-  for(let i=0;i<lines.length;i++){
-    const parts=lines[i].split(',');
-    if(parts.length>=2){
-      const tag=parts[0].trim().replace(/^\[|\]$/g,'');
-      const rawFolder=parts.slice(1).join(',').trim();
-      const cleaned=cleanTitle(rawFolder);
-      const matched=findMovie(cleaned,lookup);
-      rows.push({ tag, rawFolder, cleanedTitle:cleaned, matchedMovie:matched||null, keep:!!matched });
-    }
-    S.imp.progress=i+1;
-    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
-  }
-  S.imp.rows=rows;
-  S.imp.phase='confirm'; render();
-}
-
-// ── Apply ────────────────────────────────────────────────────
-async function applyImpTags(){
-  const toApply=S.imp.rows.filter(r=>r.keep&&r.matchedMovie);
-  if(!toApply.length){ toast('Nothing to apply.'); return; }
-  S.imp.phase='applying'; S.imp.progress=0; S.imp.total=toApply.length;
-  S.imp.stats={applied:0,skipped:0,errors:0}; S.imp.logs=[]; render();
-  for(let i=0;i<toApply.length;i++){
-    const row=toApply[i];
-    addTagHistory(row.tag);
-    const res=await applyTag(row.matchedMovie.id, row.tag);
-    S.imp.progress=i+1;
-    if(res==='ok'){
-      S.imp.stats.applied++;
-      S.imp.logs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
-      if(!row.matchedMovie.tags.includes(row.tag)) row.matchedMovie.tags.push(row.tag);
-    } else if(res==='skipped'){
-      S.imp.stats.skipped++;
-      S.imp.logs.unshift({msg:`~ already set "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
-    } else {
-      S.imp.stats.errors++;
-      S.imp.logs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
-    }
-    render();
-    await new Promise(r=>setTimeout(r,80));
-  }
-  S.imp.phase='done'; render();
-  toast(`Done — ${S.imp.stats.applied} tags applied`);
-}
-
-// ── Render import tab ────────────────────────────────────────
-function renderImport(){
-  if(!S.imp) S.imp={ mode:null, phase:'pick', rows:[], stats:{applied:0,skipped:0,errors:0}, logs:[], progress:0, total:0, csvRaw:'' };
-  const w=mk('div');
-  const {phase,mode}=S.imp;
-  if(phase==='pick') w.appendChild(renderImpPick());
-  else if(phase==='scanning') w.appendChild(renderImpScanning());
-  else if(phase==='confirm') w.appendChild(renderImpConfirm());
-  else if(phase==='applying'||phase==='done') w.appendChild(renderImpApplying());
-  return w;
-}
-
-// ── Pick screen ──────────────────────────────────────────────
-function renderImpPick(){
-  const w=mk('div');
-  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Tag import'));
-  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem'}},'Choose how you want to import tags. Everything else is handled automatically.'));
-
-  const grid=mk('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',maxWidth:'680px'}});
-
-  // Option A — Pull from Emby
-  const cardA=mk('div',{class:'card',style:{cursor:'pointer',transition:'border-color .15s'}});
-  cardA.style.borderColor='var(--border)';
-  cardA.onmouseenter=()=>cardA.style.borderColor='var(--info-text)';
-  cardA.onmouseleave=()=>cardA.style.borderColor='var(--border)';
-  cardA.innerHTML=`
-    <div style="font-size:28px;margin-bottom:10px">🎬</div>
-    <div style="font-weight:500;font-size:15px;margin-bottom:6px">Pull from Emby</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
-      Reads your movie file paths already stored in Emby, uses the parent folder as the tag, and automatically matches everything. Best if your drive is still connected or Emby still has the old paths.
-    </div>`;
-  const btnA=mk('button',{class:'primary',style:{width:'100%'}},'Scan Emby paths →');
-  btnA.onclick=()=>{ S.imp.mode='emby'; scanEmbyPaths(); };
-  cardA.appendChild(btnA);
-  grid.appendChild(cardA);
-
-  // Option B — Upload CSV
-  const cardB=mk('div',{class:'card',style:{cursor:'default'}});
-  cardB.innerHTML=`
-    <div style="font-size:28px;margin-bottom:10px">📄</div>
-    <div style="font-weight:500;font-size:15px;margin-bottom:6px">Upload a CSV</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
-      Have a spreadsheet listing your movies and their categories? Drop it here. Format: <code>Tag,MovieFolderName</code> — one row per movie. Works great for Radarr migrations or manual lists.
-    </div>`;
-
-  const dropZone=mk('div',{class:'drop-zone'});
-  dropZone.innerHTML='<div style="font-size:20px">📂</div><p style="margin-top:4px">Drop CSV here or click to browse</p>';
-  const fileInput=mk('input',{type:'file',accept:'.csv,text/csv',style:{display:'none'}});
-  function handleFile(f){ const r=new FileReader(); r.onload=e=>{ S.imp.mode='csv'; S.imp.csvRaw=e.target.result; scanCsv(e.target.result); }; r.readAsText(f); }
-  dropZone.onclick=()=>fileInput.click();
-  dropZone.addEventListener('dragover',e=>{ e.preventDefault(); dropZone.classList.add('over'); });
-  dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('over'));
-  dropZone.addEventListener('drop',e=>{ e.preventDefault(); dropZone.classList.remove('over'); if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
-  fileInput.addEventListener('change',()=>{ if(fileInput.files[0]) handleFile(fileInput.files[0]); });
-  cardB.appendChild(dropZone);
-  cardB.appendChild(fileInput);
-  grid.appendChild(cardB);
-
-  w.appendChild(grid);
-
-  // CSV format hint
-  const hint=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',maxWidth:'680px'}});
-  hint.innerHTML=`<strong>CSV format:</strong><br>
-<code>Action,Die.Hard.1988.BluRay</code><br>
-<code>Comedy,Bad.Moms.2016.BRRip</code><br>
-<code>Martial Arts,The.Raid.2011.BluRay</code><br><br>
-The tag is the first column. The movie folder name is the second column — dots, quality tags, and years are stripped automatically before matching.`;
-  w.appendChild(hint);
-  return w;
-}
-
-// ── Scanning screen ──────────────────────────────────────────
-function renderImpScanning(){
-  const {progress,total,mode}=S.imp;
-  const pct=total>0?Math.round((progress/total)*100):0;
-  const w=mk('div',{style:{maxWidth:'520px'}});
-  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Scanning…'));
-  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem'}},
-    mode==='emby'?'Reading file paths from your Emby library and matching movies…':'Reading CSV and matching movies against your Emby library…'));
-  const p=mk('div',{class:'progress',style:{marginBottom:'8px'}});
-  p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
-  w.appendChild(p);
-  w.appendChild(mk('div',{style:{fontSize:'13px',color:'var(--text2)'}},`${progress} of ${total||'?'} — ${pct}%`));
-  const btnCancel=mk('button',{style:{marginTop:'1.5rem'}},'← Cancel');
-  btnCancel.onclick=()=>{ resetImp(); render(); };
-  w.appendChild(btnCancel);
-  return w;
-}
-
-// ── Confirm screen ───────────────────────────────────────────
-function renderImpConfirm(){
-  const {rows,mode}=S.imp;
-  const matched=rows.filter(r=>r.matchedMovie);
-  const unmatched=rows.filter(r=>!r.matchedMovie);
-  const kept=rows.filter(r=>r.keep&&r.matchedMovie);
-  const w=mk('div');
-
-  const top=mk('div',{class:'row',style:{marginBottom:'12px',flexWrap:'wrap',gap:'8px'}});
-  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Review & confirm'));
-  top.appendChild(mk('span',{class:'badge success'},`${matched.length} matched`));
-  if(unmatched.length) top.appendChild(mk('span',{class:'badge danger'},`${unmatched.length} not found`));
-  w.appendChild(top);
-
-  // Summary card
-  const sum=mk('div',{class:'card',style:{marginBottom:'1rem',fontSize:'13px',color:'var(--text2)',lineHeight:'1.8'}});
-  sum.innerHTML=`
-    <strong style="color:var(--text);font-size:14px">${kept.length} tag${kept.length!==1?'s':''} ready to apply</strong><br>
-    ${unmatched.length?`<span style="color:var(--danger-text)">${unmatched.length} movie${unmatched.length!==1?'s':''} could not be matched and will be skipped.</span><br>`:''}
-    Already-tagged movies are automatically excluded. Review the list below, uncheck anything you don't want, then hit Apply.`;
-  w.appendChild(sum);
-
-  // Tag group summary — collapsed view by default
-  const tags=[...new Set(rows.filter(r=>r.keep&&r.matchedMovie).map(r=>r.tag))].sort();
-  const tagSummary=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'12px'}});
-  tags.forEach(t=>{
-    const count=rows.filter(r=>r.tag===t&&r.keep&&r.matchedMovie).length;
-    tagSummary.appendChild(mk('span',{class:'badge info'},`${t} (${count})`));
-  });
-  if(tags.length) w.appendChild(tagSummary);
-
-  // Movie list — grouped by tag
-  const card=mk('div',{class:'card',style:{padding:'0',maxHeight:'440px',overflowY:'auto',marginBottom:'1rem'}});
-  const table=mk('table',{class:'csv-table',style:{width:'100%'}});
-  table.innerHTML='<thead><tr><th style="width:130px">Tag</th><th>Movie</th><th style="width:44px;text-align:center">Apply</th></tr></thead>';
-  const tbody=mk('tbody');
-
-  let lastTag=null;
-  // Sort: matched first grouped by tag, unmatched at bottom
-  const sorted=[...rows.filter(r=>r.matchedMovie).sort((a,b)=>a.tag.localeCompare(b.tag)||a.matchedMovie.name.localeCompare(b.matchedMovie.name)),
-                ...rows.filter(r=>!r.matchedMovie)];
-
-  sorted.forEach((row,si)=>{
-    const ri=S.imp.rows.indexOf(row);
-    if(row.matchedMovie&&row.tag!==lastTag){
-      lastTag=row.tag;
-      const gh=document.createElement('tr');
-      const td=document.createElement('td'); td.colSpan=3; td.className='tag-group-header';
-      const cnt=S.imp.rows.filter(r=>r.tag===row.tag&&r.keep&&r.matchedMovie).length;
-      td.innerHTML=`<span style="color:var(--text);font-weight:500">${row.tag}</span><span style="font-weight:400;color:var(--text2)">${cnt} movie${cnt!==1?'s':''}</span>`;
-      gh.appendChild(td); tbody.appendChild(gh);
-    }
-    const tr=document.createElement('tr');
-    if(!row.matchedMovie) tr.style.cssText='background:var(--danger-bg)';
-
-    // Tag cell
-    const tagTd=document.createElement('td');
-    tagTd.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'11px'}},row.tag));
-    tr.appendChild(tagTd);
-
-    // Movie cell
-    const movTd=document.createElement('td');
-    if(row.matchedMovie){
-      movTd.innerHTML=`<span style="font-weight:500;font-size:13px">${row.matchedMovie.name}</span>${row.matchedMovie.year?` <span style="font-size:11px;color:var(--text2)">(${row.matchedMovie.year})</span>`:''}`;
-    } else {
-      movTd.innerHTML=`<span style="font-size:12px;color:var(--danger-text)">No match: ${row.rawFolder.length>40?row.rawFolder.slice(0,40)+'…':row.rawFolder}</span>`;
-    }
-    tr.appendChild(movTd);
-
-    // Checkbox
-    const cbTd=document.createElement('td'); cbTd.style.textAlign='center';
-    if(row.matchedMovie){
-      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=row.keep;
-      cb.addEventListener('change',()=>{ S.imp.rows[ri].keep=cb.checked; render(); });
-      cbTd.appendChild(cb);
-    }
-    tr.appendChild(cbTd);
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody); card.appendChild(table);
-  w.appendChild(card);
-
-  const btnRow=mk('div',{class:'row',style:{gap:'8px'}});
-  const btnBack=mk('button',{},'← Back');
-  btnBack.onclick=()=>resetImp();
-  // no render() needed — resetImp sets phase to pick
-  btnBack.onclick=()=>{ resetImp(); render(); };
-
-  const btnApply=mk('button',{class:'success'},`Apply ${kept.length} tag${kept.length!==1?'s':''} to Emby`);
-  btnApply.disabled=kept.length===0;
-  btnApply.onclick=applyImpTags;
-  btnRow.appendChild(btnBack); btnRow.appendChild(btnApply);
-  w.appendChild(btnRow);
-  return w;
-}
-
-// ── Applying / done screen ───────────────────────────────────
-function renderImpApplying(){
-  const {phase,progress,total,stats,logs}=S.imp;
-  const pct=total>0?Math.round((progress/total)*100):0;
-  const w=mk('div');
-  const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
-  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},phase==='done'?'Import complete':'Applying tags…'));
-  w.appendChild(top);
-
-  const statRow=mk('div',{class:'stats'});
-  [{v:stats.applied,l:'Applied'},{v:stats.skipped,l:'Already set'},{v:stats.errors,l:'Errors'}].forEach(({v,l})=>{
-    const sc=mk('div',{class:'stat-card'}); sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`; statRow.appendChild(sc);
-  });
-  w.appendChild(statRow);
-
-  if(phase==='applying'){
-    const p=mk('div',{class:'progress',style:{marginTop:'12px'}});
-    p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
-    w.appendChild(p);
-    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginTop:'4px'}},`${progress} of ${total} — ${pct}%`));
-  }
-
-  const logCard=mk('div',{class:'card',style:{maxHeight:'360px',overflowY:'auto',marginTop:'1rem'}});
-  if(!logs.length) logCard.appendChild(mk('div',{class:'empty-state'},'Processing…'));
-  else logs.forEach(l=>logCard.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
-  w.appendChild(logCard);
-
-  if(phase==='done'){
-    const btnRow=mk('div',{class:'row',style:{marginTop:'1rem'}});
-    const btnAgain=mk('button',{},'Import again');
-    btnAgain.onclick=()=>{ resetImp(); render(); };
-    const btnMovies=mk('button',{class:'primary'},'Go to movies');
-    btnMovies.onclick=()=>{ S.nav='movies'; render(); };
-    btnRow.appendChild(btnAgain); btnRow.appendChild(btnMovies);
-    w.appendChild(btnRow);
-  }
-  return w;
-}
-
-
-function renderLog(){
-  const w=mk('div');
-  const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
-  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Apply log'));
-  if(!S.applying){ const b=mk('button',{},'← Back to movies'); b.onclick=()=>{ S.nav='movies'; render(); }; top.appendChild(b); }
-  w.appendChild(top);
-  const stats=mk('div',{class:'stats'});
-  [{v:S.stats.applied,l:'Applied'},{v:S.stats.skipped,l:'Skipped'},{v:S.stats.errors,l:'Errors'}].forEach(({v,l})=>{
-    const sc=mk('div',{class:'stat-card'});
-    sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`;
-    stats.appendChild(sc);
-  });
-  w.appendChild(stats);
-  if(S.applying){
-    const p=mk('div',{class:'progress'});
-    p.appendChild(mk('div',{class:'progress-inner',style:{width:S.applyProgress+'%'}}));
-    w.appendChild(p);
-    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginBottom:'8px'}},S.applyProgress+'% complete'));
-  }
-  const card=mk('div',{class:'card',style:{maxHeight:'480px',overflowY:'auto'}});
-  if(!S.logs.length) card.appendChild(mk('div',{class:'empty-state'},'No log entries yet.'));
-  else S.logs.forEach(l=>card.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
-  w.appendChild(card);
-  return w;
-}
-
-loadTagHistory();
+// ════════════════════════════════════════════════
+// BOOT
+// ════════════════════════════════════════════════
+loadState();
 init();
 </script>
 </body>
