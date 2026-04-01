@@ -19,13 +19,6 @@ EMBY_USER_ID=your_user_id_here
 - **EMBY_API_KEY** — Emby Dashboard → Advanced → Security → API Keys
 - **EMBY_USER_ID** — find yours with the command below
 
-# test api key and get user id
-# curl -s "http://192.168.3.7:8096/Users?api_key=YOUR_API_KEY"
-# curl -s "http://192.168.3.7:8096/Users?api_key=YOUR_API_KEY" | python3 -c "import sys,json; [print(u['Id'], u['Name']) for u in json.load(sys.stdin)]"
-# curl -v "http://192.168.3.7:8096/Users/YOUR_USER_ID/Items?IncludeItemTypes=Movie&Recursive=true&Limit=1" -H "X-Emby-Token: YOUR_API_KEY"
-
-
-
 ```bash
 curl -s "http://192.168.3.7:8096/Users" \
   -H "X-Emby-Token: YOUR_API_KEY" | \

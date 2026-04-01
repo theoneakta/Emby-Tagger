@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emby Tag Manager</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f4;--bg3:#eeede8;
+  --text:#1a1a18;--text2:#666660;--text3:#999990;
+  --border:rgba(0,0,0,.13);--border2:rgba(0,0,0,.22);
+  --info-bg:#e6f1fb;--info-text:#185fa5;--info-border:rgba(24,95,165,.25);
+  --success-bg:#eaf3de;--success-text:#3b6d11;--success-border:rgba(59,109,17,.25);
+  --warn-bg:#faeeda;--warn-text:#854f0b;--warn-border:rgba(133,79,11,.25);
+  --danger-bg:#fcebeb;--danger-text:#a32d2d;--danger-border:rgba(163,45,45,.25);
+  --radius:8px;--radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1e1e1c;--bg2:#2a2a27;--bg3:#323230;
+    --text:#e8e8e4;--text2:#aaa9a2;--text3:#77776e;
+    --border:rgba(255,255,255,.12);--border2:rgba(255,255,255,.22);
+    --info-bg:#0c2a45;--info-text:#7ab8f0;--info-border:rgba(122,184,240,.2);
+    --success-bg:#162910;--success-text:#8fca5a;--success-border:rgba(143,202,90,.2);
+    --warn-bg:#2e1f05;--warn-text:#f0b050;--warn-border:rgba(240,176,80,.2);
+    --danger-bg:#2e0f0f;--danger-text:#e88080;--danger-border:rgba(232,128,128,.2);
+  }
+}
+body{font-family:system-ui,-apple-system,sans-serif;font-size:15px;color:var(--text);background:var(--bg3);min-height:100vh}
+input,select,button{font-family:inherit;font-size:14px}
+input[type=text]{height:36px;padding:0 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);width:100%;outline:none}
+input[type=text]:focus{border-color:var(--info-text);box-shadow:0 0 0 2px var(--info-bg)}
+button{height:34px;padding:0 14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text);cursor:pointer;white-space:nowrap;transition:background .12s}
+button:hover{background:var(--bg2)}
+button:active{transform:scale(.98)}
+button.primary{background:var(--text);color:var(--bg);border-color:transparent}
+button.primary:hover{opacity:.85}
+button.success{border-color:var(--success-border);color:var(--success-text);background:var(--success-bg)}
+button.success:hover{opacity:.85}
+.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
+.badge{display:inline-flex;align-items:center;font-size:12px;padding:3px 9px;border-radius:999px;font-weight:500}
+.badge.info{background:var(--info-bg);color:var(--info-text)}
+.badge.success{background:var(--success-bg);color:var(--success-text)}
+.badge.warning{background:var(--warn-bg);color:var(--warn-text)}
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin-bottom:6px}
+.tag-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:3px 8px;border-radius:999px;background:var(--bg2);border:0.5px solid var(--border);color:var(--text2)}
+.tag-chip.pending{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}
+.tag-chip .rm{cursor:pointer;font-size:10px;opacity:.6;margin-left:2px}
+.tag-chip .rm:hover{opacity:1;color:var(--danger-text)}
+#app{max-width:980px;margin:0 auto;padding:1.5rem 1rem}
+.row{display:flex;align-items:center;gap:8px}
+.suggest-wrap{position:relative}
+.tag-suggest{position:absolute;z-index:100;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);max-height:160px;overflow-y:auto;min-width:200px;box-shadow:0 4px 16px rgba(0,0,0,.15);top:38px;left:0}
+.tag-suggest div{padding:7px 10px;cursor:pointer;font-size:13px;color:var(--text)}
+.tag-suggest div:hover{background:var(--bg2)}
+.movie-row{border-bottom:0.5px solid var(--border);padding:10px 0;display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:start}
+.movie-row:last-child{border-bottom:none}
+.thumb{width:48px;height:72px;border-radius:4px;object-fit:cover;background:var(--bg2);border:0.5px solid var(--border);flex-shrink:0;display:block}
+.thumb-placeholder{width:48px;height:72px;border-radius:4px;background:var(--bg2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:var(--text3)}
+.log-line{font-size:12px;font-family:monospace;padding:3px 0;border-bottom:0.5px solid var(--border)}
+.log-line.ok{color:var(--success-text)}
+.log-line.err{color:var(--danger-text)}
+.log-line.skip{color:var(--text3)}
+.log-line.info{color:var(--info-text)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.stat-card{flex:1;min-width:80px;background:var(--bg2);border-radius:var(--radius);padding:10px;text-align:center}
+.stat-card .val{font-size:22px;font-weight:500}
+.stat-card .lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.tab-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1rem}
+.tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.progress{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;margin:8px 0}
+.progress-inner{height:100%;background:var(--info-text);transition:width .3s}
+.empty-state{text-align:center;padding:2.5rem 0;color:var(--text2)}
+.splash{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;color:var(--text2)}
+.splash h2{font-size:18px;font-weight:500;color:var(--text)}
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.15);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+<script>
+const STORAGE_KEY = 'emby_tag_history_v2';
+
+let S = {
+  page: 'loading',
+  config: { apiKey: '', userId: '' },
+  movies: [], tagHistory: [], pendingTags: {},
+  logs: [], applying: false, applyProgress: 0,
+  stats: { applied:0, skipped:0, errors:0 },
+  filterText: '', tab: 'untagged',
+  error: null,
+};
+
+function loadTagHistory(){
+  try{ const t=localStorage.getItem(STORAGE_KEY); if(t) S.tagHistory=JSON.parse(t); }catch(e){}
+}
+function saveTagHistory(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S.tagHistory)); }catch(e){}
+}
+function addTagHistory(tag){
+  tag=tag.trim(); if(!tag) return;
+  if(!S.tagHistory.includes(tag)){ S.tagHistory.unshift(tag); if(S.tagHistory.length>300) S.tagHistory=S.tagHistory.slice(0,300); saveTagHistory(); }
+}
+
+function toast(msg, ms=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms);
+}
+
+function hdrs(){ return { 'X-Emby-Token': S.config.apiKey, 'Content-Type': 'application/json' }; }
+
+async function init(){
+  S.page='loading'; render();
+  try{
+    const r = await fetch('/api/config');
+    if(!r.ok) throw new Error(`Config endpoint returned HTTP ${r.status}`);
+    const cfg = await r.json();
+    S.config.apiKey = cfg.apiKey;
+    S.config.userId = cfg.userId;
+    await fetchMovies();
+  }catch(e){
+    S.error = e.message;
+    S.page = 'error';
+    render();
+  }
+}
+
+async function fetchMovies(){
+  S.page='loading'; S.movies=[]; S.logs=[]; render();
+  try{
+    const url=`/emby/Users/${S.config.userId}/Items?IncludeItemTypes=Movie&Recursive=true&Fields=Tags,TagItems,Path,ProductionYear&Limit=9999`;
+    const r=await fetch(url,{headers:hdrs()});
+    if(!r.ok) throw new Error(`Emby returned HTTP ${r.status} — check your API key and User ID in .env`);
+    const d=await r.json();
+    S.movies=(d.Items||[]).map(m=>({
+      id:m.Id, name:m.Name, year:m.ProductionYear||'',
+      path:m.Path||'', tags:(m.TagItems||[]).map(t=>t.Name), tagItems:m.TagItems||[]
+    }));
+    addLog(`Loaded ${S.movies.length} movies — ${S.movies.filter(m=>m.tags.length===0).length} untagged`, 'info');
+    S.page='movies';
+  }catch(e){
+    S.error=e.message; S.page='error';
+  }
+  render();
+}
+
+function filterMovies(){
+  let list=S.movies;
+  if(S.tab==='untagged') list=list.filter(m=>m.tags.length===0);
+  else if(S.tab==='tagged') list=list.filter(m=>m.tags.length>0);
+  if(S.filterText){ const q=S.filterText.toLowerCase(); list=list.filter(m=>m.name.toLowerCase().includes(q)||(m.year+'').includes(q)); }
+  return list;
+}
+
+function addLog(msg,type='info'){ S.logs.unshift({msg,type,ts:new Date().toLocaleTimeString()}); if(S.logs.length>500) S.logs=S.logs.slice(0,500); }
+
+async function applyTag(movieId,tag){
+  try{
+    const r=await fetch(`/emby/Users/${S.config.userId}/Items/${movieId}`,{headers:hdrs()});
+    if(!r.ok) throw new Error(`Fetch HTTP ${r.status}`);
+    const item=await r.json();
+    const existing=(item.TagItems||[]).map(t=>t.Name);
+    if(existing.includes(tag)) return 'skipped';
+    const body=JSON.stringify({...item,TagItems:[...(item.TagItems||[]),{Name:tag,Id:0}]});
+    const pr=await fetch(`/emby/Items/${movieId}`,{method:'POST',headers:hdrs(),body});
+    if(!pr.ok) throw new Error(`Save HTTP ${pr.status}`);
+    return 'ok';
+  }catch(e){ return 'error:'+e.message; }
+}
+
+async function applyAllPending(){
+  const entries=Object.entries(S.pendingTags).filter(([,tags])=>tags.length>0);
+  if(!entries.length){ toast('No pending tags.'); return; }
+  S.applying=true; S.applyProgress=0; S.stats={applied:0,skipped:0,errors:0}; S.logs=[];
+  S.page='log'; render();
+  const total=entries.reduce((s,[,tags])=>s+tags.length,0);
+  let done=0;
+  for(const [id,tags] of entries){
+    const movie=S.movies.find(m=>m.id===id);
+    for(const tag of tags){
+      addTagHistory(tag);
+      const res=await applyTag(id,tag);
+      done++; S.applyProgress=Math.round((done/total)*100);
+      if(res==='ok'){ S.stats.applied++; addLog(`+ "${tag}" → ${movie?.name||id}`,'ok'); if(movie&&!movie.tags.includes(tag)) movie.tags.push(tag); }
+      else if(res==='skipped'){ S.stats.skipped++; addLog(`~ already tagged "${tag}": ${movie?.name||id}`,'skip'); }
+      else { S.stats.errors++; addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err'); }
+      render(); await new Promise(r=>setTimeout(r,80));
+    }
+    delete S.pendingTags[id];
+  }
+  S.applying=false; render();
+  toast(`Done — ${S.stats.applied} applied, ${S.stats.skipped} skipped, ${S.stats.errors} errors`);
+}
+
+/* ── DOM helpers ── */
+function mk(tag,attrs={},...ch){
+  const e=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==='style'&&typeof v==='object') Object.assign(e.style,v);
+    else if(k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(),v);
+    else e.setAttribute(k,v);
+  }
+  ch.flat().forEach(c=>e.appendChild(typeof c==='string'?document.createTextNode(c):c));
+  return e;
+}
+
+function render(){
+  const app=document.getElementById('app');
+  app.innerHTML='';
+  if(S.page==='loading') app.appendChild(renderLoading());
+  else if(S.page==='error') app.appendChild(renderError());
+  else if(S.page==='movies') app.appendChild(renderMovies());
+  else if(S.page==='log') app.appendChild(renderLog());
+}
+
+function renderLoading(){
+  const w=mk('div',{class:'splash'});
+  w.innerHTML=`<h2>Connecting to Emby...</h2><p>Loading your movie library.</p>`;
+  return w;
+}
+
+function renderError(){
+  const w=mk('div',{class:'splash'});
+  w.innerHTML=`<h2>Connection error</h2><p style="color:var(--danger-text);max-width:420px;text-align:center">${S.error}</p><p style="font-size:13px;margin-top:8px">Check your <code>.env</code> file and make sure the container can reach your Emby server.</p>`;
+  const btn=mk('button',{class:'primary',style:{marginTop:'12px'}},'Retry');
+  btn.onclick=init;
+  w.appendChild(btn);
+  return w;
+}
+
+function renderMovies(){
+  const w=mk('div');
+  const untaggedCount=S.movies.filter(m=>m.tags.length===0).length;
+  const pendingCount=Object.values(S.pendingTags).flat().length;
+
+  const top=mk('div',{class:'row',style:{marginBottom:'1rem',flexWrap:'wrap',gap:'8px'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Emby tag manager'));
+  top.appendChild(mk('span',{class:'badge warning'},`${untaggedCount} untagged`));
+  top.appendChild(mk('span',{class:'badge success'},`${S.movies.length-untaggedCount} tagged`));
+  top.appendChild(mk('span',{class:'badge info'},`${pendingCount} pending`));
+
+  const btnApply=mk('button',{class:'success'},'Apply all pending');
+  btnApply.onclick=applyAllPending;
+  top.appendChild(btnApply);
+
+  const btnRefresh=mk('button',{},'Refresh');
+  btnRefresh.onclick=fetchMovies;
+  top.appendChild(btnRefresh);
+  w.appendChild(top);
+
+  const tabBar=mk('div',{class:'tab-bar'});
+  const counts={untagged:untaggedCount,tagged:S.movies.length-untaggedCount,all:S.movies.length};
+  ['untagged','tagged','all'].forEach(t=>{
+    const tab=mk('div',{class:'tab'+(S.tab===t?' active':'')},`${t.charAt(0).toUpperCase()+t.slice(1)} (${counts[t]})`);
+    tab.onclick=()=>{S.tab=t;render();};
+    tabBar.appendChild(tab);
+  });
+  w.appendChild(tabBar);
+
+  const sb=mk('div',{style:{marginBottom:'1rem'}});
+  const si=mk('input',{type:'text',placeholder:'Filter by title or year...',value:S.filterText,style:{maxWidth:'300px'}});
+  si.addEventListener('input',()=>{S.filterText=si.value;render();});
+  sb.appendChild(si);
+  w.appendChild(sb);
+
+  const list=filterMovies();
+  if(!list.length){
+    const e=mk('div',{class:'empty-state'});
+    e.textContent=S.tab==='untagged'?'All movies are tagged — great!':'No movies match.';
+    w.appendChild(e); return w;
+  }
+
+  const card=mk('div',{class:'card'});
+  list.forEach(m=>card.appendChild(renderMovieRow(m)));
+  w.appendChild(card);
+  return w;
+}
+
+function renderMovieRow(movie){
+  const row=mk('div',{class:'movie-row'});
+
+  // Thumbnail
+  const thumbUrl=`/emby/Items/${movie.id}/Images/Primary?maxHeight=144&quality=80&api_key=${S.config.apiKey}`;
+  const thumbWrap=mk('div',{});
+  const img=mk('img',{src:thumbUrl,class:'thumb',alt:''});
+  const placeholder=mk('div',{class:'thumb-placeholder'},'🎬');
+  img.onerror=()=>{ thumbWrap.innerHTML=''; thumbWrap.appendChild(placeholder); };
+  thumbWrap.appendChild(img);
+  row.appendChild(thumbWrap);
+
+  const left=mk('div');
+
+  const nameRow=mk('div',{class:'row',style:{flexWrap:'wrap',gap:'6px',marginBottom:'4px'}});
+  nameRow.appendChild(mk('span',{style:{fontWeight:'500',fontSize:'14px'}},movie.name));
+  if(movie.year) nameRow.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text2)'}},`(${movie.year})`));
+  left.appendChild(nameRow);
+
+  const currentTags=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
+  if(movie.tags.length>0) movie.tags.forEach(t=>currentTags.appendChild(mk('span',{class:'tag-chip'},t)));
+  else currentTags.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text3)'}},'No tags'));
+  left.appendChild(currentTags);
+
+  const pending=S.pendingTags[movie.id]||[];
+  if(pending.length>0){
+    const pr=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
+    pending.forEach((t,i)=>{
+      const chip=mk('span',{class:'tag-chip pending'});
+      const rm=mk('span',{class:'rm'},' ×');
+      rm.onclick=()=>{ S.pendingTags[movie.id].splice(i,1); if(!S.pendingTags[movie.id].length) delete S.pendingTags[movie.id]; render(); };
+      chip.appendChild(document.createTextNode('+ '+t));
+      chip.appendChild(rm);
+      pr.appendChild(chip);
+    });
+    left.appendChild(pr);
+  }
+
+  const inputWrap=mk('div',{class:'suggest-wrap row'});
+  const inp=mk('input',{type:'text',placeholder:'Add tag...',style:{maxWidth:'200px',width:'200px'}});
+  const sug=mk('div',{class:'tag-suggest',style:{display:'none'}});
+  let st=null;
+
+  function showSuggestions(){
+    const q=inp.value.toLowerCase().trim();
+    const matches=S.tagHistory.filter(t=>(q?t.toLowerCase().includes(q):true)&&!(S.pendingTags[movie.id]||[]).includes(t)&&!movie.tags.includes(t));
+    sug.innerHTML='';
+    if(!matches.length){sug.style.display='none';return;}
+    matches.slice(0,10).forEach(t=>{
+      const d=mk('div',{},t);
+      d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();};
+      sug.appendChild(d);
+    });
+    sug.style.display='block';
+  }
+
+  inp.addEventListener('input',()=>{clearTimeout(st);st=setTimeout(showSuggestions,80);});
+  inp.addEventListener('focus',showSuggestions);
+  inp.addEventListener('blur',()=>setTimeout(()=>sug.style.display='none',150));
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();}});
+
+  const btnAdd=mk('button',{},'Add');
+  btnAdd.onclick=()=>{addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();};
+
+  inputWrap.appendChild(inp); inputWrap.appendChild(sug); inputWrap.appendChild(btnAdd);
+  left.appendChild(inputWrap);
+  row.appendChild(left);
+
+  const right=mk('div',{style:{paddingTop:'2px'}});
+  if(pending.length>0){
+    const btnNow=mk('button',{class:'success',style:{height:'28px',fontSize:'12px',padding:'0 10px'}},'Apply now');
+    btnNow.onclick=async()=>{
+      for(const tag of [...pending]){
+        addTagHistory(tag);
+        const res=await applyTag(movie.id,tag);
+        if(res==='ok'&&!movie.tags.includes(tag)) movie.tags.push(tag);
+      }
+      delete S.pendingTags[movie.id];
+      render(); toast(`Tagged: ${movie.name}`);
+    };
+    right.appendChild(btnNow);
+  }
+  row.appendChild(right);
+  return row;
+}
+
+function addPending(movieId,tag){
+  tag=tag.trim(); if(!tag) return;
+  const movie=S.movies.find(m=>m.id===movieId);
+  if(movie?.tags.includes(tag)) return;
+  if(!S.pendingTags[movieId]) S.pendingTags[movieId]=[];
+  if(!S.pendingTags[movieId].includes(tag)) S.pendingTags[movieId].push(tag);
+}
+
+function renderLog(){
+  const w=mk('div');
+  const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Apply log'));
+  if(!S.applying){
+    const b=mk('button',{},'← Back to movies');
+    b.onclick=()=>{S.page='movies';render();};
+    top.appendChild(b);
+  }
+  w.appendChild(top);
+
+  const stats=mk('div',{class:'stats'});
+  [{v:S.stats.applied,l:'Applied'},{v:S.stats.skipped,l:'Skipped'},{v:S.stats.errors,l:'Errors'}].forEach(({v,l})=>{
+    const sc=mk('div',{class:'stat-card'});
+    sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`;
+    stats.appendChild(sc);
+  });
+  w.appendChild(stats);
+
+  if(S.applying){
+    const p=mk('div',{class:'progress'});
+    p.appendChild(mk('div',{class:'progress-inner',style:{width:S.applyProgress+'%'}}));
+    w.appendChild(p);
+    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginBottom:'8px'}},S.applyProgress+'% complete'));
+  }
+
+  const card=mk('div',{class:'card',style:{maxHeight:'480px',overflowY:'auto'}});
+  if(!S.logs.length) card.appendChild(mk('div',{class:'empty-state'},'No log entries yet.'));
+  else S.logs.forEach(l=>card.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
+  w.appendChild(card);
+  return w;
+}
+
+loadTagHistory();
+init();
+</script>
+</body>
+</html>

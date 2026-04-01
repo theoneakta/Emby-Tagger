@@ -28,7 +28,7 @@
   }
 }
 body{font-family:system-ui,-apple-system,sans-serif;font-size:15px;color:var(--text);background:var(--bg3);min-height:100vh}
-input,select,button{font-family:inherit;font-size:14px}
+input,select,button,textarea{font-family:inherit;font-size:14px}
 input[type=text]{height:36px;padding:0 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);width:100%;outline:none}
 input[type=text]:focus{border-color:var(--info-text);box-shadow:0 0 0 2px var(--info-bg)}
 button{height:34px;padding:0 14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text);cursor:pointer;white-space:nowrap;transition:background .12s}
@@ -38,17 +38,20 @@ button.primary{background:var(--text);color:var(--bg);border-color:transparent}
 button.primary:hover{opacity:.85}
 button.success{border-color:var(--success-border);color:var(--success-text);background:var(--success-bg)}
 button.success:hover{opacity:.85}
+button.danger{border-color:var(--danger-border);color:var(--danger-text)}
+button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
 .badge{display:inline-flex;align-items:center;font-size:12px;padding:3px 9px;border-radius:999px;font-weight:500}
 .badge.info{background:var(--info-bg);color:var(--info-text)}
 .badge.success{background:var(--success-bg);color:var(--success-text)}
 .badge.warning{background:var(--warn-bg);color:var(--warn-text)}
+.badge.danger{background:var(--danger-bg);color:var(--danger-text)}
 .section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin-bottom:6px}
 .tag-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:3px 8px;border-radius:999px;background:var(--bg2);border:0.5px solid var(--border);color:var(--text2)}
 .tag-chip.pending{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}
 .tag-chip .rm{cursor:pointer;font-size:10px;opacity:.6;margin-left:2px}
 .tag-chip .rm:hover{opacity:1;color:var(--danger-text)}
-#app{max-width:980px;margin:0 auto;padding:1.5rem 1rem}
+#app{max-width:1040px;margin:0 auto;padding:1.5rem 1rem}
 .row{display:flex;align-items:center;gap:8px}
 .suggest-wrap{position:relative}
 .tag-suggest{position:absolute;z-index:100;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);max-height:160px;overflow-y:auto;min-width:200px;box-shadow:0 4px 16px rgba(0,0,0,.15);top:38px;left:0}
@@ -67,9 +70,12 @@ button.success:hover{opacity:.85}
 .stat-card{flex:1;min-width:80px;background:var(--bg2);border-radius:var(--radius);padding:10px;text-align:center}
 .stat-card .val{font-size:22px;font-weight:500}
 .stat-card .lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.tab-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1rem}
-.tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
-.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.nav-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1.5rem}
+.nav-tab{padding:9px 16px;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--text)}
+.sub-tab-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1rem}
+.sub-tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
+.sub-tab.active{color:var(--text);border-bottom-color:var(--text)}
 .progress{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;margin:8px 0}
 .progress-inner{height:100%;background:var(--info-text);transition:width .3s}
 .empty-state{text-align:center;padding:2.5rem 0;color:var(--text2)}
@@ -77,6 +83,28 @@ button.success:hover{opacity:.85}
 .splash h2{font-size:18px;font-weight:500;color:var(--text)}
 #toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.15);z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none}
 #toast.show{opacity:1}
+.csv-table{width:100%;border-collapse:collapse;font-size:13px}
+.csv-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border)}
+.csv-table td{padding:8px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
+.csv-table tr:last-child td{border-bottom:none}
+.csv-table tr.unmatched td{background:var(--danger-bg);color:var(--danger-text)}
+.csv-table input[type=text]{height:28px;font-size:12px;padding:0 6px}
+.drop-zone{border:1.5px dashed var(--border2);border-radius:var(--radius-lg);padding:2rem;text-align:center;color:var(--text2);cursor:pointer;transition:border-color .15s,background .15s}
+.drop-zone:hover,.drop-zone.over{border-color:var(--info-text);background:var(--info-bg)}
+.drop-zone p{font-size:13px;margin-top:6px}
+textarea.csv-input{width:100%;min-height:120px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;font-family:monospace;font-size:12px;outline:none}
+textarea.csv-input:focus{border-color:var(--info-text)}
+.step-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.clean-table{width:100%;border-collapse:collapse;font-size:13px}
+.clean-table th{text-align:left;padding:7px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border)}
+.clean-table td{padding:7px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
+.clean-table tr:last-child td{border-bottom:none}
+.clean-table tr.removed td{opacity:.35;text-decoration:line-through}
+.clean-table input[type=text]{height:26px;font-size:12px;padding:0 6px}
+.tag-group-header{background:var(--bg2);padding:6px 10px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--text);color:var(--bg);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-num.done{background:var(--success-text)}
+.step-title{font-size:15px;font-weight:500}
 </style>
 </head>
 <body>
@@ -86,48 +114,83 @@ button.success:hover{opacity:.85}
 const STORAGE_KEY = 'emby_tag_history_v2';
 
 let S = {
-  page: 'loading',
-  config: { apiKey: '', userId: '' },
+  nav: 'movies',
+  config: { apiKey:'', userId:'' },
   movies: [], tagHistory: [], pendingTags: {},
   logs: [], applying: false, applyProgress: 0,
   stats: { applied:0, skipped:0, errors:0 },
-  filterText: '', tab: 'untagged',
-  error: null,
+  filterText: '', subTab: 'untagged',
+  page: 'loading', error: null,
+  imp: null,
 };
 
-function loadTagHistory(){
-  try{ const t=localStorage.getItem(STORAGE_KEY); if(t) S.tagHistory=JSON.parse(t); }catch(e){}
-}
-function saveTagHistory(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S.tagHistory)); }catch(e){}
-}
-function addTagHistory(tag){
-  tag=tag.trim(); if(!tag) return;
-  if(!S.tagHistory.includes(tag)){ S.tagHistory.unshift(tag); if(S.tagHistory.length>300) S.tagHistory=S.tagHistory.slice(0,300); saveTagHistory(); }
+function loadTagHistory(){ try{ const t=localStorage.getItem(STORAGE_KEY); if(t) S.tagHistory=JSON.parse(t); }catch(e){} }
+function saveTagHistory(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S.tagHistory)); }catch(e){} }
+function addTagHistory(tag){ tag=tag.trim(); if(!tag) return; if(!S.tagHistory.includes(tag)){ S.tagHistory.unshift(tag); if(S.tagHistory.length>300) S.tagHistory=S.tagHistory.slice(0,300); saveTagHistory(); } }
+
+function toast(msg,ms=2800){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
+function hdrs(){ return {'X-Emby-Token':S.config.apiKey,'Content-Type':'application/json'}; }
+
+// ── Title cleaning ───────────────────────────────────────────
+function cleanTitle(raw){
+  let s=raw;
+  s=s.replace(/\s*\.(mkv|mp4|avi|m4v|mov|wmv|flv|ts)$/i,'');
+  s=s.replace(/\s+(mkv|mp4|avi|m4v|mov|wmv|flv|ts)$/i,'');
+  s=s.replace(/^\[\s*(?:www\.)?[A-Za-z0-9\-]+\.[a-z]{2,4}\s*\]\s*-?\s*/,'');
+  s=s.replace(/^\[.*?\]\s*/,'');
+  s=s.replace(/\./g,' ');
+  s=s.replace(/[\[\(]?(19|20)\d{2}[\]\)]?.*/,'');
+  s=s.replace(/\b(UNRATED|EXTENDED|THEATRICAL|DIRECTORS?\.?CUT|REMASTERED|REPACK|HC|LIMITED|INTERNAL|UNCENSORED|FRENCH|TRUEFRENCH|DVDRIP|BDRIP|BRRIP|WEBRIP|BLURAY|HDTV|HDRIP|XVID|H264|H265|HEVC|AAC|AC3|DTS|MULTI)\b.*/i,'');
+  s=s.replace(/\[.*?\]/g,'').replace(/\{.*?\}/g,'');
+  s=s.replace(/\([^)]*\b(Action|Adventure|BluRay|BRRip|WEBRip|HDRip|DVDRip|YTS|x264|x265|AAC|AC3|DTS|HDTV|Dual|Anime)\b[^)]*\)/gi,'');
+  s=s.replace(/\s*-\s*[A-Za-z0-9][A-Za-z0-9\.\[\]]{1,25}$/,'');
+  s=s.replace(/\.\s+\./g,' ').replace(/\s+\./g,' ').replace(/\.\s+/g,' ');
+  s=s.replace(/_+/g,' ').replace(/\[\s*$/,'').replace(/\(\s*$/,'').replace(/\s*-\s*$/,'').replace(/\s*\.\s*$/,'');
+  s=s.replace(/\s{2,}/g,' ').trim();
+  return s.toLowerCase();
 }
 
-function toast(msg, ms=2800){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms);
+function normaliseEmby(name){ return name.replace(/\s*\(\d{4}\)\s*$/,'').toLowerCase().trim(); }
+function bare(s){ return s.replace(/[^a-z0-9]/g,''); }
+function wordOverlap(a,b){
+  const wa=a.split(/\s+/).filter(w=>w.length>1);
+  const wb=new Set(b.split(/\s+/).filter(w=>w.length>1));
+  if(!wa.length) return 0;
+  return wa.filter(w=>wb.has(w)).length/wa.length;
 }
 
-function hdrs(){ return { 'X-Emby-Token': S.config.apiKey, 'Content-Type': 'application/json' }; }
+function findMovie(cleaned,lookup){
+  if(lookup.has(cleaned)) return lookup.get(cleaned);
+  const noArt=cleaned.replace(/^(the|a|an) /,'');
+  for(const [k,v] of lookup){ if(k.replace(/^(the|a|an) /,'')=== noArt) return v; }
+  const cb=bare(cleaned);
+  if(cb.length>=4){ for(const [k,v] of lookup){ if(bare(k)===cb) return v; } }
+  if(cb.length>=6){ for(const [k,v] of lookup){ const eb=bare(k); if(eb.startsWith(cb)||cb.startsWith(eb)) return v; } }
+  const words=cleaned.split(/\s+/).filter(w=>w.length>1);
+  if(words.length>=3){
+    let best=null,bestScore=0;
+    for(const [k,v] of lookup){ const sc=wordOverlap(cleaned,k); if(sc>bestScore){bestScore=sc;best=v;} }
+    if(bestScore>=0.80) return best;
+  }
+  return null;
+}
 
+function buildLookup(){
+  const m=new Map();
+  S.movies.forEach(mv=>{ const k=normaliseEmby(mv.name); if(!m.has(k)) m.set(k,mv); });
+  return m;
+}
+
+// ── API ──────────────────────────────────────────────────────
 async function init(){
   S.page='loading'; render();
   try{
-    const r = await fetch('/api/config');
+    const r=await fetch('/api/config');
     if(!r.ok) throw new Error(`Config endpoint returned HTTP ${r.status}`);
-    const cfg = await r.json();
-    S.config.apiKey = cfg.apiKey;
-    S.config.userId = cfg.userId;
+    const cfg=await r.json();
+    S.config.apiKey=cfg.apiKey; S.config.userId=cfg.userId;
     await fetchMovies();
-  }catch(e){
-    S.error = e.message;
-    S.page = 'error';
-    render();
-  }
+  }catch(e){ S.error=e.message; S.page='error'; render(); }
 }
 
 async function fetchMovies(){
@@ -138,21 +201,19 @@ async function fetchMovies(){
     if(!r.ok) throw new Error(`Emby returned HTTP ${r.status} — check your API key and User ID in .env`);
     const d=await r.json();
     S.movies=(d.Items||[]).map(m=>({
-      id:m.Id, name:m.Name, year:m.ProductionYear||'',
-      path:m.Path||'', tags:(m.TagItems||[]).map(t=>t.Name), tagItems:m.TagItems||[]
+      id:m.Id,name:m.Name,year:m.ProductionYear||'',
+      path:m.Path||'',tags:(m.TagItems||[]).map(t=>t.Name),tagItems:m.TagItems||[]
     }));
-    addLog(`Loaded ${S.movies.length} movies — ${S.movies.filter(m=>m.tags.length===0).length} untagged`, 'info');
-    S.page='movies';
-  }catch(e){
-    S.error=e.message; S.page='error';
-  }
+    addLog(`Loaded ${S.movies.length} movies — ${S.movies.filter(m=>m.tags.length===0).length} untagged`,'info');
+    S.page='ready';
+  }catch(e){ S.error=e.message; S.page='error'; }
   render();
 }
 
 function filterMovies(){
   let list=S.movies;
-  if(S.tab==='untagged') list=list.filter(m=>m.tags.length===0);
-  else if(S.tab==='tagged') list=list.filter(m=>m.tags.length>0);
+  if(S.subTab==='untagged') list=list.filter(m=>m.tags.length===0);
+  else if(S.subTab==='tagged') list=list.filter(m=>m.tags.length>0);
   if(S.filterText){ const q=S.filterText.toLowerCase(); list=list.filter(m=>m.name.toLowerCase().includes(q)||(m.year+'').includes(q)); }
   return list;
 }
@@ -177,7 +238,7 @@ async function applyAllPending(){
   const entries=Object.entries(S.pendingTags).filter(([,tags])=>tags.length>0);
   if(!entries.length){ toast('No pending tags.'); return; }
   S.applying=true; S.applyProgress=0; S.stats={applied:0,skipped:0,errors:0}; S.logs=[];
-  S.page='log'; render();
+  S.nav='log'; render();
   const total=entries.reduce((s,[,tags])=>s+tags.length,0);
   let done=0;
   for(const [id,tags] of entries){
@@ -188,7 +249,7 @@ async function applyAllPending(){
       done++; S.applyProgress=Math.round((done/total)*100);
       if(res==='ok'){ S.stats.applied++; addLog(`+ "${tag}" → ${movie?.name||id}`,'ok'); if(movie&&!movie.tags.includes(tag)) movie.tags.push(tag); }
       else if(res==='skipped'){ S.stats.skipped++; addLog(`~ already tagged "${tag}": ${movie?.name||id}`,'skip'); }
-      else { S.stats.errors++; addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err'); }
+      else{ S.stats.errors++; addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err'); }
       render(); await new Promise(r=>setTimeout(r,80));
     }
     delete S.pendingTags[id];
@@ -197,7 +258,106 @@ async function applyAllPending(){
   toast(`Done — ${S.stats.applied} applied, ${S.stats.skipped} skipped, ${S.stats.errors} errors`);
 }
 
-/* ── DOM helpers ── */
+// ── CSV logic ────────────────────────────────────────────────
+async function parseAndMatchCsv(raw){
+  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean)
+    .filter(l=>!/^folde?r?tag/i.test(l) && l.includes(','));
+  const lookup=buildLookup();
+  const rows=[];
+  S.csvMatching=true; S.csvMatchProgress=0; S.csvMatchTotal=lines.length;
+  render();
+  const CHUNK=40;
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    const parts=line.split(',');
+    if(parts.length<2){ S.csvMatchProgress=i+1; continue; }
+    const folderTag=parts[0].trim().replace(/^\[|\]$/g,'');
+    const movieFolder=parts.slice(1).join(',').trim();
+    const cleaned=cleanTitle(movieFolder);
+    const matched=findMovie(cleaned,lookup);
+    rows.push({
+      folderTag, movieFolder, cleanedTitle:cleaned,
+      matchedMovie:matched||null,
+      tag:folderTag,
+      status:matched?'matched':'unmatched',
+      skip:!matched,
+    });
+    S.csvMatchProgress=i+1;
+    // yield to browser every CHUNK rows so UI stays responsive
+    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
+  }
+  S.csvMatching=false; S.csvMatchProgress=0;
+  return rows;
+}
+
+function generateExportCsv(){
+  const lines=['FolderTag,MovieFolder'];
+  S.movies.forEach(m=>{
+    if(!m.path) return;
+    const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
+    if(parts.length<2) return;
+    const movieFolder=parts[parts.length-1];
+    const tagFolder=parts[parts.length-2].replace(/^\[|\]$/g,'');
+    lines.push(`${tagFolder},${movieFolder}`);
+  });
+  return lines.join('\n');
+}
+
+function generateCleanRows(){
+  // Build raw export data
+  const rows=[];
+  S.movies.forEach(m=>{
+    if(!m.path) return;
+    const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
+    if(parts.length<2) return;
+    const rawFolder=parts[parts.length-1];
+    const rawTag=parts[parts.length-2].replace(/^\[|\]$/g,'');
+    const cleaned=cleanTitle(rawFolder);
+    rows.push({ tag:rawTag, rawFolder, cleanedTitle:cleaned, keep:true });
+  });
+  // Sort by tag then cleaned title
+  rows.sort((a,b)=>a.tag.localeCompare(b.tag)||a.cleanedTitle.localeCompare(b.cleanedTitle));
+  return rows;
+}
+
+// Convert cleanRows to CSV for the paste/import step
+function cleanRowsToCsv(){
+  const lines=['FolderTag,MovieFolder'];
+  S.cleanRows.filter(r=>r.keep).forEach(r=>{
+    lines.push(`${r.tag},${r.rawFolder}`);
+  });
+  return lines.join('\n');
+}
+
+async function applyCsvTags(){
+  const toApply=S.csvRows.filter(r=>!r.skip&&r.status==='matched'&&r.matchedMovie);
+  if(!toApply.length){ toast('Nothing to apply.'); return; }
+  S.csvApplying=true; S.csvProgress=0; S.csvStats={applied:0,skipped:0,errors:0}; S.csvLogs=[];
+  render();
+  for(let i=0;i<toApply.length;i++){
+    const row=toApply[i];
+    addTagHistory(row.tag);
+    const res=await applyTag(row.matchedMovie.id,row.tag);
+    S.csvProgress=Math.round(((i+1)/toApply.length)*100);
+    if(res==='ok'){
+      S.csvStats.applied++;
+      S.csvLogs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
+      if(!row.matchedMovie.tags.includes(row.tag)) row.matchedMovie.tags.push(row.tag);
+    }else if(res==='skipped'){
+      S.csvStats.skipped++;
+      S.csvLogs.unshift({msg:`~ already tagged "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
+    }else{
+      S.csvStats.errors++;
+      S.csvLogs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+    }
+    render();
+    await new Promise(r=>setTimeout(r,80));
+  }
+  S.csvApplying=false; S.csvStep=3; render();
+  toast(`Done — ${S.csvStats.applied} applied, ${S.csvStats.skipped} skipped, ${S.csvStats.errors} errors`);
+}
+
+// ── DOM helpers ──────────────────────────────────────────────
 function mk(tag,attrs={},...ch){
   const e=document.createElement(tag);
   for(const [k,v] of Object.entries(attrs)){
@@ -212,15 +372,23 @@ function mk(tag,attrs={},...ch){
 function render(){
   const app=document.getElementById('app');
   app.innerHTML='';
-  if(S.page==='loading') app.appendChild(renderLoading());
-  else if(S.page==='error') app.appendChild(renderError());
-  else if(S.page==='movies') app.appendChild(renderMovies());
-  else if(S.page==='log') app.appendChild(renderLog());
+  if(S.page==='loading'){ app.appendChild(renderSplash('Connecting to Emby…','Loading your movie library.')); return; }
+  if(S.page==='error'){ app.appendChild(renderError()); return; }
+  const nav=mk('div',{class:'nav-bar'});
+  [['movies','Movies'],['import','Folder import'],['log','Apply log']].forEach(([id,label])=>{
+    const t=mk('div',{class:'nav-tab'+(S.nav===id?' active':'')},label);
+    t.onclick=()=>{ if(id!=='log'||!S.applying){ S.nav=id; render(); } };
+    nav.appendChild(t);
+  });
+  app.appendChild(nav);
+  if(S.nav==='movies') app.appendChild(renderMovies());
+  else if(S.nav==='import') app.appendChild(renderImport());
+  else app.appendChild(renderLog());
 }
 
-function renderLoading(){
+function renderSplash(title,sub){
   const w=mk('div',{class:'splash'});
-  w.innerHTML=`<h2>Connecting to Emby...</h2><p>Loading your movie library.</p>`;
+  w.innerHTML=`<h2>${title}</h2><p>${sub}</p>`;
   return w;
 }
 
@@ -228,53 +396,41 @@ function renderError(){
   const w=mk('div',{class:'splash'});
   w.innerHTML=`<h2>Connection error</h2><p style="color:var(--danger-text);max-width:420px;text-align:center">${S.error}</p><p style="font-size:13px;margin-top:8px">Check your <code>.env</code> file and make sure the container can reach your Emby server.</p>`;
   const btn=mk('button',{class:'primary',style:{marginTop:'12px'}},'Retry');
-  btn.onclick=init;
-  w.appendChild(btn);
+  btn.onclick=init; w.appendChild(btn);
   return w;
 }
 
+// ── Movies tab ───────────────────────────────────────────────
 function renderMovies(){
   const w=mk('div');
   const untaggedCount=S.movies.filter(m=>m.tags.length===0).length;
   const pendingCount=Object.values(S.pendingTags).flat().length;
-
   const top=mk('div',{class:'row',style:{marginBottom:'1rem',flexWrap:'wrap',gap:'8px'}});
-  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Emby tag manager'));
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Movie library'));
   top.appendChild(mk('span',{class:'badge warning'},`${untaggedCount} untagged`));
   top.appendChild(mk('span',{class:'badge success'},`${S.movies.length-untaggedCount} tagged`));
   top.appendChild(mk('span',{class:'badge info'},`${pendingCount} pending`));
-
   const btnApply=mk('button',{class:'success'},'Apply all pending');
   btnApply.onclick=applyAllPending;
   top.appendChild(btnApply);
-
   const btnRefresh=mk('button',{},'Refresh');
   btnRefresh.onclick=fetchMovies;
   top.appendChild(btnRefresh);
   w.appendChild(top);
-
-  const tabBar=mk('div',{class:'tab-bar'});
+  const subTabBar=mk('div',{class:'sub-tab-bar'});
   const counts={untagged:untaggedCount,tagged:S.movies.length-untaggedCount,all:S.movies.length};
   ['untagged','tagged','all'].forEach(t=>{
-    const tab=mk('div',{class:'tab'+(S.tab===t?' active':'')},`${t.charAt(0).toUpperCase()+t.slice(1)} (${counts[t]})`);
-    tab.onclick=()=>{S.tab=t;render();};
-    tabBar.appendChild(tab);
+    const tab=mk('div',{class:'sub-tab'+(S.subTab===t?' active':'')},`${t.charAt(0).toUpperCase()+t.slice(1)} (${counts[t]})`);
+    tab.onclick=()=>{ S.subTab=t; render(); };
+    subTabBar.appendChild(tab);
   });
-  w.appendChild(tabBar);
-
+  w.appendChild(subTabBar);
   const sb=mk('div',{style:{marginBottom:'1rem'}});
-  const si=mk('input',{type:'text',placeholder:'Filter by title or year...',value:S.filterText,style:{maxWidth:'300px'}});
-  si.addEventListener('input',()=>{S.filterText=si.value;render();});
-  sb.appendChild(si);
-  w.appendChild(sb);
-
+  const si=mk('input',{type:'text',placeholder:'Filter by title or year…',value:S.filterText,style:{maxWidth:'300px'}});
+  si.addEventListener('input',()=>{ S.filterText=si.value; render(); });
+  sb.appendChild(si); w.appendChild(sb);
   const list=filterMovies();
-  if(!list.length){
-    const e=mk('div',{class:'empty-state'});
-    e.textContent=S.tab==='untagged'?'All movies are tagged — great!':'No movies match.';
-    w.appendChild(e); return w;
-  }
-
+  if(!list.length){ w.appendChild(mk('div',{class:'empty-state'},S.subTab==='untagged'?'All movies are tagged!':'No movies match.')); return w; }
   const card=mk('div',{class:'card'});
   list.forEach(m=>card.appendChild(renderMovieRow(m)));
   w.appendChild(card);
@@ -283,28 +439,20 @@ function renderMovies(){
 
 function renderMovieRow(movie){
   const row=mk('div',{class:'movie-row'});
-
-  // Thumbnail
-  const thumbUrl=`/emby/Items/${movie.id}/Images/Primary?maxHeight=144&quality=80&api_key=${S.config.apiKey}`;
   const thumbWrap=mk('div',{});
-  const img=mk('img',{src:thumbUrl,class:'thumb',alt:''});
-  const placeholder=mk('div',{class:'thumb-placeholder'},'🎬');
-  img.onerror=()=>{ thumbWrap.innerHTML=''; thumbWrap.appendChild(placeholder); };
-  thumbWrap.appendChild(img);
-  row.appendChild(thumbWrap);
-
+  const img=mk('img',{src:`/emby/Items/${movie.id}/Images/Primary?maxHeight=144&quality=80&api_key=${S.config.apiKey}`,class:'thumb',alt:''});
+  const ph=mk('div',{class:'thumb-placeholder'},'🎬');
+  img.onerror=()=>{ thumbWrap.innerHTML=''; thumbWrap.appendChild(ph); };
+  thumbWrap.appendChild(img); row.appendChild(thumbWrap);
   const left=mk('div');
-
   const nameRow=mk('div',{class:'row',style:{flexWrap:'wrap',gap:'6px',marginBottom:'4px'}});
   nameRow.appendChild(mk('span',{style:{fontWeight:'500',fontSize:'14px'}},movie.name));
   if(movie.year) nameRow.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text2)'}},`(${movie.year})`));
   left.appendChild(nameRow);
-
   const currentTags=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
   if(movie.tags.length>0) movie.tags.forEach(t=>currentTags.appendChild(mk('span',{class:'tag-chip'},t)));
   else currentTags.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text3)'}},'No tags'));
   left.appendChild(currentTags);
-
   const pending=S.pendingTags[movie.id]||[];
   if(pending.length>0){
     const pr=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
@@ -312,54 +460,36 @@ function renderMovieRow(movie){
       const chip=mk('span',{class:'tag-chip pending'});
       const rm=mk('span',{class:'rm'},' ×');
       rm.onclick=()=>{ S.pendingTags[movie.id].splice(i,1); if(!S.pendingTags[movie.id].length) delete S.pendingTags[movie.id]; render(); };
-      chip.appendChild(document.createTextNode('+ '+t));
-      chip.appendChild(rm);
-      pr.appendChild(chip);
+      chip.appendChild(document.createTextNode('+ '+t)); chip.appendChild(rm); pr.appendChild(chip);
     });
     left.appendChild(pr);
   }
-
   const inputWrap=mk('div',{class:'suggest-wrap row'});
-  const inp=mk('input',{type:'text',placeholder:'Add tag...',style:{maxWidth:'200px',width:'200px'}});
+  const inp=mk('input',{type:'text',placeholder:'Add tag…',style:{maxWidth:'200px',width:'200px'}});
   const sug=mk('div',{class:'tag-suggest',style:{display:'none'}});
   let st=null;
-
   function showSuggestions(){
     const q=inp.value.toLowerCase().trim();
     const matches=S.tagHistory.filter(t=>(q?t.toLowerCase().includes(q):true)&&!(S.pendingTags[movie.id]||[]).includes(t)&&!movie.tags.includes(t));
     sug.innerHTML='';
-    if(!matches.length){sug.style.display='none';return;}
-    matches.slice(0,10).forEach(t=>{
-      const d=mk('div',{},t);
-      d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();};
-      sug.appendChild(d);
-    });
+    if(!matches.length){ sug.style.display='none'; return; }
+    matches.slice(0,10).forEach(t=>{ const d=mk('div',{},t); d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();}; sug.appendChild(d); });
     sug.style.display='block';
   }
-
-  inp.addEventListener('input',()=>{clearTimeout(st);st=setTimeout(showSuggestions,80);});
+  inp.addEventListener('input',()=>{ clearTimeout(st); st=setTimeout(showSuggestions,80); });
   inp.addEventListener('focus',showSuggestions);
   inp.addEventListener('blur',()=>setTimeout(()=>sug.style.display='none',150));
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();}});
-
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addPending(movie.id,inp.value); inp.value=''; sug.style.display='none'; render(); } });
   const btnAdd=mk('button',{},'Add');
-  btnAdd.onclick=()=>{addPending(movie.id,inp.value);inp.value='';sug.style.display='none';render();};
-
+  btnAdd.onclick=()=>{ addPending(movie.id,inp.value); inp.value=''; sug.style.display='none'; render(); };
   inputWrap.appendChild(inp); inputWrap.appendChild(sug); inputWrap.appendChild(btnAdd);
-  left.appendChild(inputWrap);
-  row.appendChild(left);
-
+  left.appendChild(inputWrap); row.appendChild(left);
   const right=mk('div',{style:{paddingTop:'2px'}});
   if(pending.length>0){
     const btnNow=mk('button',{class:'success',style:{height:'28px',fontSize:'12px',padding:'0 10px'}},'Apply now');
     btnNow.onclick=async()=>{
-      for(const tag of [...pending]){
-        addTagHistory(tag);
-        const res=await applyTag(movie.id,tag);
-        if(res==='ok'&&!movie.tags.includes(tag)) movie.tags.push(tag);
-      }
-      delete S.pendingTags[movie.id];
-      render(); toast(`Tagged: ${movie.name}`);
+      for(const tag of [...pending]){ addTagHistory(tag); const res=await applyTag(movie.id,tag); if(res==='ok'&&!movie.tags.includes(tag)) movie.tags.push(tag); }
+      delete S.pendingTags[movie.id]; render(); toast(`Tagged: ${movie.name}`);
     };
     right.appendChild(btnNow);
   }
@@ -375,17 +505,333 @@ function addPending(movieId,tag){
   if(!S.pendingTags[movieId].includes(tag)) S.pendingTags[movieId].push(tag);
 }
 
+// ── Import tab ───────────────────────────────────────────────
+
+// ── Import tab — two simple paths ───────────────────────────
+// State: imp.mode = null | 'emby' | 'csv'
+//        imp.phase = 'pick' | 'scanning' | 'confirm' | 'applying' | 'done'
+//        imp.rows  = [{tag, rawFolder, cleanedTitle, matchedMovie, keep}]
+//        imp.stats = {applied,skipped,errors}
+//        imp.logs  = []
+//        imp.progress / imp.total
+function resetImp(){ S.imp={ mode:null, phase:'pick', rows:[], stats:{applied:0,skipped:0,errors:0}, logs:[], progress:0, total:0, csvRaw:'' }; }
+
+// ── Build rows from Emby paths ───────────────────────────────
+async function scanEmbyPaths(){
+  S.imp.phase='scanning'; S.imp.progress=0; S.imp.total=S.movies.length; render();
+  const lookup=buildLookup();
+  const rows=[];
+  const CHUNK=40;
+  for(let i=0;i<S.movies.length;i++){
+    const m=S.movies[i];
+    if(m.path){
+      const parts=m.path.replace(/\\/g,'/').split('/').filter(Boolean);
+      if(parts.length>=2){
+        const rawFolder=parts[parts.length-1];
+        const rawTag=parts[parts.length-2].replace(/^\[|\]$/g,'');
+        const cleaned=cleanTitle(rawFolder);
+        const matched=findMovie(cleaned,lookup);
+        if(matched){
+          // skip if already has this tag
+          if(!matched.tags.includes(rawTag)){
+            rows.push({ tag:rawTag, rawFolder, cleanedTitle:cleaned, matchedMovie:matched, keep:true });
+          }
+        }
+      }
+    }
+    S.imp.progress=i+1;
+    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
+  }
+  // Deduplicate: same movie+tag combo only once
+  const seen=new Set();
+  S.imp.rows=rows.filter(r=>{ const k=r.matchedMovie.id+'|'+r.tag; if(seen.has(k)) return false; seen.add(k); return true; });
+  S.imp.phase='confirm'; render();
+}
+
+// ── Build rows from uploaded CSV ─────────────────────────────
+async function scanCsv(raw){
+  S.imp.phase='scanning'; render();
+  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean).filter(l=>!/^folde?r?tag/i.test(l)&&l.includes(','));
+  S.imp.total=lines.length; S.imp.progress=0;
+  const lookup=buildLookup();
+  const rows=[];
+  const CHUNK=40;
+  for(let i=0;i<lines.length;i++){
+    const parts=lines[i].split(',');
+    if(parts.length>=2){
+      const tag=parts[0].trim().replace(/^\[|\]$/g,'');
+      const rawFolder=parts.slice(1).join(',').trim();
+      const cleaned=cleanTitle(rawFolder);
+      const matched=findMovie(cleaned,lookup);
+      rows.push({ tag, rawFolder, cleanedTitle:cleaned, matchedMovie:matched||null, keep:!!matched });
+    }
+    S.imp.progress=i+1;
+    if((i+1)%CHUNK===0){ render(); await new Promise(r=>setTimeout(r,0)); }
+  }
+  S.imp.rows=rows;
+  S.imp.phase='confirm'; render();
+}
+
+// ── Apply ────────────────────────────────────────────────────
+async function applyImpTags(){
+  const toApply=S.imp.rows.filter(r=>r.keep&&r.matchedMovie);
+  if(!toApply.length){ toast('Nothing to apply.'); return; }
+  S.imp.phase='applying'; S.imp.progress=0; S.imp.total=toApply.length;
+  S.imp.stats={applied:0,skipped:0,errors:0}; S.imp.logs=[]; render();
+  for(let i=0;i<toApply.length;i++){
+    const row=toApply[i];
+    addTagHistory(row.tag);
+    const res=await applyTag(row.matchedMovie.id, row.tag);
+    S.imp.progress=i+1;
+    if(res==='ok'){
+      S.imp.stats.applied++;
+      S.imp.logs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
+      if(!row.matchedMovie.tags.includes(row.tag)) row.matchedMovie.tags.push(row.tag);
+    } else if(res==='skipped'){
+      S.imp.stats.skipped++;
+      S.imp.logs.unshift({msg:`~ already set "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
+    } else {
+      S.imp.stats.errors++;
+      S.imp.logs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+    }
+    render();
+    await new Promise(r=>setTimeout(r,80));
+  }
+  S.imp.phase='done'; render();
+  toast(`Done — ${S.imp.stats.applied} tags applied`);
+}
+
+// ── Render import tab ────────────────────────────────────────
+function renderImport(){
+  if(!S.imp) S.imp={ mode:null, phase:'pick', rows:[], stats:{applied:0,skipped:0,errors:0}, logs:[], progress:0, total:0, csvRaw:'' };
+  const w=mk('div');
+  const {phase,mode}=S.imp;
+  if(phase==='pick') w.appendChild(renderImpPick());
+  else if(phase==='scanning') w.appendChild(renderImpScanning());
+  else if(phase==='confirm') w.appendChild(renderImpConfirm());
+  else if(phase==='applying'||phase==='done') w.appendChild(renderImpApplying());
+  return w;
+}
+
+// ── Pick screen ──────────────────────────────────────────────
+function renderImpPick(){
+  const w=mk('div');
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Tag import'));
+  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem'}},'Choose how you want to import tags. Everything else is handled automatically.'));
+
+  const grid=mk('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',maxWidth:'680px'}});
+
+  // Option A — Pull from Emby
+  const cardA=mk('div',{class:'card',style:{cursor:'pointer',transition:'border-color .15s'}});
+  cardA.style.borderColor='var(--border)';
+  cardA.onmouseenter=()=>cardA.style.borderColor='var(--info-text)';
+  cardA.onmouseleave=()=>cardA.style.borderColor='var(--border)';
+  cardA.innerHTML=`
+    <div style="font-size:28px;margin-bottom:10px">🎬</div>
+    <div style="font-weight:500;font-size:15px;margin-bottom:6px">Pull from Emby</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+      Reads your movie file paths already stored in Emby, uses the parent folder as the tag, and automatically matches everything. Best if your drive is still connected or Emby still has the old paths.
+    </div>`;
+  const btnA=mk('button',{class:'primary',style:{width:'100%'}},'Scan Emby paths →');
+  btnA.onclick=()=>{ S.imp.mode='emby'; scanEmbyPaths(); };
+  cardA.appendChild(btnA);
+  grid.appendChild(cardA);
+
+  // Option B — Upload CSV
+  const cardB=mk('div',{class:'card',style:{cursor:'default'}});
+  cardB.innerHTML=`
+    <div style="font-size:28px;margin-bottom:10px">📄</div>
+    <div style="font-weight:500;font-size:15px;margin-bottom:6px">Upload a CSV</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+      Have a spreadsheet listing your movies and their categories? Drop it here. Format: <code>Tag,MovieFolderName</code> — one row per movie. Works great for Radarr migrations or manual lists.
+    </div>`;
+
+  const dropZone=mk('div',{class:'drop-zone'});
+  dropZone.innerHTML='<div style="font-size:20px">📂</div><p style="margin-top:4px">Drop CSV here or click to browse</p>';
+  const fileInput=mk('input',{type:'file',accept:'.csv,text/csv',style:{display:'none'}});
+  function handleFile(f){ const r=new FileReader(); r.onload=e=>{ S.imp.mode='csv'; S.imp.csvRaw=e.target.result; scanCsv(e.target.result); }; r.readAsText(f); }
+  dropZone.onclick=()=>fileInput.click();
+  dropZone.addEventListener('dragover',e=>{ e.preventDefault(); dropZone.classList.add('over'); });
+  dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('over'));
+  dropZone.addEventListener('drop',e=>{ e.preventDefault(); dropZone.classList.remove('over'); if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+  fileInput.addEventListener('change',()=>{ if(fileInput.files[0]) handleFile(fileInput.files[0]); });
+  cardB.appendChild(dropZone);
+  cardB.appendChild(fileInput);
+  grid.appendChild(cardB);
+
+  w.appendChild(grid);
+
+  // CSV format hint
+  const hint=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',maxWidth:'680px'}});
+  hint.innerHTML=`<strong>CSV format:</strong><br>
+<code>Action,Die.Hard.1988.BluRay</code><br>
+<code>Comedy,Bad.Moms.2016.BRRip</code><br>
+<code>Martial Arts,The.Raid.2011.BluRay</code><br><br>
+The tag is the first column. The movie folder name is the second column — dots, quality tags, and years are stripped automatically before matching.`;
+  w.appendChild(hint);
+  return w;
+}
+
+// ── Scanning screen ──────────────────────────────────────────
+function renderImpScanning(){
+  const {progress,total,mode}=S.imp;
+  const pct=total>0?Math.round((progress/total)*100):0;
+  const w=mk('div',{style:{maxWidth:'520px'}});
+  w.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',marginBottom:'6px'}},'Scanning…'));
+  w.appendChild(mk('p',{style:{fontSize:'13px',color:'var(--text2)',marginBottom:'1.5rem'}},
+    mode==='emby'?'Reading file paths from your Emby library and matching movies…':'Reading CSV and matching movies against your Emby library…'));
+  const p=mk('div',{class:'progress',style:{marginBottom:'8px'}});
+  p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
+  w.appendChild(p);
+  w.appendChild(mk('div',{style:{fontSize:'13px',color:'var(--text2)'}},`${progress} of ${total||'?'} — ${pct}%`));
+  const btnCancel=mk('button',{style:{marginTop:'1.5rem'}},'← Cancel');
+  btnCancel.onclick=()=>{ resetImp(); render(); };
+  w.appendChild(btnCancel);
+  return w;
+}
+
+// ── Confirm screen ───────────────────────────────────────────
+function renderImpConfirm(){
+  const {rows,mode}=S.imp;
+  const matched=rows.filter(r=>r.matchedMovie);
+  const unmatched=rows.filter(r=>!r.matchedMovie);
+  const kept=rows.filter(r=>r.keep&&r.matchedMovie);
+  const w=mk('div');
+
+  const top=mk('div',{class:'row',style:{marginBottom:'12px',flexWrap:'wrap',gap:'8px'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Review & confirm'));
+  top.appendChild(mk('span',{class:'badge success'},`${matched.length} matched`));
+  if(unmatched.length) top.appendChild(mk('span',{class:'badge danger'},`${unmatched.length} not found`));
+  w.appendChild(top);
+
+  // Summary card
+  const sum=mk('div',{class:'card',style:{marginBottom:'1rem',fontSize:'13px',color:'var(--text2)',lineHeight:'1.8'}});
+  sum.innerHTML=`
+    <strong style="color:var(--text);font-size:14px">${kept.length} tag${kept.length!==1?'s':''} ready to apply</strong><br>
+    ${unmatched.length?`<span style="color:var(--danger-text)">${unmatched.length} movie${unmatched.length!==1?'s':''} could not be matched and will be skipped.</span><br>`:''}
+    Already-tagged movies are automatically excluded. Review the list below, uncheck anything you don't want, then hit Apply.`;
+  w.appendChild(sum);
+
+  // Tag group summary — collapsed view by default
+  const tags=[...new Set(rows.filter(r=>r.keep&&r.matchedMovie).map(r=>r.tag))].sort();
+  const tagSummary=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'12px'}});
+  tags.forEach(t=>{
+    const count=rows.filter(r=>r.tag===t&&r.keep&&r.matchedMovie).length;
+    tagSummary.appendChild(mk('span',{class:'badge info'},`${t} (${count})`));
+  });
+  if(tags.length) w.appendChild(tagSummary);
+
+  // Movie list — grouped by tag
+  const card=mk('div',{class:'card',style:{padding:'0',maxHeight:'440px',overflowY:'auto',marginBottom:'1rem'}});
+  const table=mk('table',{class:'csv-table',style:{width:'100%'}});
+  table.innerHTML='<thead><tr><th style="width:130px">Tag</th><th>Movie</th><th style="width:44px;text-align:center">Apply</th></tr></thead>';
+  const tbody=mk('tbody');
+
+  let lastTag=null;
+  // Sort: matched first grouped by tag, unmatched at bottom
+  const sorted=[...rows.filter(r=>r.matchedMovie).sort((a,b)=>a.tag.localeCompare(b.tag)||a.matchedMovie.name.localeCompare(b.matchedMovie.name)),
+                ...rows.filter(r=>!r.matchedMovie)];
+
+  sorted.forEach((row,si)=>{
+    const ri=S.imp.rows.indexOf(row);
+    if(row.matchedMovie&&row.tag!==lastTag){
+      lastTag=row.tag;
+      const gh=document.createElement('tr');
+      const td=document.createElement('td'); td.colSpan=3; td.className='tag-group-header';
+      const cnt=S.imp.rows.filter(r=>r.tag===row.tag&&r.keep&&r.matchedMovie).length;
+      td.innerHTML=`<span style="color:var(--text);font-weight:500">${row.tag}</span><span style="font-weight:400;color:var(--text2)">${cnt} movie${cnt!==1?'s':''}</span>`;
+      gh.appendChild(td); tbody.appendChild(gh);
+    }
+    const tr=document.createElement('tr');
+    if(!row.matchedMovie) tr.style.cssText='background:var(--danger-bg)';
+
+    // Tag cell
+    const tagTd=document.createElement('td');
+    tagTd.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'11px'}},row.tag));
+    tr.appendChild(tagTd);
+
+    // Movie cell
+    const movTd=document.createElement('td');
+    if(row.matchedMovie){
+      movTd.innerHTML=`<span style="font-weight:500;font-size:13px">${row.matchedMovie.name}</span>${row.matchedMovie.year?` <span style="font-size:11px;color:var(--text2)">(${row.matchedMovie.year})</span>`:''}`;
+    } else {
+      movTd.innerHTML=`<span style="font-size:12px;color:var(--danger-text)">No match: ${row.rawFolder.length>40?row.rawFolder.slice(0,40)+'…':row.rawFolder}</span>`;
+    }
+    tr.appendChild(movTd);
+
+    // Checkbox
+    const cbTd=document.createElement('td'); cbTd.style.textAlign='center';
+    if(row.matchedMovie){
+      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=row.keep;
+      cb.addEventListener('change',()=>{ S.imp.rows[ri].keep=cb.checked; render(); });
+      cbTd.appendChild(cb);
+    }
+    tr.appendChild(cbTd);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); card.appendChild(table);
+  w.appendChild(card);
+
+  const btnRow=mk('div',{class:'row',style:{gap:'8px'}});
+  const btnBack=mk('button',{},'← Back');
+  btnBack.onclick=()=>resetImp();
+  // no render() needed — resetImp sets phase to pick
+  btnBack.onclick=()=>{ resetImp(); render(); };
+
+  const btnApply=mk('button',{class:'success'},`Apply ${kept.length} tag${kept.length!==1?'s':''} to Emby`);
+  btnApply.disabled=kept.length===0;
+  btnApply.onclick=applyImpTags;
+  btnRow.appendChild(btnBack); btnRow.appendChild(btnApply);
+  w.appendChild(btnRow);
+  return w;
+}
+
+// ── Applying / done screen ───────────────────────────────────
+function renderImpApplying(){
+  const {phase,progress,total,stats,logs}=S.imp;
+  const pct=total>0?Math.round((progress/total)*100):0;
+  const w=mk('div');
+  const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
+  top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},phase==='done'?'Import complete':'Applying tags…'));
+  w.appendChild(top);
+
+  const statRow=mk('div',{class:'stats'});
+  [{v:stats.applied,l:'Applied'},{v:stats.skipped,l:'Already set'},{v:stats.errors,l:'Errors'}].forEach(({v,l})=>{
+    const sc=mk('div',{class:'stat-card'}); sc.innerHTML=`<div class="val">${v}</div><div class="lbl">${l}</div>`; statRow.appendChild(sc);
+  });
+  w.appendChild(statRow);
+
+  if(phase==='applying'){
+    const p=mk('div',{class:'progress',style:{marginTop:'12px'}});
+    p.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%'}}));
+    w.appendChild(p);
+    w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginTop:'4px'}},`${progress} of ${total} — ${pct}%`));
+  }
+
+  const logCard=mk('div',{class:'card',style:{maxHeight:'360px',overflowY:'auto',marginTop:'1rem'}});
+  if(!logs.length) logCard.appendChild(mk('div',{class:'empty-state'},'Processing…'));
+  else logs.forEach(l=>logCard.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
+  w.appendChild(logCard);
+
+  if(phase==='done'){
+    const btnRow=mk('div',{class:'row',style:{marginTop:'1rem'}});
+    const btnAgain=mk('button',{},'Import again');
+    btnAgain.onclick=()=>{ resetImp(); render(); };
+    const btnMovies=mk('button',{class:'primary'},'Go to movies');
+    btnMovies.onclick=()=>{ S.nav='movies'; render(); };
+    btnRow.appendChild(btnAgain); btnRow.appendChild(btnMovies);
+    w.appendChild(btnRow);
+  }
+  return w;
+}
+
+
 function renderLog(){
   const w=mk('div');
   const top=mk('div',{class:'row',style:{marginBottom:'1rem'}});
   top.appendChild(mk('h1',{style:{fontSize:'18px',fontWeight:'500',flex:'1'}},'Apply log'));
-  if(!S.applying){
-    const b=mk('button',{},'← Back to movies');
-    b.onclick=()=>{S.page='movies';render();};
-    top.appendChild(b);
-  }
+  if(!S.applying){ const b=mk('button',{},'← Back to movies'); b.onclick=()=>{ S.nav='movies'; render(); }; top.appendChild(b); }
   w.appendChild(top);
-
   const stats=mk('div',{class:'stats'});
   [{v:S.stats.applied,l:'Applied'},{v:S.stats.skipped,l:'Skipped'},{v:S.stats.errors,l:'Errors'}].forEach(({v,l})=>{
     const sc=mk('div',{class:'stat-card'});
@@ -393,14 +839,12 @@ function renderLog(){
     stats.appendChild(sc);
   });
   w.appendChild(stats);
-
   if(S.applying){
     const p=mk('div',{class:'progress'});
     p.appendChild(mk('div',{class:'progress-inner',style:{width:S.applyProgress+'%'}}));
     w.appendChild(p);
     w.appendChild(mk('div',{style:{fontSize:'12px',color:'var(--text2)',marginBottom:'8px'}},S.applyProgress+'% complete'));
   }
-
   const card=mk('div',{class:'card',style:{maxHeight:'480px',overflowY:'auto'}});
   if(!S.logs.length) card.appendChild(mk('div',{class:'empty-state'},'No log entries yet.'));
   else S.logs.forEach(l=>card.appendChild(mk('div',{class:`log-line ${l.type}`},`[${l.ts}] ${l.msg}`)));
