@@ -11,7 +11,7 @@ RUN npm install --omit=dev
 
 # Copy app source
 COPY server.mjs .
-COPY public/ public/
+COPY index.html .
 
 # Switch to non-root user
 USER appuser

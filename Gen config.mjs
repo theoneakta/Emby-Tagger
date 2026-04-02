@@ -136,6 +136,10 @@ textarea.csv-input:focus{border-color:var(--info-text)}
 .movie-list-row:last-child{border-bottom:none}
 .movie-list-row select{height:28px;font-size:12px;padding:0 6px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;flex-shrink:0;max-width:160px}
 </style>
+<!-- config.js is generated from your .env by gen-config.mjs -->
+<!-- It sets window.__EMBY_CONFIG__ with your server URL, API key and user ID -->
+<script>window.__EMBY_CONFIG__=null;</script>
+<script src="config.js" onerror="console.warn('[emby-tag-manager] config.js not found')"></script>
 </head>
 <body>
 <div id="app"></div>
@@ -147,7 +151,7 @@ textarea.csv-input:focus{border-color:var(--info-text)}
 const STORAGE_KEY='emby_tag_v3';
 let S={
   nav:'sorter',
-  config:{apiKey:'',userId:''},
+  config:{apiKey:'',userId:'',serverUrl:''},
   movies:[], tagHistory:[],
   page:'loading', error:null,
   pendingTags:{},
@@ -198,6 +202,14 @@ function loadState(){
 // ════════════════════════════════════════════════
 function toast(msg,ms=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
 function hdrs(){return{'X-Emby-Token':S.config.apiKey,'Content-Type':'application/json'};}
+function embyUrl(path){
+  // Standalone: prepend Emby server URL directly
+  // Server/Docker: use relative path (proxied by Node)
+  if(S.config.serverUrl){
+    return S.config.serverUrl.replace(/\/+$/,'')+path.replace(/^\/emby/,'');
+  }
+  return path;
+}
 function uid(){return Math.random().toString(36).slice(2);}
 function addTagHistory(tag){tag=tag.trim();if(!tag)return;if(!S.tagHistory.includes(tag)){S.tagHistory.unshift(tag);if(S.tagHistory.length>300)S.tagHistory=S.tagHistory.slice(0,300);saveState();}}
 
@@ -240,10 +252,19 @@ function buildLookup(){const m=new Map();S.movies.forEach(mv=>{const k=normalise
 async function init(){
   S.page='loading';render();
   try{
-    const r=await fetch('/api/config');
-    if(!r.ok)throw new Error(`Config endpoint returned HTTP ${r.status}`);
-    const cfg=await r.json();
-    S.config.apiKey=cfg.apiKey;S.config.userId=cfg.userId;
+    let cfg;
+    if(window.__EMBY_CONFIG__){
+      // Standalone mode: loaded from config.js
+      cfg=window.__EMBY_CONFIG__;
+    } else {
+      // Server/Docker mode: fetch from proxy endpoint
+      const r=await fetch('/api/config');
+      if(!r.ok)throw new Error(`Config endpoint returned HTTP ${r.status}`);
+      cfg=await r.json();
+    }
+    S.config.apiKey=cfg.apiKey;
+    S.config.userId=cfg.userId;
+    S.config.serverUrl=cfg.serverUrl||'';
     await fetchMovies();
   }catch(e){S.error=e.message;S.page='error';render();}
 }
@@ -251,7 +272,7 @@ async function init(){
 async function fetchMovies(){
   S.page='loading';S.movies=[];render();
   try{
-    const url=`/emby/Users/${S.config.userId}/Items?IncludeItemTypes=Movie&Recursive=true&Fields=Tags,TagItems,Path,ProductionYear&Limit=9999`;
+    const url=embyUrl(`/emby/Users/${S.config.userId}/Items?IncludeItemTypes=Movie&Recursive=true&Fields=Tags,TagItems,Path,ProductionYear&Limit=9999`);
     const r=await fetch(url,{headers:hdrs()});
     if(!r.ok)throw new Error(`Emby returned HTTP ${r.status}`);
     const d=await r.json();
@@ -266,13 +287,13 @@ async function fetchMovies(){
 
 async function applyTag(movieId,tag){
   try{
-    const r=await fetch(`/emby/Users/${S.config.userId}/Items/${movieId}`,{headers:hdrs()});
+    const r=await fetch(embyUrl(`/emby/Users/${S.config.userId}/Items/${movieId}`),{headers:hdrs()});
     if(!r.ok)throw new Error(`Fetch HTTP ${r.status}`);
     const item=await r.json();
     const existing=(item.TagItems||[]).map(t=>t.Name);
     if(existing.includes(tag))return'skipped';
     const body=JSON.stringify({...item,TagItems:[...(item.TagItems||[]),{Name:tag,Id:0}]});
-    const pr=await fetch(`/emby/Items/${movieId}`,{method:'POST',headers:hdrs(),body});
+    const pr=await fetch(embyUrl(`/emby/Items/${movieId}`),{method:'POST',headers:hdrs(),body});
     if(!pr.ok)throw new Error(`Save HTTP ${pr.status}`);
     return'ok';
   }catch(e){return'error:'+e.message;}
@@ -487,7 +508,7 @@ function renderSorter(){
         const movieList=mk('div',{class:'cat-slot-movies'});
         movies.forEach(m=>{
           const item=mk('div',{class:'cat-movie-item'});
-          const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=60&quality=70&api_key=${S.config.apiKey}`,class:'thumb-sm',alt:'',style:{borderRadius:'3px'}});
+          const img=mk('img',{src:embyUrl(`/emby/Items/${m.id}/Images/Primary?maxHeight=60&quality=70&api_key=${S.config.apiKey}`),class:'thumb-sm',alt:'',style:{borderRadius:'3px'}});
           img.onerror=()=>{item.replaceChild(mk('span',{style:{fontSize:'16px'}}, '🎬'),img);};
           item.appendChild(img);
           const title=mk('span',{style:{flex:'1',fontSize:'11px',lineHeight:'1.3'}},m.name+(m.year?` (${m.year})`:''));
@@ -558,7 +579,7 @@ function renderSorter(){
         card.addEventListener('dragend',()=>{S.sorter.dragMovieId=null;card.classList.remove('dragging');});
       }
       // Poster
-      const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=300&quality=70&api_key=${S.config.apiKey}`,class:'movie-card-poster',alt:''});
+      const img=mk('img',{src:embyUrl(`/emby/Items/${m.id}/Images/Primary?maxHeight=300&quality=70&api_key=${S.config.apiKey}`),class:'movie-card-poster',alt:''});
       img.onerror=()=>{const ph=mk('div',{class:'movie-card-poster-ph'},'🎬');card.replaceChild(ph,img);};
       card.appendChild(img);
       card.appendChild(mk('div',{class:'movie-card-title'},m.name));
@@ -608,7 +629,7 @@ function renderSorter(){
     visible.forEach(m=>{
       const catId=S.sorter.assignments[m.id];
       const row=mk('div',{class:'movie-list-row',style:{padding:'6px 12px'}});
-      const img=mk('img',{src:`/emby/Items/${m.id}/Images/Primary?maxHeight=96&quality=60&api_key=${S.config.apiKey}`,class:'thumb-sm',alt:'',style:{borderRadius:'3px',flexShrink:'0'}});
+      const img=mk('img',{src:embyUrl(`/emby/Items/${m.id}/Images/Primary?maxHeight=96&quality=60&api_key=${S.config.apiKey}`),class:'thumb-sm',alt:'',style:{borderRadius:'3px',flexShrink:'0'}});
       img.onerror=()=>{row.replaceChild(mk('span',{style:{fontSize:'20px',flexShrink:'0'}},'🎬'),img);};
       row.appendChild(img);
       const info=mk('div',{style:{flex:'1',minWidth:'0'}});
@@ -1069,7 +1090,7 @@ function renderMovies(){
 function renderMovieRow(movie){
   const row=mk('div',{class:'movie-row'});
   const thumbWrap=mk('div',{});
-  const img=mk('img',{src:`/emby/Items/${movie.id}/Images/Primary?maxHeight=120&quality=70&api_key=${S.config.apiKey}`,class:'thumb',alt:''});
+  const img=mk('img',{src:embyUrl(`/emby/Items/${movie.id}/Images/Primary?maxHeight=120&quality=70&api_key=${S.config.apiKey}`),class:'thumb',alt:''});
   const ph=mk('div',{class:'thumb-placeholder'},'🎬');
   img.onerror=()=>{thumbWrap.innerHTML='';thumbWrap.appendChild(ph);};
   thumbWrap.appendChild(img);row.appendChild(thumbWrap);

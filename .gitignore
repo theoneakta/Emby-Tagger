@@ -1,5 +1,6 @@
-# Environment — contains secrets, never commit this
+# Secrets — never commit
 .env
+config.js
 
 # Node
 node_modules/
