@@ -780,7 +780,9 @@ function renderImpPick(){
   w.appendChild(dropZone);w.appendChild(fileInput);
 
   w.appendChild(mk('div',{class:'section-label',style:{marginBottom:'4px'}},'Or paste CSV content'));
-  const textarea=mk('textarea',{class:'csv-input',placeholder:'Category,MovieFolderName\nAction,Die.Hard.1988.BluRay\nComedy,Bad.Moms.2016.BRRip\nSci-Fi,The.Matrix.1999.BDRIP'});
+  const textarea=mk('textarea',{class:'csv-input',placeholder:'Category,MovieFolderName\nDie.Hard.1988.BluRay,Action,Thriller,Christmas\nThe.Matrix.1999,Sci-Fi,Action
+\nBad.Moms.2016.BRRip,Comedy
+'});
   textarea.addEventListener('input',()=>{S.imp.csvRaw=textarea.value;});
   if(S.imp.csvRaw)textarea.value=S.imp.csvRaw;
   w.appendChild(textarea);
@@ -795,9 +797,9 @@ function renderImpPick(){
 
   const hint=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',lineHeight:'1.8'}});
   hint.innerHTML=`<strong>CSV format examples:</strong><br>
-<code>Action,Die.Hard.1988.BluRay.x264</code><br>
-<code>Comedy,Bad.Moms.2016.BRRip</code><br>
-<code>Sci-Fi,The.Matrix.1999.BDRIP.YTS</code><br><br>
+<code>Die.Hard.1988.BluRay,Action,Thriller,Christmas</code><br>
+<code>The.Matrix.1999,Sci-Fi,Action</code><br>
+<code>Bad.Moms.2016.BRRip,Comedy</code><br><br>
 The first column is the tag/category. The second column is the movie folder name as it appears on disk — dots, quality tags, and years are stripped before matching against your Emby library.`;
   w.appendChild(hint);
   return w;

@@ -11,9 +11,9 @@ A browser-based tool for managing category tags on your Emby movie library — b
 | Tab | What it does |
 |-----|-------------|
 | 🗂 **Visual Sorter** | Create categories, assign movies by drag-and-drop or dropdown. Saves progress in browser localStorage. |
-| 📄 **CSV Import** | Upload or paste a CSV. Fuzzy-matches titles against your live Emby library before applying. |
+| 📄 **CSV Import** | Upload or paste a CSV. Movie name first, then up to 5 tags per row. Fuzzy-matches titles against your live Emby library before applying. |
 | ⬇ **Export CSV** | Download your current Emby tags as a CSV backup. |
-| 🎬 **Movies** | Manual movie-by-movie tag editing with autocomplete. |
+| 🎬 **Movies** | Manual movie-by-movie tag editing — add tags with autocomplete, remove individual tags with ×, or delete all tags from all movies at once. |
 
 ---
 
@@ -106,6 +106,50 @@ Open http://localhost:3000
 
 ---
 
+## CSV Import format
+
+Movie name first, then up to 5 tags per row:
+
+```csv
+MovieFolderName,Tag1,Tag2,Tag3,Tag4,Tag5
+Die.Hard.1988.BluRay.x264,Action,Thriller,Christmas
+The.Matrix.1999.BDRIP,Sci-Fi,Action
+Bad.Moms.2016.BRRip,Comedy
+```
+
+- Extra tag columns are optional — use as many as you need (up to 5)
+- Dots, quality tags, and years in the folder name are stripped automatically before matching
+- All tags for a movie are applied in a single API call per movie
+
+---
+
+## Movies tab
+
+The Movies tab lets you manage tags movie by movie:
+
+- **Add tags** — type in the tag input with autocomplete from your tag history
+- **Remove a tag** — click the **×** on any existing tag chip to remove just that tag
+- **Apply all pending** — batch-applies all queued tag additions at once
+- **🗑 Delete all tags** — removes every tag from every movie in your library (shows a confirmation dialog first)
+
+---
+
+## Disaster recovery
+
+```
+Before migration          After migration
+────────────────          ───────────────────────────
+/movies/Action/           /movies/Die Hard (1988)/
+  Die Hard (1988)/        /movies/The Matrix (1999)/
+/movies/Sci-Fi/           ...flat folder, tags gone
+```
+
+1. **Before migrating** — Export CSV (⬇ Export CSV tab)
+2. Let Radarr migrate, refresh Emby
+3. **Import CSV** (📄 CSV Import tab) — titles fuzzy-matched automatically
+
+---
+
 ## How it works
 
 ```
@@ -134,37 +178,6 @@ emby-tag-manager/
 ├── docker-compose.yml
 ├── .env.example        # Template — copy to .env for Docker/Node mode
 └── .gitignore
-```
-
----
-
-## Disaster recovery
-
-```
-Before migration          After migration
-────────────────          ───────────────────────────
-/movies/Action/           /movies/Die Hard (1988)/
-  Die Hard (1988)/        /movies/The Matrix (1999)/
-/movies/Sci-Fi/           ...flat folder, tags gone
-```
-
-1. **Before migrating** — Export CSV (⬇ Export CSV tab)
-2. Let Radarr migrate, refresh Emby
-3. **Import CSV** (📄 CSV Import tab) — titles fuzzy-matched automatically
-
----
-
-## CSV format
-
-```csv
-Category,Movie,Year
-Action,Die Hard,1988
-Sci-Fi,The Matrix,1999
-```
-
-Raw folder names also work — quality tags, dots, and years stripped automatically:
-```csv
-Action,Die.Hard.1988.BluRay.x264-YTS
 ```
 
 ---

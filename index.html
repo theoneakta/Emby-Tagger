@@ -281,17 +281,54 @@ async function fetchMovies(){
 }
 
 async function applyTag(movieId,tag){
+  const res=await applyTags(movieId,[tag]);
+  if(res.added.includes(tag))return'ok';
+  if(res.skipped.includes(tag))return'skipped';
+  return res.error||'error:unknown';
+}
+
+async function removeTag(movieId,tag){
   try{
     const r=await fetch(embyUrl(`/emby/Users/${S.config.userId}/Items/${movieId}`),{headers:hdrs()});
     if(!r.ok)throw new Error(`Fetch HTTP ${r.status}`);
     const item=await r.json();
-    const existing=(item.TagItems||[]).map(t=>t.Name);
-    if(existing.includes(tag))return'skipped';
-    const body=JSON.stringify({...item,TagItems:[...(item.TagItems||[]),{Name:tag,Id:0}]});
+    const newTagItems=(item.TagItems||[]).filter(t=>t.Name!==tag);
+    if(newTagItems.length===(item.TagItems||[]).length)return'skipped';
+    const body=JSON.stringify({...item,TagItems:newTagItems});
     const pr=await fetch(embyUrl(`/emby/Items/${movieId}`),{method:'POST',headers:hdrs(),body});
     if(!pr.ok)throw new Error(`Save HTTP ${pr.status}`);
     return'ok';
   }catch(e){return'error:'+e.message;}
+}
+
+async function removeAllTags(movieId){
+  try{
+    const r=await fetch(embyUrl(`/emby/Users/${S.config.userId}/Items/${movieId}`),{headers:hdrs()});
+    if(!r.ok)throw new Error(`Fetch HTTP ${r.status}`);
+    const item=await r.json();
+    if(!(item.TagItems||[]).length)return'skipped';
+    const body=JSON.stringify({...item,TagItems:[]});
+    const pr=await fetch(embyUrl(`/emby/Items/${movieId}`),{method:'POST',headers:hdrs(),body});
+    if(!pr.ok)throw new Error(`Save HTTP ${pr.status}`);
+    return'ok';
+  }catch(e){return'error:'+e.message;}
+}
+
+async function applyTags(movieId,tags){
+  try{
+    const r=await fetch(embyUrl(`/emby/Users/${S.config.userId}/Items/${movieId}`),{headers:hdrs()});
+    if(!r.ok)throw new Error(`Fetch HTTP ${r.status}`);
+    const item=await r.json();
+    const existing=new Set((item.TagItems||[]).map(t=>t.Name));
+    const toAdd=tags.filter(t=>!existing.has(t));
+    const skipped=tags.filter(t=>existing.has(t));
+    if(!toAdd.length)return{added:[],skipped,error:null};
+    const newTagItems=[...(item.TagItems||[]),...toAdd.map(t=>({Name:t,Id:0}))];
+    const body=JSON.stringify({...item,TagItems:newTagItems});
+    const pr=await fetch(embyUrl(`/emby/Items/${movieId}`),{method:'POST',headers:hdrs(),body});
+    if(!pr.ok)throw new Error(`Save HTTP ${pr.status}`);
+    return{added:toAdd,skipped,error:null};
+  }catch(e){return{added:[],skipped:[],error:'error:'+e.message};}
 }
 
 // ════════════════════════════════════════════════
@@ -698,19 +735,23 @@ function resetImp(){S.imp={mode:null,phase:'pick',rows:[],stats:{applied:0,skipp
 
 async function scanCsv(raw){
   S.imp.phase='scanning';render();
-  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean).filter(l=>!/^folde?r?tag/i.test(l)&&!/^tag,/i.test(l)&&l.includes(','));
-  S.imp.total=lines.length;S.imp.progress=0;
+  // Format: MovieFolderName,Tag1,Tag2,Tag3,Tag4,Tag5
+  // First column = movie, columns 2-6 = tags (empty columns ignored)
+  // Skip header rows and blank lines
+  const lines=raw.trim().split('\n').map(l=>l.trim()).filter(Boolean)
+    .filter(l=>!/^movie/i.test(l.split(',')[0])&&l.includes(','));
   const lookup=buildLookup();
   const rows=[];
   const CHUNK=40;
+  S.imp.total=lines.length;S.imp.progress=0;
   for(let i=0;i<lines.length;i++){
-    const parts=lines[i].split(',');
+    const parts=lines[i].split(',').map(p=>p.trim()).filter(Boolean);
     if(parts.length>=2){
-      const tag=parts[0].trim().replace(/^\[|\]$/g,'');
-      const rawFolder=parts.slice(1).join(',').trim();
+      const rawFolder=parts[0];
+      const tags=[...new Set(parts.slice(1,6).filter(Boolean))]; // up to 5 tags, deduplicated
       const cleaned=cleanTitle(rawFolder);
       const matched=findMovie(cleaned,lookup);
-      rows.push({tag,rawFolder,cleanedTitle:cleaned,matchedMovie:matched||null,keep:!!matched});
+      rows.push({rawFolder,cleanedTitle:cleaned,tags,matchedMovie:matched||null,keep:!!matched});
     }
     S.imp.progress=i+1;
     if((i+1)%CHUNK===0){render();await new Promise(r=>setTimeout(r,0));}
@@ -720,31 +761,33 @@ async function scanCsv(raw){
 }
 
 async function applyImpTags(){
-  const toApply=S.imp.rows.filter(r=>r.keep&&r.matchedMovie);
+  const toApply=S.imp.rows.filter(r=>r.keep&&r.matchedMovie&&r.tags.length);
   if(!toApply.length){toast('Nothing to apply.');return;}
   S.imp.phase='applying';S.imp.progress=0;S.imp.total=toApply.length;
   S.imp.stats={applied:0,skipped:0,errors:0};S.imp.logs=[];render();
   for(let i=0;i<toApply.length;i++){
     const row=toApply[i];
-    addTagHistory(row.tag);
-    const res=await applyTag(row.matchedMovie.id,row.tag);
+    row.tags.forEach(t=>addTagHistory(t));
+    const res=await applyTags(row.matchedMovie.id,row.tags);
     S.imp.progress=i+1;
-    if(res==='ok'){
-      S.imp.stats.applied++;
-      S.imp.logs.unshift({msg:`+ "${row.tag}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
-      if(!row.matchedMovie.tags.includes(row.tag))row.matchedMovie.tags.push(row.tag);
-    }else if(res==='skipped'){
-      S.imp.stats.skipped++;
-      S.imp.logs.unshift({msg:`~ already set "${row.tag}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
-    }else{
+    if(res.error){
       S.imp.stats.errors++;
-      S.imp.logs.unshift({msg:`! ${row.matchedMovie.name}: ${res.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+      S.imp.logs.unshift({msg:`! ${row.matchedMovie.name}: ${res.error.replace('error:','')}`,type:'err',ts:new Date().toLocaleTimeString()});
+    } else {
+      res.added.forEach(t=>{
+        S.imp.stats.applied++;
+        S.imp.logs.unshift({msg:`+ "${t}" → ${row.matchedMovie.name}`,type:'ok',ts:new Date().toLocaleTimeString()});
+        if(!row.matchedMovie.tags.includes(t))row.matchedMovie.tags.push(t);
+      });
+      res.skipped.forEach(t=>{
+        S.imp.stats.skipped++;
+        S.imp.logs.unshift({msg:`~ already set "${t}": ${row.matchedMovie.name}`,type:'skip',ts:new Date().toLocaleTimeString()});
+      });
     }
     render();
     await new Promise(r=>setTimeout(r,80));
   }
   S.imp.phase='done';render();
-  toast(`Done — ${S.imp.stats.applied} tags applied`);
 }
 
 function renderImport(){
@@ -789,11 +832,12 @@ function renderImpPick(){
   w.appendChild(btnRow);
 
   const hint=mk('div',{style:{marginTop:'1.5rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',fontSize:'12px',color:'var(--text2)',lineHeight:'1.8'}});
-  hint.innerHTML=`<strong>CSV format examples:</strong><br>
-<code>Action,Die.Hard.1988.BluRay.x264</code><br>
-<code>Comedy,Bad.Moms.2016.BRRip</code><br>
-<code>Sci-Fi,The.Matrix.1999.BDRIP.YTS</code><br><br>
-The first column is the tag/category. The second column is the movie folder name as it appears on disk — dots, quality tags, and years are stripped before matching against your Emby library.`;
+  hint.innerHTML=`<strong>CSV format — movie name first, then up to 5 tags:</strong><br><br>
+<code style="display:block;padding:4px 8px;background:var(--bg3);border-radius:4px;margin-bottom:4px">MovieFolderName,Tag1,Tag2,Tag3,Tag4,Tag5</code>
+<code style="display:block;padding:4px 8px;background:var(--bg3);border-radius:4px;margin-bottom:4px">Die.Hard.1988.BluRay.x264,Action,Thriller,Christmas</code>
+<code style="display:block;padding:4px 8px;background:var(--bg3);border-radius:4px;margin-bottom:4px">The.Matrix.1999.BDRIP,Sci-Fi,Action</code>
+<code style="display:block;padding:4px 8px;background:var(--bg3);border-radius:4px;margin-bottom:8px">Bad.Moms.2016.BRRip,Comedy</code>
+Extra tag columns are optional — use as many as you need (up to 5). Dots, quality tags, and years in the folder name are stripped automatically before matching.`;
   w.appendChild(hint);
   return w;
 }
@@ -832,36 +876,42 @@ ${unmatched.length?`<span style="color:var(--danger-text)">${unmatched.length} m
 Uncheck anything you don't want, then click Apply.`;
   w.appendChild(sum);
 
-  const tags=[...new Set(rows.filter(r=>r.keep&&r.matchedMovie).map(r=>r.tag))].sort();
+  // Collect all unique tags across all matched rows
+  const tagCounts={};
+  rows.filter(r=>r.keep&&r.matchedMovie).forEach(r=>(r.tags||[]).forEach(t=>{tagCounts[t]=(tagCounts[t]||0)+1;}));
   const tagSummary=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'12px'}});
-  tags.forEach(t=>{const count=rows.filter(r=>r.tag===t&&r.keep&&r.matchedMovie).length;tagSummary.appendChild(mk('span',{class:'badge info'},`${t} (${count})`));});
-  if(tags.length)w.appendChild(tagSummary);
+  Object.entries(tagCounts).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([t,c])=>tagSummary.appendChild(mk('span',{class:'badge info'},`${t} (${c})`)));
+  if(Object.keys(tagCounts).length)w.appendChild(tagSummary);
 
   const card=mk('div',{class:'card',style:{padding:'0',maxHeight:'480px',overflowY:'auto',marginBottom:'1rem'}});
   const table=mk('table',{class:'csv-table',style:{width:'100%'}});
-  table.innerHTML='<thead><tr><th style="width:130px">Category</th><th>Movie</th><th style="width:44px;text-align:center">✓</th></tr></thead>';
+  table.innerHTML='<thead><tr><th>Movie</th><th style="width:220px">Tags</th><th style="width:44px;text-align:center">✓</th></tr></thead>';
   const tbody=mk('tbody');
 
-  let lastTag=null;
-  const sorted=[...rows.filter(r=>r.matchedMovie).sort((a,b)=>a.tag.localeCompare(b.tag)||a.matchedMovie.name.localeCompare(b.matchedMovie.name)),
-                ...rows.filter(r=>!r.matchedMovie)];
+  // Sort: matched movies first by name, unmatched at bottom
+  const sorted=[
+    ...rows.filter(r=>r.matchedMovie).sort((a,b)=>a.matchedMovie.name.localeCompare(b.matchedMovie.name)),
+    ...rows.filter(r=>!r.matchedMovie)
+  ];
   sorted.forEach(row=>{
     const ri=S.imp.rows.indexOf(row);
-    if(row.matchedMovie&&row.tag!==lastTag){
-      lastTag=row.tag;
-      const gh=document.createElement('tr');
-      const td=document.createElement('td');td.colSpan=3;td.className='tag-group-header';
-      const cnt=S.imp.rows.filter(r=>r.tag===row.tag&&r.keep&&r.matchedMovie).length;
-      td.innerHTML=`<span style="color:var(--text);font-weight:500">${row.tag}</span><span style="font-weight:400;color:var(--text2);margin-left:6px">${cnt} movie${cnt!==1?'s':''}</span>`;
-      gh.appendChild(td);tbody.appendChild(gh);
-    }
     const tr=document.createElement('tr');
     if(!row.matchedMovie)tr.style.cssText='background:var(--danger-bg)';
-    const tagTd=document.createElement('td');tagTd.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'11px'}},row.tag));tr.appendChild(tagTd);
+    // Movie column
     const movTd=document.createElement('td');
-    if(row.matchedMovie){movTd.innerHTML=`<span style="font-weight:500;font-size:13px">${row.matchedMovie.name}</span>${row.matchedMovie.year?` <span style="font-size:11px;color:var(--text2)">(${row.matchedMovie.year})</span>`:''}`;}
-    else{movTd.innerHTML=`<span style="font-size:12px;color:var(--danger-text)">No match: ${row.rawFolder.length>50?row.rawFolder.slice(0,50)+'…':row.rawFolder}</span>`;}
+    if(row.matchedMovie){
+      movTd.innerHTML=`<span style="font-weight:500;font-size:13px">${row.matchedMovie.name}</span>`
+        +(row.matchedMovie.year?` <span style="font-size:11px;color:var(--text2)">(${row.matchedMovie.year})</span>`:'');
+    } else {
+      movTd.innerHTML=`<span style="font-size:12px;color:var(--danger-text)">No match: ${row.rawFolder.length>50?row.rawFolder.slice(0,50)+'…':row.rawFolder}</span>`;
+    }
     tr.appendChild(movTd);
+    // Tags column — show all tags as chips
+    const tagTd=document.createElement('td');
+    tagTd.style.cssText='display:flex;flex-wrap:wrap;gap:3px;padding:8px 10px;';
+    (row.tags||[]).forEach(t=>tagTd.appendChild(mk('span',{class:'tag-chip',style:{fontSize:'11px'}},t)));
+    tr.appendChild(tagTd);
+    // Checkbox column
     const cbTd=document.createElement('td');cbTd.style.textAlign='center';
     if(row.matchedMovie){const cb=document.createElement('input');cb.type='checkbox';cb.checked=row.keep;cb.addEventListener('change',()=>{S.imp.rows[ri].keep=cb.checked;render();});cbTd.appendChild(cb);}
     tr.appendChild(cbTd);tbody.appendChild(tr);
@@ -1058,6 +1108,21 @@ function renderMovies(){
   const btnRefresh=mk('button',{},'↺ Refresh');
   btnRefresh.onclick=fetchMovies;
   top.appendChild(btnRefresh);
+  const taggedMovies=S.movies.filter(m=>m.tags.length>0);
+  const btnDelAll=mk('button',{class:'danger',title:'Remove all tags from every movie in your library'},'🗑 Delete all tags');
+  btnDelAll.disabled=taggedMovies.length===0;
+  btnDelAll.onclick=async()=>{
+    if(!confirm(`Remove ALL tags from all ${taggedMovies.length} tagged movies? This cannot be undone.`))return;
+    btnDelAll.disabled=true;btnDelAll.textContent='Deleting…';
+    let done=0,errors=0;
+    for(const m of taggedMovies){
+      const res=await removeAllTags(m.id);
+      if(res==='ok'){m.tags=[];done++;}else errors++;
+    }
+    toast(`Done — ${done} cleared${errors?', '+errors+' errors':''}`);
+    render();
+  };
+  top.appendChild(btnDelAll);
   w.appendChild(top);
 
   const subTabBar=mk('div',{class:'sub-tab-bar'});
@@ -1095,8 +1160,21 @@ function renderMovieRow(movie){
   if(movie.year)nameRow.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text2)'}},`(${movie.year})`));
   left.appendChild(nameRow);
   const currentTags=mk('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginBottom:'6px'}});
-  if(movie.tags.length>0)movie.tags.forEach(t=>currentTags.appendChild(mk('span',{class:'tag-chip'},t)));
-  else currentTags.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text3)'}},'No tags'));
+  if(movie.tags.length>0){
+    movie.tags.forEach(t=>{
+      const chip=mk('span',{class:'tag-chip'});
+      chip.appendChild(document.createTextNode(t));
+      const rm=mk('span',{class:'rm',title:'Remove this tag'},' ×');
+      rm.onclick=async()=>{
+        rm.textContent=' …';rm.style.pointerEvents='none';
+        const res=await removeTag(movie.id,t);
+        if(res==='ok'){movie.tags=movie.tags.filter(x=>x!==t);render();toast(`Removed "${t}" from ${movie.name}`);}
+        else{rm.textContent=' ×';rm.style.pointerEvents='';toast('Error: '+res);}
+      };
+      chip.appendChild(rm);
+      currentTags.appendChild(chip);
+    });
+  } else currentTags.appendChild(mk('span',{style:{fontSize:'12px',color:'var(--text3)'}},'No tags'));
   left.appendChild(currentTags);
   const pending=S.pendingTags[movie.id]||[];
   if(pending.length>0){
