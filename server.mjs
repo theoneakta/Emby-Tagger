@@ -1,24 +1,62 @@
-// Emby Tag Manager — standalone configuration
+// Emby Tag Manager — Node.js / Docker server
 //
-// SETUP:
-//   1. Copy this file to config.js
-//   2. Fill in your values below
-//   3. Open index.html in your browser
+// Serves index.html and exposes /api/config so credentials stay in .env
+// and never touch the browser's local filesystem.
 //
-// config.js is in .gitignore and will never be committed to git.
+// In Docker/Node mode the browser calls Emby directly using the serverUrl
+// returned by /api/config — no proxy needed as long as your Emby server
+// is reachable from the client machine.
+//
+// Required env vars (copy .env.example → .env):
+//   EMBY_SERVER_URL   Full URL to Emby — no trailing slash
+//   EMBY_API_KEY      Emby API key
+//   EMBY_USER_ID      Emby user ID (hex string)
+//   PORT              (optional) defaults to 3000
 
-window.__EMBY_CONFIG__ = {
+import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-  // Full URL to your Emby server — no trailing slash
-  serverUrl: 'http://192.168.1.100:8096',
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-  // Emby API key
-  // Find it: Dashboard → Advanced → Security → API Keys → + New Key
-  apiKey: 'your_api_key_here',
+// ── Validate required env vars on startup ────────────────────────────────────
+const REQUIRED = ['EMBY_SERVER_URL', 'EMBY_API_KEY', 'EMBY_USER_ID'];
+const missing = REQUIRED.filter(k => !process.env[k]);
+if (missing.length) {
+  console.error(`[emby-tag-manager] Missing required env vars: ${missing.join(', ')}`);
+  console.error('Copy .env.example → .env and fill in your values.');
+  process.exit(1);
+}
 
-  // Your Emby user ID (not your username — it's a long hex string)
-  // Find it: Dashboard → Users → click your user → copy ID from the URL
-  // Or run: curl http://YOUR_SERVER:8096/Users -H "X-Emby-Token: YOUR_KEY"
-  userId: 'your_user_id_here'
-
+const config = {
+  serverUrl: process.env.EMBY_SERVER_URL.replace(/\/+$/, ''),
+  apiKey:    process.env.EMBY_API_KEY,
+  userId:    process.env.EMBY_USER_ID,
 };
+
+// ── Routes ───────────────────────────────────────────────────────────────────
+
+// Config endpoint — returns credentials to the browser
+// The browser uses serverUrl to call Emby directly (no proxy)
+app.get('/api/config', (req, res) => {
+  res.json(config);
+});
+
+// Health check endpoint (used by docker-compose healthcheck)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', serverUrl: config.serverUrl });
+});
+
+// Serve index.html for all other routes (SPA catch-all)
+app.use(express.static(__dirname));
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, 'index.html'));
+});
+
+// ── Start ────────────────────────────────────────────────────────────────────
+app.listen(PORT, () => {
+  console.log(`[emby-tag-manager] Running on http://localhost:${PORT}`);
+  console.log(`[emby-tag-manager] Emby server: ${config.serverUrl}`);
+});
