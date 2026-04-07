@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3000;
 const REQUIRED = ['EMBY_SERVER_URL', 'EMBY_API_KEY', 'EMBY_USER_ID'];
 const missing = REQUIRED.filter(k => !process.env[k]);
 if (missing.length) {
-  console.error(`[emby-tag-manager] Missing required env vars: ${missing.join(', ')}`);
+  console.error(`[emby-tagger] Missing required env vars: ${missing.join(', ')}`);
   console.error('Copy .env.example → .env and fill in your values.');
   process.exit(1);
 }
@@ -57,6 +57,6 @@ app.get('*', (req, res) => {
 
 // ── Start ────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`[emby-tag-manager] Running on http://localhost:${PORT}`);
-  console.log(`[emby-tag-manager] Emby server: ${config.serverUrl}`);
+  console.log(`[emby-tagger] Running on http://localhost:${PORT}`);
+  console.log(`[emby-tagger] Emby server: ${config.serverUrl}`);
 });

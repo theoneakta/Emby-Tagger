@@ -1,5 +1,5 @@
 {
-  "name": "emby-tag-manager",
+  "name": "emby-tagger",
   "version": "1.0.0",
   "type": "module",
   "main": "server.mjs",

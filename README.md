@@ -168,7 +168,7 @@ In standalone mode `config.js` sets `window.__EMBY_CONFIG__` which `index.html` 
 ## Project structure
 
 ```
-emby-tag-manager/
+emby-tagger/
 ├── index.html          # The entire app — open directly or served by Node
 ├── config.example.js   # Template — copy to config.js for standalone mode
 ├── config.js           # Your credentials — gitignored, never committed
