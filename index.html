@@ -1136,7 +1136,16 @@ function renderMovies(){
 
   const sb=mk('div',{style:{marginBottom:'1rem'}});
   const si=mk('input',{type:'text',placeholder:'Filter by title or year…',value:S.filterText,style:{maxWidth:'300px'}});
-  si.addEventListener('input',()=>{S.filterText=si.value;render();});
+  si.addEventListener('input',()=>{
+    S.filterText=si.value;
+    const val=si.value;
+    const pos=si.selectionStart;
+    render();
+    // Restore focus and cursor position after render rebuilds the DOM
+    const newInput=document.querySelector('.filter-search');
+    if(newInput){newInput.focus();try{newInput.setSelectionRange(pos,pos);}catch(e){}}
+  });
+  si.className='filter-search';
   sb.appendChild(si);w.appendChild(sb);
 
   const list=filterMovies();
