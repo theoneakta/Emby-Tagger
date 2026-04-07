@@ -963,6 +963,18 @@ function renderImpApplying(){
 // ════════════════════════════════════════════════
 // EXPORT CSV TAB
 // ════════════════════════════════════════════════
+function generateBackupCsv(){
+  // Import-compatible format: MovieName,Tag1,Tag2,Tag3...
+  // One row per movie — can be fed directly back into the CSV Import tab
+  const lines=['Movie,Tag1,Tag2,Tag3,Tag4,Tag5'];
+  S.movies.forEach(m=>{
+    if(!m.tags.length)return;
+    const safeName=m.name.replace(/,/g,' ');
+    lines.push([safeName,...m.tags.slice(0,5)].join(','));
+  });
+  return lines.join('\n');
+}
+
 function generateExportCsv(){
   // Export current Emby tags
   const lines=['Tag,Movie,Year,Path'];
@@ -1109,6 +1121,9 @@ function renderMovies(){
   btnRefresh.onclick=fetchMovies;
   top.appendChild(btnRefresh);
   const taggedMovies=S.movies.filter(m=>m.tags.length>0);
+  const btnBackup=mk('button',{title:'Export tags as import-compatible CSV backup'},'⬇ Backup tags');
+  btnBackup.onclick=()=>downloadCsv(generateBackupCsv(),`emby-tags-backup-${new Date().toISOString().slice(0,10)}.csv`);
+  top.appendChild(btnBackup);
   const btnDelAll=mk('button',{class:'danger',title:'Remove all tags from every movie in your library'},'🗑 Delete all tags');
   btnDelAll.disabled=taggedMovies.length===0;
   btnDelAll.onclick=async()=>{

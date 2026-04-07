@@ -1,7 +1,7 @@
 services:
-  emby-tag-manager:
+  emby-tagger:
     build: .
-    container_name: emby-tag-manager
+    container_name: emby-tagger
     restart: unless-stopped
     ports:
       - "8765:3000"        # Left side = host port (change to any free port)
