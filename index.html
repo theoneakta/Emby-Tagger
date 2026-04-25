@@ -574,12 +574,12 @@ function renderSorter(){
       const embyTagged=movies.filter(m=>m.tags.some(t=>t.toLowerCase()===cat.name.toLowerCase()));
       const pending=movies.filter(m=>!m.tags.some(t=>t.toLowerCase()===cat.name.toLowerCase()));
       const collapsed=S.sorter.collapseMap[cat.id]!==false; // collapsed by default unless explicitly opened
-      const slot=mk('div',{class:'cat-slot'});
+      const slot=mk('div',{class:'cat-slot',style:{minHeight:'44px'}});
       // drag-over wiring
-      slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drag-over');});
-      slot.addEventListener('dragleave',()=>slot.classList.remove('drag-over'));
+      slot.addEventListener('dragover',e=>{e.preventDefault();slot.style.outline=`2px dashed ${cat.color}`;slot.style.background=cat.color+'11';});
+      slot.addEventListener('dragleave',()=>{slot.style.outline='';slot.style.background='';});
       slot.addEventListener('drop',e=>{
-        e.preventDefault();slot.classList.remove('drag-over');
+        e.preventDefault();slot.style.outline='';slot.style.background='';
         const mId=e.dataTransfer.getData('movieId');
         if(mId){S.sorter.assignments[mId]=cat.id;saveState();render();}
       });
@@ -591,9 +591,7 @@ function renderSorter(){
       if(embyTagged.length)countParts.push(`✓${embyTagged.length}`);
       if(pending.length)countParts.push(`+${pending.length}`);
       const countSpan=mk('span',{class:'cat-slot-count',style:{flexShrink:'0'},title:`${embyTagged.length} already tagged in Emby, ${pending.length} pending`},countParts.join(' ')||'0');
-      const chevron=mk('span',{style:{fontSize:'10px',color:'var(--text3)',flexShrink:'0'}},collapsed?'▶':'▼');
-      hd.appendChild(dot);hd.appendChild(nameSpan);hd.appendChild(countSpan);hd.appendChild(chevron);
-      hd.appendChild(dot);hd.appendChild(nameSpan);hd.appendChild(countSpan);hd.appendChild(chevron);
+      hd.appendChild(dot);hd.appendChild(nameSpan);hd.appendChild(countSpan);
       hd.onclick=()=>{S.sorter.collapseMap[cat.id]=!collapsed;render();};
 
       // Edit/delete buttons
@@ -698,7 +696,7 @@ function renderSorter(){
           const existing=card.querySelector('.cat-assign-dropdown');
           if(existing){existing.remove();return;}
           const dd=mk('div',{class:'cat-assign-dropdown'});
-          S.sorter.categories.forEach(cat=>{
+          S.sorter.categories.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(cat=>{
             const item=mk('div');
             item.appendChild(mk('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:cat.color,display:'inline-block',flexShrink:'0'}}));
             item.appendChild(document.createTextNode(cat.name));
@@ -718,7 +716,14 @@ function renderSorter(){
     const card=mk('div',{class:'card',style:{padding:'0 1.25rem'}});
     visible.forEach(m=>{
       const catId=S.sorter.assignments[m.id];
-      const wrap=mk('div',{style:{borderBottom:'0.5px solid var(--border)',padding:'10px 0'}});
+      const wrap=mk('div',{style:{borderBottom:'0.5px solid var(--border)',padding:'10px 0',cursor:catId?'default':'grab'}});
+
+      // Drag support on list rows
+      if(!catId){
+        wrap.draggable=true;
+        wrap.addEventListener('dragstart',e=>{e.dataTransfer.setData('movieId',m.id);S.sorter.dragMovieId=m.id;wrap.style.opacity='0.5';});
+        wrap.addEventListener('dragend',()=>{S.sorter.dragMovieId=null;wrap.style.opacity='1';});
+      }
 
       const row=mk('div',{style:{display:'grid',gridTemplateColumns:'40px 1fr auto',gap:'12px',alignItems:'start'}});
 
@@ -770,7 +775,7 @@ function renderSorter(){
       const sel=document.createElement('select');
       sel.style.cssText='height:28px;font-size:12px;padding:0 6px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;flex-shrink:0;max-width:180px;align-self:start;margin-top:2px;';
       const optNone=document.createElement('option');optNone.value='';optNone.textContent='— assign —';sel.appendChild(optNone);
-      S.sorter.categories.forEach(cat=>{
+      [...S.sorter.categories].sort((a,b)=>a.name.localeCompare(b.name)).forEach(cat=>{
         const opt=document.createElement('option');opt.value=cat.id;opt.textContent=cat.name;
         if(catId===cat.id)opt.selected=true;
         sel.appendChild(opt);

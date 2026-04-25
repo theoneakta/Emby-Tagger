@@ -13,6 +13,10 @@ RUN npm install --omit=dev
 COPY server.mjs .
 COPY index.html .
 
+# Create /data directory and give appuser ownership before switching user
+# This is where the CSV cache and cron status live (mount a volume here)
+RUN mkdir -p /data && chown appuser:appgroup /data
+
 # Switch to non-root user
 USER appuser
 
