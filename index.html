@@ -568,7 +568,7 @@ function renderSorter(){
   if(!S.sorter.categories.length){
     catList.appendChild(mk('div',{style:{fontSize:'13px',color:'var(--text2)',textAlign:'center',padding:'20px 0'}},'Add your first category above.\nExamples: Action, Comedy, Sci-Fi…'));
   } else {
-    S.sorter.categories.forEach(cat=>{
+    [...S.sorter.categories].sort((a,b)=>a.name.localeCompare(b.name)).forEach(cat=>{
       const movies=S.movies.filter(m=>S.sorter.assignments[m.id]===cat.id);
       // Split into already-tagged-in-emby vs manually assigned pending
       const embyTagged=movies.filter(m=>m.tags.some(t=>t.toLowerCase()===cat.name.toLowerCase()));
@@ -1335,10 +1335,12 @@ function renderMovieRow(movie){
   let st=null;
   function showSuggestions(){
     const q=inp.value.toLowerCase().trim();
-    const matches=S.tagHistory.filter(t=>(q?t.toLowerCase().includes(q):true)&&!(S.pendingTags[movie.id]||[]).includes(t)&&!movie.tags.includes(t));
+    const matches=S.tagHistory
+      .filter(t=>(q?t.toLowerCase().includes(q):true)&&!(S.pendingTags[movie.id]||[]).includes(t)&&!movie.tags.includes(t))
+      .sort((a,b)=>a.localeCompare(b));
     sug.innerHTML='';
     if(!matches.length){sug.style.display='none';return;}
-    matches.slice(0,10).forEach(t=>{const d=mk('div',{},t);d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();};sug.appendChild(d);});
+    matches.forEach(t=>{const d=mk('div',{},t);d.onmousedown=e=>{e.preventDefault();addPending(movie.id,t);inp.value='';sug.style.display='none';render();};sug.appendChild(d);});
     sug.style.display='block';
   }
   inp.addEventListener('input',()=>{clearTimeout(st);st=setTimeout(showSuggestions,80);});
