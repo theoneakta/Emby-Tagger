@@ -14,6 +14,7 @@ A browser-based tool for managing category tags on your Emby movie library — b
 | 📄 **CSV Import** | Upload or paste a CSV. Movie name first, then up to 5 tags per row. Fuzzy-matches titles against your live Emby library before applying. |
 | ⬇ **Export CSV** | Download your current Emby tags as a CSV backup. |
 | 🎬 **Movies** | Manual movie-by-movie tag editing — add tags with autocomplete, remove individual tags with ×, or delete all tags from all movies at once. |
+| 🔄 **Auto-tag** | Cache a CSV on the server. A background cron job runs every hour (configurable), fetches your library, and automatically tags any new movies that are missing their CSV tags. Docker/Node mode only. |
 
 ---
 
@@ -134,7 +135,52 @@ The Movies tab lets you manage tags movie by movie:
 
 ---
 
+## Auto-tag (hourly cron)
+
+> **Docker / Node mode only** — the cron runs on the server process.
+
+The Auto-tag tab lets you cache your CSV on the server so that every time Radarr adds a new movie, it gets tagged automatically — without you having to re-run a manual import.
+
+**How it works:**
+
+1. Go to the **🔄 Auto-tag** tab.
+2. Paste or drop your CSV (same format as CSV Import), or click **"Use current Emby export as CSV"** to seed it from your existing tags.
+3. Click **"Save CSV to server & schedule"**.
+4. The server stores the CSV at `/data/auto_tag.csv` and schedules a run every hour (default).
+5. On each run it fetches your full Emby library, compares it against the CSV, and applies tags **only to movies that are missing them** — already-tagged movies are always skipped.
+
+**Configuring the interval:**
+
+```bash
+# .env
+CRON_INTERVAL_HOURS=1    # default — run every hour
+CRON_INTERVAL_HOURS=6    # run every 6 hours
+CRON_INTERVAL_HOURS=0.5  # run every 30 minutes
+```
+
+**Persisting the CSV across container restarts:**
+
+The `docker-compose.yml` mounts a named volume at `/data`. The CSV and cron status survive restarts automatically. If you prefer a bind mount to a specific host path:
+
+```yaml
+volumes:
+  - /your/host/path:/data
+```
+
+**API endpoints (for scripting / automation):**
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/api/cron/status` | Current cron state, last run stats, last 200 log lines |
+| `POST` | `/api/cron/csv` | Cache a new CSV `{ "csv": "..." }` |
+| `GET` | `/api/cron/csv` | Retrieve the cached CSV |
+| `DELETE` | `/api/cron/csv` | Clear the CSV (disables cron until re-uploaded) |
+| `POST` | `/api/cron/run` | Trigger an immediate run |
+
+---
+
 ## Disaster recovery
+
 
 ```
 Before migration          After migration
@@ -172,12 +218,15 @@ emby-tagger/
 ├── index.html          # The entire app — open directly or served by Node
 ├── config.example.js   # Template — copy to config.js for standalone mode
 ├── config.js           # Your credentials — gitignored, never committed
-├── server.mjs          # Node.js proxy server for Docker/Node mode
+├── server.mjs          # Node.js proxy server for Docker/Node mode + cron engine
 ├── package.json
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .env.example        # Template — copy to .env for Docker/Node mode
-└── .gitignore
+├── .gitignore
+└── data/               # Created at runtime (or mount /data volume in Docker)
+    ├── auto_tag.csv    # Cached CSV for the cron job
+    └── cron_status.json
 ```
 
 ---

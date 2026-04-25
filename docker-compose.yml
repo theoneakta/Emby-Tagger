@@ -7,9 +7,14 @@ services:
       - "8765:3000"        # Left side = host port (change to any free port)
     env_file:
       - .env               # Copy .env.example → .env and fill in your values
+    volumes:
+      - emby-tagger-data:/data   # Persists the cached CSV and cron status across restarts
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/config"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+
+volumes:
+  emby-tagger-data:
