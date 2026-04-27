@@ -1183,16 +1183,16 @@ function addPending(movieId,tag){
 async function applyAllPending(){
   const entries=Object.entries(S.pendingTags).filter(([,tags])=>tags.length>0);
   if(!entries.length){toast('No pending tags.');return;}
-  S.applying=true;S.applyProgress=0;S.stats={applied:0,skipped:0,errors:0};S.logs=[];
-  render();
   const total=entries.reduce((s,[,tags])=>s+tags.length,0);
-  let done=0;
+  S.applying=true;S.applyProgress=0;S.applyTotal=total;S.applyDone=0;
+  S.stats={applied:0,skipped:0,errors:0};S.logs=[];
+  render();
   for(const[id,tags]of entries){
     const movie=S.movies.find(m=>m.id===id);
     for(const tag of tags){
       addTagHistory(tag);
       const res=await applyTag(id,tag);
-      done++;S.applyProgress=Math.round((done/total)*100);
+      S.applyDone++;S.applyProgress=Math.round((S.applyDone/total)*100);
       if(res==='ok'){S.stats.applied++;addLog(`+ "${tag}" → ${movie?.name||id}`,'ok');if(movie&&!movie.tags.includes(tag))movie.tags.push(tag);}
       else if(res==='skipped'){S.stats.skipped++;addLog(`~ already tagged "${tag}": ${movie?.name||id}`,'skip');}
       else{S.stats.errors++;addLog(`! ${movie?.name||id}: ${res.replace('error:','')}`,'err');}
@@ -1242,20 +1242,20 @@ function renderMovies(){
 
   // ── Progress bar (shown during apply) ──
   if(S.applying){
-    const total=Object.values(S.pendingTags).flat().length+S.stats.applied+S.stats.skipped+S.stats.errors;
-    const done=S.stats.applied+S.stats.skipped+S.stats.errors;
-    const pct=total>0?Math.round((done/total)*100):0;
-    const overlay=mk('div',{style:{marginBottom:'1rem'}});
-    const barLabel=mk('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',color:'var(--text2)',marginBottom:'4px'}});
+    const total=S.applyTotal||1;
+    const done=S.applyDone||0;
+    const pct=Math.round((done/total)*100);
+    const overlay=mk('div',{style:{marginBottom:'1rem',padding:'12px 16px',background:'var(--bg2)',borderRadius:'var(--radius)',border:'0.5px solid var(--border)'}});
+    const barLabel=mk('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',color:'var(--text2)',marginBottom:'6px'}});
     barLabel.appendChild(mk('span',{},`Applying tags… ${done} of ${total}`));
     barLabel.appendChild(mk('span',{},`${pct}%`));
     overlay.appendChild(barLabel);
-    const bar=mk('div',{class:'progress'});
-    bar.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%',transition:'width 0.2s'}}));
+    const bar=mk('div',{class:'progress',style:{height:'10px',borderRadius:'6px'}});
+    bar.appendChild(mk('div',{class:'progress-inner',style:{width:pct+'%',transition:'width 0.2s',borderRadius:'6px'}}));
     overlay.appendChild(bar);
     if(S.logs&&S.logs.length){
       const last=S.logs[S.logs.length-1];
-      overlay.appendChild(mk('div',{style:{fontSize:'11px',color:'var(--text2)',marginTop:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},last.msg));
+      overlay.appendChild(mk('div',{style:{fontSize:'11px',color:'var(--text2)',marginTop:'6px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},last.msg));
     }
     w.appendChild(overlay);
   }
