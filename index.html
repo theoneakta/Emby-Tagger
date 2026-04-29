@@ -291,12 +291,16 @@ async function fetchMovies(){
       }
     }));
     // Pre-populate assignments from Emby tags — use the first matching tag per movie
+    // DISABLED: This was auto-tagging everything on launch, causing confusion
+    // Users should manually assign movies in the sorter instead
+    /*
     S.movies.forEach(m=>{
       if(S.sorter.assignments[m.id])return; // already manually assigned, leave it
       if(!m.tags.length)return;
       const cat=S.sorter.categories.find(c=>m.tags.some(t=>t.toLowerCase()===c.name.toLowerCase()));
       if(cat)S.sorter.assignments[m.id]=cat.id;
     });
+    */
     if(catsAdded)saveState();
   }catch(e){S.error=e.message;S.page='error';}
   render();
