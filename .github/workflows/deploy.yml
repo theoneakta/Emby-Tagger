@@ -14,6 +14,6 @@ jobs:
 
       - name: Build and restart
         run: |
-          cp /home/mbmondor/docker/emby-tagger/.env .env
+          cp /home/mbmondor/docker/Emby-tagger/.env .env
           docker compose up --build -d
           docker image prune -f
