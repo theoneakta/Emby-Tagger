@@ -73,8 +73,9 @@ button:disabled{opacity:.4;cursor:default;pointer-events:none}
 .stat-card{flex:1;min-width:80px;background:var(--bg2);border-radius:var(--radius);padding:10px;text-align:center}
 .stat-card .val{font-size:22px;font-weight:500}
 .stat-card .lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.nav-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1.5rem}
-.nav-tab{padding:9px 16px;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
+.nav-bar{display:flex;gap:0;border-bottom:1.5px solid var(--border);margin-bottom:1.5rem}
+.nav-tab{padding:10px 20px;font-size:13px;font-weight:500;letter-spacing:.01em;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:color .15s}
+.nav-tab:hover{color:var(--text2)}
 .nav-tab.active{color:var(--text);border-bottom-color:var(--text)}
 .sub-tab-bar{display:flex;gap:2px;border-bottom:0.5px solid var(--border);margin-bottom:1rem}
 .sub-tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)}
@@ -379,7 +380,7 @@ function render(){
   if(S.page==='loading'){app.appendChild(renderSplash('Connecting to Emby…','Loading your movie library.'));return;}
   if(S.page==='error'){app.appendChild(renderError());return;}
   const nav=mk('div',{class:'nav-bar'});
-  [['sorter','🗂 Visual Sorter'],['import','📄 CSV Import'],['export','⬇ Export CSV'],['movies','🎬 Movies'],['autotag','🔄 Auto-tag']].forEach(([id,label])=>{
+  [['sorter','Sorter'],['import','Import'],['export','Export'],['movies','Movies'],['autotag','Auto-tag']].forEach(([id,label])=>{
     const t=mk('div',{class:'nav-tab'+(S.nav===id?' active':'')},label);
     t.onclick=()=>{S.nav=id;render();};
     nav.appendChild(t);
