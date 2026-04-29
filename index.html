@@ -290,18 +290,15 @@ async function fetchMovies(){
         catsAdded=true;
       }
     }));
-    // Pre-populate assignments from Emby tags — use the first matching tag per movie
-    // DISABLED: This was auto-tagging everything on launch, causing confusion
-    // Users should manually assign movies in the sorter instead
-    /*
+    // Re-populate assignments from Emby tags so already-tagged movies stay visible in their categories
+    let assignmentsChanged=false;
     S.movies.forEach(m=>{
       if(S.sorter.assignments[m.id])return; // already manually assigned, leave it
       if(!m.tags.length)return;
       const cat=S.sorter.categories.find(c=>m.tags.some(t=>t.toLowerCase()===c.name.toLowerCase()));
-      if(cat)S.sorter.assignments[m.id]=cat.id;
+      if(cat){S.sorter.assignments[m.id]=cat.id;assignmentsChanged=true;}
     });
-    */
-    if(catsAdded)saveState();
+    if(catsAdded||assignmentsChanged)saveState();
   }catch(e){S.error=e.message;S.page='error';}
   render();
 }
@@ -449,8 +446,6 @@ async function applySorterTags(){
       S.sorter.applyStats.applied++;
       S.sorter.applyLogs.unshift({msg:`+ "${tag}" → ${movie?.name||movieId}`,type:'ok',ts:new Date().toLocaleTimeString()});
       if(movie&&!movie.tags.some(t=>t.toLowerCase()===tag.toLowerCase()))movie.tags.push(tag);
-      // Remove assignment after successful application
-      delete S.sorter.assignments[movieId];
     }else if(res==='skipped'){
       S.sorter.applyStats.skipped++;
       S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
