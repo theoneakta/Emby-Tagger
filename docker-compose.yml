@@ -1,6 +1,7 @@
 services:
   emby-tagger:
     build: .
+    image: emby-tagger
     container_name: emby-tagger
     restart: unless-stopped
     ports:
