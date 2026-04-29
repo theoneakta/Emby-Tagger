@@ -433,8 +433,8 @@ async function applySorterTags(){
     if(!cat){S.sorter.progress=i+1;continue;}
     const tag=cat.name;
     const movie=S.movies.find(m=>m.id===movieId);
-    // Only apply if the movie does not already have the tag
-    if(movie && movie.tags.includes(tag)) {
+    // Only apply if the movie does not already have the tag (case-insensitive)
+    if(movie && movie.tags.some(t=>t.toLowerCase()===tag.toLowerCase())) {
       S.sorter.progress=i+1;
       S.sorter.applyStats.skipped++;
       S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
@@ -448,7 +448,9 @@ async function applySorterTags(){
     if(res==='ok'){
       S.sorter.applyStats.applied++;
       S.sorter.applyLogs.unshift({msg:`+ "${tag}" → ${movie?.name||movieId}`,type:'ok',ts:new Date().toLocaleTimeString()});
-      if(movie&&!movie.tags.includes(tag))movie.tags.push(tag);
+      if(movie&&!movie.tags.some(t=>t.toLowerCase()===tag.toLowerCase()))movie.tags.push(tag);
+      // Remove assignment after successful application
+      delete S.sorter.assignments[movieId];
     }else if(res==='skipped'){
       S.sorter.applyStats.skipped++;
       S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
