@@ -418,8 +418,14 @@ function catName(catId){
 
 async function applySorterTags(){
   const assignments=S.sorter.assignments;
-  const pairs=Object.entries(assignments); // [movieId, catId]
-  if(!pairs.length){toast('No assignments to apply.');return;}
+  // Only process movies that don't already have the matching tag in Emby
+  const pairs=Object.entries(assignments).filter(([movieId,catId])=>{
+    const cat=S.sorter.categories.find(c=>c.id===catId);
+    const movie=S.movies.find(m=>m.id===movieId);
+    if(!cat||!movie)return false;
+    return !movie.tags.some(t=>t.toLowerCase()===cat.name.toLowerCase());
+  });
+  if(!pairs.length){toast('No pending assignments to apply.');return;}
   S.sorter.phase='applying';
   S.sorter.progress=0;S.sorter.total=pairs.length;
   S.sorter.applyStats={applied:0,skipped:0,errors:0};S.sorter.applyLogs=[];
