@@ -290,19 +290,18 @@ async function fetchMovies(){
         catsAdded=true;
       }
     }));
-    // Clean up stale assignments: remove any where the movie is already tagged in Emby
-    // with the assigned category (avoids re-processing already-done work on next Apply)
-    let assignmentsChanged=false;
-    Object.keys(S.sorter.assignments).forEach(mId=>{
-      const movie=S.movies.find(m=>m.id===mId);
-      if(!movie){delete S.sorter.assignments[mId];assignmentsChanged=true;return;}
-      const cat=S.sorter.categories.find(c=>c.id===S.sorter.assignments[mId]);
-      if(!cat){delete S.sorter.assignments[mId];assignmentsChanged=true;return;}
-      if(movie.tags.some(t=>t.toLowerCase()===cat.name.toLowerCase())){
-        delete S.sorter.assignments[mId];assignmentsChanged=true;
-      }
+    // Pre-populate assignments from Emby tags — use the first matching tag per movie
+    // DISABLED: This was auto-tagging everything on launch, causing confusion
+    // Users should manually assign movies in the sorter instead
+    /*
+    S.movies.forEach(m=>{
+      if(S.sorter.assignments[m.id])return; // already manually assigned, leave it
+      if(!m.tags.length)return;
+      const cat=S.sorter.categories.find(c=>m.tags.some(t=>t.toLowerCase()===c.name.toLowerCase()));
+      if(cat)S.sorter.assignments[m.id]=cat.id;
     });
-    if(catsAdded||assignmentsChanged)saveState();
+    */
+    if(catsAdded)saveState();
   }catch(e){S.error=e.message;S.page='error';}
   render();
 }
@@ -438,7 +437,6 @@ async function applySorterTags(){
     if(movie && movie.tags.some(t=>t.toLowerCase()===tag.toLowerCase())) {
       S.sorter.progress=i+1;
       S.sorter.applyStats.skipped++;
-      delete S.sorter.assignments[movieId]; // clean up stale assignment
       S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
       render();
       await new Promise(r=>setTimeout(r,30));
@@ -455,7 +453,6 @@ async function applySorterTags(){
       delete S.sorter.assignments[movieId];
     }else if(res==='skipped'){
       S.sorter.applyStats.skipped++;
-      delete S.sorter.assignments[movieId]; // clean up stale assignment
       S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
     }else{
       S.sorter.applyStats.errors++;
