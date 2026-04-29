@@ -94,6 +94,49 @@ docker compose up -d --build     # rebuild after changes
 
 ---
 
+## Auto-deploy on push (self-hosted runner)
+
+If your server is not exposed to the internet, you can still get automatic deploys on every push to `main` using a GitHub Actions self-hosted runner. The runner makes **outbound-only** connections to GitHub (port 443) — no inbound ports required.
+
+### 1. Register the runner on your server
+
+Go to your GitHub repo → **Settings → Actions → Runners → New self-hosted runner**, pick **Linux**, and run the commands GitHub provides. They will look like:
+
+```bash
+mkdir ~/actions-runner && cd ~/actions-runner
+curl -o actions-runner-linux-x64.tar.gz -L https://github.com/actions/runner/releases/download/v2.x.x/actions-runner-linux-x64-2.x.x.tar.gz
+tar xzf actions-runner-linux-x64.tar.gz
+./config.sh --url https://github.com/YOUR_USER/emby-tagger --token TOKEN_FROM_GITHUB
+```
+
+### 2. Install it as a service
+
+```bash
+sudo ./svc.sh install
+sudo ./svc.sh start
+```
+
+### 3. Give the runner Docker access
+
+```bash
+sudo usermod -aG docker $(whoami)   # log out and back in after this
+```
+
+### 4. Clone the repo on your server (first time only)
+
+```bash
+git clone https://github.com/YOUR_USER/emby-tagger.git /opt/emby-tagger
+cd /opt/emby-tagger
+cp .env.example .env   # fill in your values
+docker compose up --build -d
+```
+
+> The runner checks out the repo into its own workspace on each deploy — the clone above is just for the initial `.env` setup and first run.
+
+After this, every push to `main` triggers `.github/workflows/deploy.yml` on your server: it pulls the latest code, rebuilds the image, and restarts the container. The old image is pruned automatically.
+
+---
+
 ## Node.js mode
 
 ```bash
