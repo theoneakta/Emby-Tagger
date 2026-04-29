@@ -432,10 +432,19 @@ async function applySorterTags(){
     const cat=S.sorter.categories.find(c=>c.id===catId);
     if(!cat){S.sorter.progress=i+1;continue;}
     const tag=cat.name;
+    const movie=S.movies.find(m=>m.id===movieId);
+    // Only apply if the movie does not already have the tag
+    if(movie && movie.tags.includes(tag)) {
+      S.sorter.progress=i+1;
+      S.sorter.applyStats.skipped++;
+      S.sorter.applyLogs.unshift({msg:`~ already set "${tag}": ${movie?.name||movieId}`,type:'skip',ts:new Date().toLocaleTimeString()});
+      render();
+      await new Promise(r=>setTimeout(r,30));
+      continue;
+    }
     addTagHistory(tag);
     const res=await applyTag(movieId,tag);
     S.sorter.progress=i+1;
-    const movie=S.movies.find(m=>m.id===movieId);
     if(res==='ok'){
       S.sorter.applyStats.applied++;
       S.sorter.applyLogs.unshift({msg:`+ "${tag}" → ${movie?.name||movieId}`,type:'ok',ts:new Date().toLocaleTimeString()});
