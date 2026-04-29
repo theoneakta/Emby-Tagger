@@ -380,7 +380,7 @@ function render(){
   if(S.page==='loading'){app.appendChild(renderSplash('Connecting to Emby…','Loading your movie library.'));return;}
   if(S.page==='error'){app.appendChild(renderError());return;}
   const nav=mk('div',{class:'nav-bar'});
-  [['sorter','Sorter'],['movies','Movies'],['tools','Tools']].forEach(([id,label])=>{
+  [['sorter','🗂 Sorter'],['movies','🎬 Movies'],['import','📥 Import'],['export','📤 Export'],['autotag','⚡ Auto-tag']].forEach(([id,label])=>{
     const t=mk('div',{class:'nav-tab'+(S.nav===id?' active':'')},label);
     t.onclick=()=>{S.nav=id;render();};
     nav.appendChild(t);
@@ -388,21 +388,9 @@ function render(){
   app.appendChild(nav);
   if(S.nav==='sorter')app.appendChild(renderSorter());
   else if(S.nav==='movies')app.appendChild(renderMovies());
-  else{
-    // Tools tab — sub-nav for Import / Export / Auto-tag
-    const toolsWrap=mk('div');
-    const subBar=mk('div',{class:'sub-tab-bar'});
-    [['import','CSV Import'],['export','Export'],['autotag','Auto-tag']].forEach(([id,label])=>{
-      const t=mk('div',{class:'sub-tab'+(S.toolsTab===id?' active':'')},label);
-      t.onclick=()=>{S.toolsTab=id;render();};
-      subBar.appendChild(t);
-    });
-    toolsWrap.appendChild(subBar);
-    if(S.toolsTab==='import')toolsWrap.appendChild(renderImport());
-    else if(S.toolsTab==='export')toolsWrap.appendChild(renderExport());
-    else toolsWrap.appendChild(renderAutoTag());
-    app.appendChild(toolsWrap);
-  }
+  else if(S.nav==='import')app.appendChild(renderImport());
+  else if(S.nav==='export')app.appendChild(renderExport());
+  else app.appendChild(renderAutoTag());
 }
 
 function renderSplash(title,sub){
@@ -851,7 +839,7 @@ function renderSorterApplying(){
     const btnBack=mk('button',{},'← Back to Sorter');
     btnBack.onclick=()=>{S.sorter.phase='sort';render();};
     const btnExport=mk('button',{class:'primary'},'Export CSV backup →');
-    btnExport.onclick=()=>{S.nav='tools';S.toolsTab='export';render();};
+    btnExport.onclick=()=>{S.nav='export';render();};
     btnRow.appendChild(btnBack);btnRow.appendChild(btnExport);
     w.appendChild(btnRow);
   }
@@ -1497,7 +1485,7 @@ function startAutoTagPolling(){
   autoTagState.pollingTimer=setInterval(async()=>{
     if(S.nav!=='autotag'){stopAutoTagPolling();return;}
     await fetchAutoTagStatus();
-    if(S.nav==='tools'&&S.toolsTab==='autotag')render();
+    if(S.nav==='autotag')render();
   },4000);
 }
 
@@ -1538,7 +1526,7 @@ async function triggerManualRun(){
     if(!r.ok)throw new Error(`HTTP ${r.status}`);
     toast('Manual run started — watch the log below.');
     // Give the server a moment to start, then refresh
-    setTimeout(async()=>{await fetchAutoTagStatus();if(S.nav==='tools'&&S.toolsTab==='autotag')render();},1200);
+    setTimeout(async()=>{await fetchAutoTagStatus();if(S.nav==='autotag')render();},1200);
   }catch(e){toast('Error: '+e.message);}
   autoTagState.runningManual=false;render();
 }
@@ -1582,7 +1570,7 @@ function renderAutoTag(){
 
   // Kick off polling and initial fetch when the tab is first rendered
   if(!autoTagState.status&&!autoTagState.error){
-    fetchAutoTagStatus().then(()=>{if(S.nav==='tools'&&S.toolsTab==='autotag')render();});
+    fetchAutoTagStatus().then(()=>{if(S.nav==='autotag')render();});
   }
   startAutoTagPolling();
 
